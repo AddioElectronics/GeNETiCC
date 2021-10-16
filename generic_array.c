@@ -15,33 +15,6 @@
 bool array_contains_memory(const uint8_t* value, const uint8_t* array, size_t length, uint8_t elem_size )
 {
 	return array_indexOf_memory(value, array, length, elem_size) != -1;
-	//uint8_t matching = 0;		//How many bytes have matched, also used to point at a byte in the value.
-	//
-	//int i = 0;
-	//while(i < length)
-	//{
-		////The current byte is matching.
-		//if(array[i] == value[matching])
-		//{
-			////All bytes are matching.
-			//if(++matching == elem_size)
-				//return true;
-				//
-			////Increase index to check next byte.
-			//i++;
-		//}
-		//else //First byte did not match.
-		//{
-			////Reset
-			//matching = 0;
-			//
-			////Go to the first byte of the next value.
-			////Staying aligned with the value types size (elem_size)
-			////This allows us to check less bytes, and stops the ability to get a false positive.
-			//i += elem_size - (i % elem_size);
-		//}
-	//}
-	//return false;
 }
 
 /*
@@ -78,11 +51,8 @@ int array_indexOf_memory(const uint8_t* value, const uint8_t* array, size_t leng
 		}
 		else //First byte did not match.
 		{
-			
-			
 			//Reset
 			matching = 0;
-			
 			
 			//Go to the first byte of the next value.
 			//Staying aligned with the value types size (elem_size)
