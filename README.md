@@ -13,7 +13,9 @@ Just import the headers and source files into your project, and include the head
 
 ### Macros (Main Usage)
 ` length is size in bytes, not the  element count. `
+
 ` Macros below contain siblings where the first characters are capitalized, there are different ways to call them. `
+
 [Learn about macro differences, and how macros can be called](#Calling-Conventions)
 
 ##### array_contains(value, array, length)
@@ -65,7 +67,8 @@ Used for standard value types.
 ### Type Specific Functions
 > Type specific functions can be added to improve performance. Float and Double use them by default. 
 > They can be called directly, or via the macros.
-> ` To have new editions used by macros, the macros will have to be edited. `
+
+ ` To have new functions used by macros, the macros will have to be edited. `
 
 
 ###### bool array_contains_float(const float value, const float* array, size_t length)
@@ -95,7 +98,9 @@ bool contains = array_contains(5, intArray, sizeof(int) * 5); // Length is passe
 
 ##### Upper-Case Macros (Array_Contains, Array_IndexOf, Array_LastIndexOf)
 `These are for internal features, but are available to use.`
+
 `All parameters are required`
+
 These upper case siblings have a locked parameter count.
 
 ``` C
