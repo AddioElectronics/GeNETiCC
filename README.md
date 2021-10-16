@@ -1,8 +1,6 @@
 # Generic Array ( C Library)
- `
-Free for personal and/or scientific use. Licensing available for Commercial use.
-`
-A C libary which implements functions for working with arrays in a generic manner.
+
+A C libary which implements generic functions for working with arrays.
 
 ## Usage
 
@@ -28,6 +26,27 @@ If "value" does not exist, -1 will be returned.
 ##### array_lastIndexOf(value, array, length)
 Searches an array up to the length for "value", and returns the last index of the value.
 If "value" does not exist, -1 will be returned.
+
+#### Examples
+` More examples can be found in main.c`
+>The main way to use this library is to use the lower-case macros.
+>The example below only contains lower-case-macros.
+[Learn about lower/upper-case macros](#Calling-Conventions)
+``` C
+//Initialize Arrays
+uint16_t shortarray [10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};	
+float  floatarray[3] = {1.0f, 2.5f, -5.25f};	
+
+void main()
+{
+    //Length not passed, full array checked
+    bool containsShort = array_contains(5, shortarray);     
+    Or
+    //Length passed, half of array checked
+    int value = 5;
+    bool containsShort = array_contains(value, shortarray, (5 * sizeof(uint16_t));  
+}
+```
 
 ### Functions
 `Functions are mainly for internal use, to be called from the macros. They are still available for use, if you choose to use them.`
