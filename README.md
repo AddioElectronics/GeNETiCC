@@ -33,6 +33,8 @@ If "value" does not exist, -1 will be returned.
 >The example below only contains lower-case-macros.
 [Learn about lower/upper-case macros](#Calling-Conventions)
 ``` C
+#include "generic_array.h"
+
 //Initialize Arrays
 uint16_t shortarray [10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};	
 float  floatarray[3] = {1.0f, 2.5f, -5.25f};	
