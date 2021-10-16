@@ -2,6 +2,8 @@
 
 A C libary which implements generic functions for working with arrays.
 
+`More functions will be added`
+
 ## Usage
 
 Just import the headers and source files into your project, and include the headers.
