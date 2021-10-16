@@ -25,12 +25,12 @@ int main(void)
 	/* Integer Types */	
 	
 	//Macros
-	//Array_IndexOf does not require the length, but can also be used.
-	//array_indexOf always requires the length.
+	//array_indexOf does not require the length, but can also be used.
+	//Array_IndexOf always requires the length.
 	
-	int shortResult1 =  Array_IndexOf(2, shortarray);						//length is not passed
-	int shortResult2 =  Array_IndexOf(2, shortarray, 5);					//length is passed
-	int shortResult3 =  array_indexOf(2, shortarray, sizeof(shortarray));	//length must be passed
+	int shortResult1 =  array_indexOf(2, shortarray);						//length is not passed
+	int shortResult2 =  array_indexOf(2, shortarray, 5);					//length is passed
+	int shortResult3 =  Array_IndexOf(2, shortarray, sizeof(shortarray));	//length must be passed
 	
 	//Here is the function which the macros call, it always requires the length, as well as the size of the element.
 	//It also requires you to cast the value to (generic_union_t).
@@ -38,7 +38,7 @@ int main(void)
 	
 
 	/* Floating Point Types*/
-	bool containsFloat = Array_Contains(2.5f, floatarray);
+	bool containsFloat = array_contains(2.5f, floatarray);
 	
 	/* Struct */
 	ts_arr[0] = (example_struct_t){.a = 5, .b = 2.5f};
@@ -49,7 +49,7 @@ int main(void)
 	example_struct_t ts = (example_struct_t){.a = 3, .b = 2.5f};
 		
 	//Unfortuantely we need to cast the struct to a char* (All pointers must be char*)
-	bool containsStruct = Array_Contains((char*)&ts, ts_arr);
+	bool containsStruct = array_contains((char*)&ts, ts_arr);
 	
 	/* Pointer Based Arrays */
 	
@@ -63,5 +63,5 @@ int main(void)
 	intPointerArray[5] = 2;
 	
 	//You probably already know, but pointer arrays can not be used with sizeof. The length needs to be passed manually.
-	int pointerArrayResult = Array_LastIndexOf(1, intPointerArray, (6 * sizeof(int)));
+	int pointerArrayResult = array_lastIndexOf(1, intPointerArray, (6 * sizeof(int)));
 }

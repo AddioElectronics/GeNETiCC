@@ -1,11 +1,3 @@
-/*
- * generic_array.h
- *
- * Created: 10/12/2021 3:47:32 PM
- *  Author: Addio
- */ 
-
-
 #ifndef GENERIC_ARRAY_H_
 #define GENERIC_ARRAY_H_
 
@@ -125,6 +117,10 @@ static int internal_call_array_lastIndexOf_special(const generic_union_t value, 
 
 #pragma region Macros
 
+
+/*
+*	Macros used in ARRAY_..._MACRO_CHOOSER macros, used to change parameter counts.
+*/
 #define GET_LENGTH_ARG(varg, value, array, length, ...) length
 
 
@@ -138,7 +134,7 @@ static int internal_call_array_lastIndexOf_special(const generic_union_t value, 
 *
 *	/returns			If the array contains the value.
 */
-#define array_contains(value, array, length) _Generic((value),																	\
+#define Array_Contains(value, array, length) _Generic((value),																	\
 const char*: array_contains_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),				\
 char*: array_contains_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),					\
 const unsigned char*: array_contains_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length,sizeof(array[0])),		\
@@ -152,14 +148,14 @@ default: array_contains_generic((generic_union_t)value, array, length, sizeof(ar
 /*
 *	Adds the ability to call one macro with different amounts of parameters
 */
-#define PARRAY_CONTAINS_GENERIC(value, array, length) array_contains(value, array, length)
-#define ARRAY_CONTAINS_GENERIC(value, array) array_contains(value, array, sizeof(array))
+#define PARRAY_CONTAINS_GENERIC(value, array, length) Array_Contains(value, array, length)
+#define ARRAY_CONTAINS_GENERIC(value, array) Array_Contains(value, array, sizeof(array))
 #define ARRAY_CONTAINS_MACRO_CHOOSER(...)				\
 GET_LENGTH_ARG(__VA_ARGS__, PARRAY_CONTAINS_GENERIC,	\
 ARRAY_CONTAINS_GENERIC, )
 
 /*
-*	Calls the "array_contains" with a different amount of parameters.
+*	Calls the "Array_Contains" with a different amount of parameters.
 *
 *	/param	value		The value to search for.
 *	/param	array		Pointer to the start of the array.
@@ -167,7 +163,7 @@ ARRAY_CONTAINS_GENERIC, )
 *
 *	/returns			If the array contains the value.
 */
-#define Array_Contains(...) ARRAY_CONTAINS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define array_contains(...) ARRAY_CONTAINS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 
 /*
@@ -179,7 +175,7 @@ ARRAY_CONTAINS_GENERIC, )
 *
 *	/returns			The index of the value in the array, or -1 if it does not exist.
 */
-#define array_indexOf(value, array, length) _Generic((value),																	\
+#define Array_IndexOf(value, array, length) _Generic((value),																	\
 const char*: array_indexOf_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),				\
 char*: array_indexOf_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),						\
 const unsigned char*: array_indexOf_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),		\
@@ -193,14 +189,14 @@ default: array_indexOf_generic((generic_union_t)value, array, length, sizeof(arr
 /*
 *	Adds the ability to call one macro with different amounts of parameters
 */
-#define PARRAY_INDEXOF_GENERIC(value, array, length) array_indexOf(value, array, length)
-#define ARRAY_INDEXOF_GENERIC(value, array) array_indexOf(value, array, sizeof(array))
+#define PARRAY_INDEXOF_GENERIC(value, array, length) Array_IndexOf(value, array, length)
+#define ARRAY_INDEXOF_GENERIC(value, array) Array_IndexOf(value, array, sizeof(array))
 #define ARRAY_INDEXOF_MACRO_CHOOSER(...)			\
 GET_LENGTH_ARG(__VA_ARGS__, PARRAY_INDEXOF_GENERIC, \
 ARRAY_INDEXOF_GENERIC, )
 
 /*
-*	Calls the "array_contains" with a different amount of parameters.
+*	Calls the "Array_IndexOf" with a different amount of parameters.
 *
 *	/param	value		The value to search for.
 *	/param	array		Pointer to the start of the array.
@@ -208,7 +204,7 @@ ARRAY_INDEXOF_GENERIC, )
 *
 *	/returns			If the array contains the value.
 */
-#define Array_IndexOf(...) ARRAY_INDEXOF_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define array_indexOf(...) ARRAY_INDEXOF_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Macro used to "overload" array_indexOf functions.
@@ -219,7 +215,7 @@ ARRAY_INDEXOF_GENERIC, )
 *
 *	/returns			The last index of the value in the array, or -1 if it does not exist.
 */
-#define parray_lastIndexOf(value, array, length) _Generic((value),																	\
+#define Array_LastIndexOf(value, array, length) _Generic((value),																	\
 const char*: array_lastIndexOf_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),				\
 char*: array_lastIndexOf_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),						\
 const unsigned char*: array_lastIndexOf_memory((generic_union_t){.u64 = (uint32_t)value}.cp, array, length, sizeof(array[0])),		\
@@ -233,14 +229,14 @@ default: array_lastIndexOf_generic((generic_union_t)value, array, length, sizeof
 /*
 *	Adds the ability to call one macro with different amounts of parameters
 */
-#define PARRAY_LASTINDEXOF_GENERIC(value, array, length) array_indexOf(value, array, length)
-#define ARRAY_LASTINDEXOF_GENERIC(value, array) array_indexOf(value, array, sizeof(array))
+#define PARRAY_LASTINDEXOF_GENERIC(value, array, length) Array_LastIndexOf(value, array, length)
+#define ARRAY_LASTINDEXOF_GENERIC(value, array) Array_LastIndexOf(value, array, sizeof(array))
 #define ARRAY_LASTINDEXOF_MACRO_CHOOSER(...)			\
 GET_LENGTH_ARG(__VA_ARGS__, PARRAY_LASTINDEXOF_GENERIC, \
 ARRAY_LASTINDEXOF_GENERIC, )
 
 /*
-*	Calls the "array_contains" with a different amount of parameters.
+*	Calls the "Array_LastIndexOf" with a different amount of parameters.
 *
 *	/param	value		The value to search for.
 *	/param	array		Pointer to the start of the array.
@@ -248,7 +244,7 @@ ARRAY_LASTINDEXOF_GENERIC, )
 *
 *	/returns			If the array contains the value.
 */
-#define Array_LastIndexOf(...) ARRAY_LASTINDEXOF_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define array_lastIndexOf(...) ARRAY_LASTINDEXOF_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 #pragma endregion Macros
 
