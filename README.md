@@ -1,10 +1,12 @@
-# Generic Array ( C Library)
+# GeNETiCC ( C Library)
 
-A C libary which implements generic functions for working with arrays.
+A C libary which implements generic functions for working with arrays, list, and more, in a style that closely resembles C#.
 
-`More functions will be added`
+`Warning: This repo is about to get a massive update which adds a ton of stuff, and changes literally everything here. I do not recommend starting to use this for atleast a couple days until the repo is updated.`
 
 ## Usage
+
+### [Info about the upcoming update in the Wiki](https://github.com/AddioElectronics/Generic-Array-C-gcc/wiki)
 
 Just import the headers and source files into your project, and include the headers.
 
