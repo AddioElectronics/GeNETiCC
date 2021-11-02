@@ -35,7 +35,7 @@
 *	The minimum transaction count needed to use DMA over memcpy.
 */
 #warning reminder to set transaction count to a reasonable value before publishing
-#define GENETICC_DMA_MIN_TRANSACTION_COUNT	100
+#define GENETICC_DMA_MIN_TRANSACTION_COUNT	512
 #define GENETICC_DMA_SYNC_MIN_TRANSACTION_COUNT 2048		//For synchronous methods (inside geneticc_memory.h)
 
 
@@ -50,12 +50,12 @@
 /*
 *	How many transfers can be in the list at once?
 */
-#define GENETICC_DMA_MAX_TRANSFERS				100	//Absolute max is 255	(To increase, change the bit count for the transfer_count bit field in the geneticc_dma_control_reg definition)
+#define GENETICC_DMA_MAX_TRANSFERS				255	//Absolute max is 255	(To increase, change the bit count for the transfer_count bit field in the geneticc_dma_control_reg definition)
 
 /*
 *	How many subtransfers can fit in a transfer.
 */
-#define GENETICC_DMA_MAX_SUBTRANSFERS			100	//Absolute max is 255	(To increase, change the bit count for the subtran_count and complete_count bit fields in the geneticc_dma_transfer_t definition)
+#define GENETICC_DMA_MAX_SUBTRANSFERS			255	//Absolute max is 255	(To increase, change the bit count for the subtran_count and complete_count bit fields in the geneticc_dma_transfer_t definition)
 
 /*
 *	How many loop cycles in the geneticc_dma_wait() equals a timeout.
