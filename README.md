@@ -1,118 +1,78 @@
 # GeNETiCC ( C Library)
+#### `V0.5.0`
 
-A C libary which implements generic functions for working with arrays, list, and more, in a style that closely resembles C#.
+__**A C libary which implements generic functions for working with [arrays](https://github.com/AddioElectronics/GeNETiCC/wiki/API-Array), [lists](https://github.com/AddioElectronics/GeNETiCC/wiki/API-List), and more(coming soon), in a style that implements syntactic sugar that closely resembles C#.**__
 
-`Warning: This repo is about to get a massive update which adds a ton of stuff, and changes literally everything here. I do not recommend starting to use this for atleast a couple days until the repo is updated.`
 
-## Usage
 
-### [Info about the upcoming update in the Wiki](https://github.com/AddioElectronics/Generic-Array-C-gcc/wiki)
+## Notes
+
+`The README and WIKI are very messy at the moment, I apologize for any confusion caused`
+
+The library is in an early state but almost production ready. It is very hard to test every permutation of each Macro/Function, so it would be much appreciated if you could report any bugs so I am able to fix them ASAP. Also feel free to post any issues, suggestions or questions you may have, this is library is not like most other C libraries, and I want to make the documentation as clear as possible to avoid any confusion you or anyone else may have. My goal is to have this very approachable for coders of any skill level, just like C#.
+
+One thing about DMA, from the small tests I've done everything is working smoothly, but I have not had the chance to test it while other channels are in use. It is probably the least finished code in the repo, I have not had a chance to add comments and perform a clean up, so just be careful when using it for any critical projects.
+
+
+## Contents
+
+* [Reference API](https://github.com/AddioElectronics/GeNETiCC/wiki)
+* [Change Log](https://github.com/AddioElectronics/GeNETiCC/blob/master/ChangeLog.md)
+* [Usage](#usage)
+  * [Macros](#macros)
+  * [Functions](#functions_internal)
+  * [Type Specific Functions](#type_specific_functions)
+  * [DMA](#dma)
+* [Contributing](#contributing)
+* [License](#license)
+* [Author](#author)
+
+## Usage <a name="usage"/>
+
+#### [Documentation and Reference API](https://github.com/AddioElectronics/GeNETiCC/wiki)
 
 Just import the headers and source files into your project, and include the headers.
 
 ```
-#include "generic.h"
-#include "generic_array.h"
+#include "geneticc_master.h"
 ```
 
-### Macros (Main Usage)
-` length is size in bytes, not the  element count. `
+### Macros (Main Usage) <a name="macros"/>
 
-` Macros below contain siblings where the first characters are capitalized, there are different ways to call them. `
+#### [This info has been moved to the WIKI](https://github.com/AddioElectronics/GeNETiCC/wiki)
 
-[Learn about macro differences, and how macros can be called](#Calling-Conventions)
+Macros are the intended way to use this library, they call into internal functions after using pre-processor "tricks" to implement function overloading, and generic casting.
 
-##### array_contains(value, array, length)
- Searches an array up to the length for "value", and returns a bool depending on if it exists in the context.
+
+### Functions (Internal) <a name="functions_internal"/>
+
+#### [This info has been moved to the WIKI](https://github.com/AddioElectronics/GeNETiCC/wiki)
+
+Most functions are for internal use, to be called from the macros. They are still available for use, if you choose to use them, but you will miss out on the features this library has to offer.
+
+### Type Specific Functions (Internal) <a name="type_specific_functions"/>
+
+#### [This info has been moved to the WIKI](https://github.com/AddioElectronics/GeNETiCC/wiki)
+
+Type specific functions can be disabled (in most cases) by setting the `GENETICC_OPTIMIZATION_LEVEL` to `GENETICC_OPTIMIZATION_LEVEL_SIZE.`
+
+In cases where performance is an issue for a certain data type, functions for that specific data type can be added to squeeze as much performance as possible.
+
+As of now, only a few type specific functions have been added, typically for floating point types. In the future most Macros will contain them, if you nee
  
-##### array_indexOf(value, array, length)
-Searches an array up to the length for "value", and returns the first index of the value.
-If "value" does not exist, -1 will be returned.
+After creating the function, the internal macro will need a minor modification to allow the "public" macro to call into the function.
 
-##### array_lastIndexOf(value, array, length)
-Searches an array up to the length for "value", and returns the last index of the value.
-If "value" does not exist, -1 will be returned.
+### DMA <a name="dma"/>
 
-#### Examples
-` More examples can be found in main.c`
->The main way to use this library is to use the lower-case macros.
->The example below only contains lower-case-macros.
-[Learn about lower/upper-case macros](#Calling-Conventions)
-``` C
-#include "generic_array.h"
+#### [Info In the Wiki](https://github.com/AddioElectronics/GeNETiCC/wiki/DMA)
 
-//Initialize Arrays
-uint16_t shortarray [10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};	
-float  floatarray[3] = {1.0f, 2.5f, -5.25f};	
+## Contributing
 
-void main()
-{
-    //Length not passed, full array checked
-    bool containsShort = array_contains(5, shortarray);     
-    Or
-    //Length passed, half of array checked
-    int value = 5;
-    bool containsShort = array_contains(value, shortarray, (5 * sizeof(uint16_t));  
-}
-```
+Would you like to contribute to this project? [CONTRIBUTING.md](https://github.com/AddioElectronics/GeNETiCC/blob/master/Contributing.md)
 
-### Functions
-`Functions are mainly for internal use, to be called from the macros. They are still available for use, if you choose to use them.`
+## License
 
-
-###### array_..._memory(const uint8_t* value, const uint8_t* array, size_t length, uint8_t elem_size)
-All the the main functionality is located in these functions.
-
-###### array_..._generic(const generic_union_t value, const uint8_t* array, size_t length, uint8_t elem_size)
-Used for standard value types. 
-
-
-
-### Type Specific Functions
-> Type specific functions can be added to improve performance. Float and Double use them by default. 
-> They can be called directly, or via the macros.
-
- ` To have new functions used by macros, the macros will have to be edited. `
-
-
-###### bool array_contains_float(const float value, const float* array, size_t length)
-###### bool array_contains_double(const double value, const double* array, size_t length)
-###### int array_indexOf_float(const float value, const float* array, size_t length)
-###### int array_indexOf_double(const double value, const double* array, size_t length)
-###### int array_lastIndexOf_float(const float value, const float* array, size_t length)
-###### int array_lastIndexOf_double(const double value, const double* array, size_t length)
-
-### Calling Conventions
-
-
-
-Each macro contains a "sibling," where the first characters are/aren't capitalized.
-
-##### Lower-Case Macros (array_contains, array_indexOf, array_lastIndexOf)
-`length is the optional parameter (For arrays only, length is required for pointer arrays)`
-The all-lower-case macros can take a variable length of parameters.
-These figure out the parameters internally, and then call their upper-case sibling.
-
-``` C
-int intarray[10] = {1, 2, 3, 4, 5 , 6, 7, 8, 9, 10};
-//Both allowed
-bool contains = array_contains(5, intArray); // length is calculated internally if not passed.
-bool contains = array_contains(5, intArray, sizeof(int) * 5); // Length is passed, only half the array will be searched.
-```
-
-##### Upper-Case Macros (Array_Contains, Array_IndexOf, Array_LastIndexOf)
-`These are for internal features, but are available to use.`
-
-`All parameters are required`
-
-These upper case siblings have a locked parameter count.
-
-``` C
-int intarray[10] = {1, 2, 3, 4, 5 , 6, 7, 8, 9, 10};
-bool contains = Array_Contains(5, intArray); // Not Allowed
-bool contains = array_contains(5, intArray, sizeof(intarray); // Required
-```
-
+GeNETiCC is released under the [MIT License.](http://www.opensource.org/licenses/MIT)
 
 ## Author
 
