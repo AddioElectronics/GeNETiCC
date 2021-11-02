@@ -34,7 +34,7 @@ One thing about DMA, from the small tests I've done everything is working smooth
 Just import the headers and source files into your project, and include the headers.
 
 ```
-#include "geneticc_master.h"
+#include "addio/geneticc/geneticc_master.h"
 ```
 
 ### Macros (Main Usage) <a name="macros"/>

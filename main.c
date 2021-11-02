@@ -1,6 +1,6 @@
 #include <atmel_start.h>
 
-#include "geneticc/geneticc_master.h"
+#include "addio/geneticc/geneticc_master.h"
 
 //The struct def for the example
 typedef struct example_struct{

@@ -1,5 +1,5 @@
-#ifndef MULTISYSTEM_CONFIG_H_
-#define MULTISYSTEM_CONFIG_H_
+#ifndef ADDIO_MULTISYSTEM_CONFIG_H_
+#define ADDIO_MULTISYSTEM_CONFIG_H_
 
 /*
 *	The types of systems.
@@ -14,4 +14,4 @@
 
 
 
-#endif /* MULTISYSTEM_CONFIG_H_ */
+#endif /* ADDIO_MULTISYSTEM_CONFIG_H_ */

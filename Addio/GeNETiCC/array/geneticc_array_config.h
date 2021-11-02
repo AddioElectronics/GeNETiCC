@@ -2,7 +2,7 @@
 #ifndef GENETICC_ARRAY_CONFIG_H_
 #define GENETICC_ARRAY_CONFIG_H_
 
-#include "../config/multisystem_config.h"
+#include "../../addio_multisystem_config.h"
 
 #if SYSTEM_TYPE == SYSTEM_TYPE_PC
 #define ARRAY_MAX_SIZE					0x7FFFFFC7		//The max size of the array (in bytes).
