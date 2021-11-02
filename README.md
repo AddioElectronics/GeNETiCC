@@ -9,9 +9,9 @@ __**A C libary which implements generic functions for working with [arrays](http
 
 `The README and WIKI are very messy at the moment, I apologize for any confusion caused`
 
-The library is in an early state but almost production ready. It is very hard to test every permutation of each Macro/Function, so it would be much appreciated if you could report any bugs so I am able to fix them ASAP. Also feel free to post any issues, suggestions or questions you may have, this is library is not like most other C libraries, and I want to make the documentation as clear as possible to avoid any confusion you or anyone else may have. My goal is to have this very approachable for coders of any skill level, just like C#.
+The library is in an early state but almost production ready. It is very hard to test every permutation of each Macro/Function, so it would be much appreciated if you could report any bugs so I am able to fix them ASAP. Also feel free to post any issues, suggestions or questions you may have, this library is not like most other C libraries, and I want to make the documentation as clear as possible to avoid any confusion you or anyone else may have. My goal is to have this very approachable for coders of any skill level, just like C#.
 
-One thing about DMA, from the small tests I've done everything is working smoothly, but I have not had the chance to test it while other channels are in use. It is probably the least finished code in the repo, I have not had a chance to add comments and perform a clean up, so just be careful when using it for any critical projects.
+One thing about DMA, from the small tests I've done everything is working smoothly, but I have not had the chance to test it while other channels are in use. It is some of the least finished code in the repo, I have not had a chance to add comments and perform a clean up, so just be careful when using it for any critical projects.
 
 
 ## Contents
