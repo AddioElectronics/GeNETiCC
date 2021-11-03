@@ -155,18 +155,46 @@ void internal_array_copy_init_list(ARRAY_PTR array, size_t size,  element_size_t
 	geneticc_memcpy(out_list->array, array, out_list->head);
 }
 
+/*
+*	Allocates a new array and copies the elements from the list.
+*
+*	/param	list			Pointer to the list.
+*
+*	/returns				Pointer to the newly allocated array.
+*/
+ARRAY_PTR internal_list_toArray(LIST_PTR list)
+{
+	size_t size = internal_list_get_size(list);
+	ARRAY_PTR array = malloc(size);
+	
+	geneticc_memcpy(array, internal_list_get_aligned_array(list), size);
+	
+	return array;
+}
+
+
+/*
+*	Frees the list and its internal array from memory.
+*
+*	List_Delete(list)
+*
+*	/param		list			Pointer to the list.
+*/
+void GENOPTI_ATT_FORCE_INLINE internal_list_delete(LIST_PTR list)
+{
+	free(list->array);
+	free(list);
+}
+
+
 
 /*
 *	Initializes a list from an already existing array.
 *
-*	/param	array				A pointer to the start of the array.
-*	/param	size				The total size of the array(in bytes).
-*	/param	elem_size			The size of the value's type (in bytes).
-*	/param	out_list			(out)The list
-*	/param	capacity			The size of the internal array (in bytes).
-*	/param	populated_size		The size of the used elements in the array (in bytes).
+*	/param	list			Pointer to the list.
+*	/param	min				The minimum capacity the list can be.
 *
-*	/Returns	bool			True if capacity is ok, false if min is larger than ARRAY_MAX_SIZE.
+*	/returns				True if the capacity was equal to or greater than min. False if the capacity has reached its maximum.
 */
 bool internal_list_ensure_capacity(LIST_PTR list, capacity_size_t min)
 {
@@ -196,7 +224,7 @@ bool internal_list_ensure_capacity(LIST_PTR list, capacity_size_t min)
 /*
 *	Sets the list's capacity, as long as it is not smaller than the internal array.
 *
-*	/param	list			(out)The list
+*	/param	list			The list
 *	/param	newCapacity		The amount of elements the new capacity will be.
 *
 *	/returns				True if the capacity was changed, or if it did not need to be changed. False if the internal array is larger than newCapacity.
@@ -232,7 +260,7 @@ bool internal_list_set_capacity(LIST_PTR list, capacity_count_t newCapacity)
 /*
 *	Get the list's capacity as a count, not size.
 *
-*	/param	list			(out)The list
+*	/param	list			Pointer to the list.
 *
 *	/returns				The amount of elements that can fit in the list.
 */
@@ -443,16 +471,17 @@ ELEMENT_PTR internal_list_get(LIST_PTR list, index_t index)
 }
 
 /*
-*	Frees the list and its internal array from memory.
+*	Enumerates through all elements in the list, checking them to the predicate's conditions,
+*	and returning if the predicate was satisfied.
 *
-*	List_Delete(list)
+*	/param	list		Pointer to the list.
+*	/param	predicate	A function which checks each value to its conditions.
 *
-*	/param		list			Pointer to the list.
+*	/returns			True if an element in the list satisfied the predicate's condition, false if the predicate was unsatisfied.
 */
-void GENOPTI_ATT_FORCE_INLINE internal_list_delete(LIST_PTR list)
+bool GENOPTI_ATT_FORCE_INLINE internal_list_exists(LIST_PTR list, PREDICATE predicate)
 {
-	free(list->array);
-	free(list);
+	return internal_array_exists(list->array + list->tail, list->head - list->tail, list->elem_size, predicate);
 }
 
 /*
@@ -536,7 +565,7 @@ bool internal_list_any(LIST_PTR list, PREDICATE predicate, byte_offset_t offset,
 *
 *	/returns			Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_list_select_memory(LIST_PTR list, PREDICATE predicate)
+int GENOPTI_ATT_FORCE_INLINE internal_list_find_memory(LIST_PTR list, PREDICATE predicate)
 {
 	return internal_array_select_memory(list->array + list->tail, list->head - list->tail, list->elem_size, predicate) - (list->tail == 0 ? 0 : list->tail / list->elem_size);	
 }
@@ -551,11 +580,11 @@ int GENOPTI_ATT_FORCE_INLINE internal_list_select_memory(LIST_PTR list, PREDICAT
 *
 *	/returns			Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_list_select_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
+int GENOPTI_ATT_FORCE_INLINE internal_list_find_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
 {
 	va_list ap;
 	va_start(ap, arg_count);	
-	return internal_list_select_vargs_memory(list, predicate, arg_count, ap);
+	return internal_list_find_vargs_memory(list, predicate, arg_count, ap);
 }
 
 /*
@@ -570,7 +599,7 @@ int GENOPTI_ATT_FORCE_INLINE internal_list_select_args_memory(LIST_PTR list, PRE
 *
 *	/returns			Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-int internal_list_select_vargs_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
+int internal_list_find_vargs_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
 {
 	#warning reminder to add start and length to all the list select functions. The macros currently allow them, but it would be much faster to use them in the function.
 	size_t size = internal_list_get_size(list);
@@ -608,7 +637,7 @@ int internal_list_select_vargs_memory(LIST_PTR list, PREDICATE_ARGS predicate, i
 *
 *	/returns			A list of zero based indexes to all values in the array that matched the predicate, or NULL if there were no matches.
 */
-LIST_PTR internal_list_selectMany_indexes(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size)
+LIST_PTR internal_list_findAll_indexes(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size)
 {
 	LIST_PTR newList = new_List(sizeof(index_t));
 	
@@ -645,7 +674,7 @@ LIST_PTR internal_list_selectMany_indexes(LIST_PTR list, PREDICATE predicate, by
 *
 *	/returns			A list containing pointers to each value in the list that matched the predicate's conditions, or NULL if there was no matches.
 */
-LIST_PTR internal_list_selectMany_pointers(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size)
+LIST_PTR internal_list_findAll_pointers(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size)
 {
 	LIST_PTR newList = new_List(sizeof(ELEMENT_PTR));
 	
@@ -682,7 +711,7 @@ LIST_PTR internal_list_selectMany_pointers(LIST_PTR list, PREDICATE predicate, b
 *
 *	/returns			A list of values from the original list that matched the conditions defined by predicate, or NULL if there was no matches.
 */
-LIST_PTR internal_list_selectMany_values(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size)
+LIST_PTR internal_list_findAll_values(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size)
 {
 	LIST_PTR newList = new_List(list->elem_size);
 	
@@ -724,11 +753,11 @@ LIST_PTR internal_list_selectMany_values(LIST_PTR list, PREDICATE predicate, byt
 *
 *	/returns			A list of zero based indexes to all values in the array that matched the predicate, or NULL if there were no matches.
 */
-LIST_PTR internal_list_selectMany_indexes_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
+LIST_PTR internal_list_findAll_indexes_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
 {
 	va_list ap;
 	va_start(ap, arg_count);
-	return internal_list_selectMany_indexes_vargs(list, predicate, arg_count, ap);
+	return internal_list_findAll_indexes_vargs(list, predicate, arg_count, ap);
 }
 
 /*
@@ -744,11 +773,11 @@ LIST_PTR internal_list_selectMany_indexes_args(LIST_PTR list, PREDICATE_ARGS pre
 *
 *	/returns			A list containing pointers to each value in the list that matched the predicate's conditions, or NULL if there was no matches.
 */
-LIST_PTR internal_list_selectMany_pointers_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
+LIST_PTR internal_list_findAll_pointers_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
 {
 	va_list ap;
 	va_start(ap, arg_count);
-	return internal_list_selectMany_pointers_vargs(list, predicate, arg_count, ap);
+	return internal_list_findAll_pointers_vargs(list, predicate, arg_count, ap);
 }
 
 /*
@@ -764,11 +793,11 @@ LIST_PTR internal_list_selectMany_pointers_args(LIST_PTR list, PREDICATE_ARGS pr
 *
 *	/returns			A list of values from the original list that matched the conditions defined by predicate, or null if there was no matches.
 */
-LIST_PTR internal_list_selectMany_values_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
+LIST_PTR internal_list_findAll_values_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...)
 {
 	va_list ap;
 	va_start(ap, arg_count);
-	return internal_list_selectMany_values_vargs(list, predicate, arg_count, ap);
+	return internal_list_findAll_values_vargs(list, predicate, arg_count, ap);
 }
 
 
@@ -785,7 +814,7 @@ LIST_PTR internal_list_selectMany_values_args(LIST_PTR list, PREDICATE_ARGS pred
 *
 *	/returns			A list of zero based indexes to all values in the array that matched the predicate, or NULL if there were no matches.
 */
-LIST_PTR internal_list_selectMany_indexes_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
+LIST_PTR internal_list_findAll_indexes_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
 {
 	LIST_PTR newList = new_List(list->elem_size);
 	
@@ -823,7 +852,7 @@ LIST_PTR internal_list_selectMany_indexes_vargs(LIST_PTR list, PREDICATE_ARGS pr
 *
 *	/returns			A list containing pointers to each value in the list that matched the predicate's conditions
 */
-LIST_PTR internal_list_selectMany_pointers_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
+LIST_PTR internal_list_findAll_pointers_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
 {
 	LIST_PTR newList = new_List(list->elem_size);
 	
@@ -861,7 +890,7 @@ LIST_PTR internal_list_selectMany_pointers_vargs(LIST_PTR list, PREDICATE_ARGS p
 *
 *	/returns			A list of values from the original list that matched the conditions defined by predicate, or null if there was no matches.
 */
-LIST_PTR internal_list_selectMany_values_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
+LIST_PTR internal_list_findAll_values_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap)
 {
 	LIST_PTR newList = new_List(list->elem_size);
 	
@@ -1347,7 +1376,7 @@ uint32_t internal_list_removeAll_memory(LIST_PTR list, ELEMENT_PTR value)
 	int index = 0;
 	do
 	{
-		index = List_IndexOf(list, value, index);
+		index = List_Indexof(list, value, index);
 		
 		if(index != -1)
 		{
@@ -1557,7 +1586,7 @@ uint32_t internal_list_removeAllMatching_memory(LIST_PTR list, PREDICATE predica
 	int index = 0;
 	do
 	{
-		index = List_Select(list, predicate);
+		index = List_FindIndex(list, predicate);
 		
 		if(index != -1)
 		{
@@ -1656,7 +1685,7 @@ uint32_t internal_list_removeAllMatching_vargs_memory(LIST_PTR list, PREDICATE_A
 	int index = 0;
 	do 
 	{
-		index = List_SelectVargs(list, predicate, arg_count, ap, index);
+		index = List_FindIndexVargs(list, predicate, arg_count, ap, index);
 		
 		if(index != -1)
 		{
@@ -1756,6 +1785,13 @@ void internal_list_reverse_memory(LIST_PTR list, int start)
 	
 	list->array = internal_array_reverse_memory(list->array, list->capacity, list->elem_size, true);
 }
+
+
+//void internal_list_sort_memory(LIST_PTR list, COMPARISON comparison)
+//{
+	//list->array = internal_array_sort_memory();
+//}
+
 
 
 #pragma endregion Unsafe Generic Methods
@@ -2341,7 +2377,7 @@ bool internal_list_dma_removeAll_memory(LIST_PTR list, const ELEMENT_PTR value, 
 	//int index = 0;
 	//do
 	//{
-		//index = List_IndexOf(list, value, index);
+		//index = List_Indexof(list, value, index);
 		//
 		//if(index != -1)
 		//{

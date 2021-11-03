@@ -157,12 +157,12 @@ length_t __attribute__((__always_inline__)) geneticc_dma_get_transfer_count()
 
 void __attribute__((__always_inline__)) geneticc_dma_wait_for_transfer(const void* dest)
 {
-	while(internal_list_select_args_memory(&geneticc_dma_transfer_list, predicate_transfer_destmatch, 1, dest) != -1);
+	while(internal_list_find_args_memory(&geneticc_dma_transfer_list, predicate_transfer_destmatch, 1, dest) != -1);
 }
 
 bool __attribute__((__always_inline__)) geneticc_dma_is_transfer_complete(const void* dest)
 {
-	return internal_list_select_args_memory(&geneticc_dma_transfer_list, predicate_transfer_destmatch, 1, dest) == -1;
+	return internal_list_find_args_memory(&geneticc_dma_transfer_list, predicate_transfer_destmatch, 1, dest) == -1;
 }
 
 #pragma endregion Functions
@@ -201,9 +201,9 @@ geneticc_dma_transfer_t* __attribute__((__always_inline__)) internal_geneticc_dm
 	
 	return NULL;*/
 	
-	//return *(geneticc_dma_transfer_t**)internal_list_select_memory(&geneticc_dma_transfer_list, predicate);
-	//return internal_list_get(&geneticc_dma_transfer_list, internal_list_select_memory(&geneticc_dma_transfer_list, predicate));
-	return *(geneticc_dma_transfer_t**)List_SelectPointer(&geneticc_dma_transfer_list, predicate);
+	//return *(geneticc_dma_transfer_t**)internal_list_find_memory(&geneticc_dma_transfer_list, predicate);
+	//return internal_list_get(&geneticc_dma_transfer_list, internal_list_find_memory(&geneticc_dma_transfer_list, predicate));
+	return *(geneticc_dma_transfer_t**)List_FindPointers(&geneticc_dma_transfer_list, predicate);
 }
 
 geneticc_dma_transfer_t* internal_geneticc_dma_get_transfer_args(PREDICATE_ARGS predicate, int arg_count, ...)
@@ -211,9 +211,9 @@ geneticc_dma_transfer_t* internal_geneticc_dma_get_transfer_args(PREDICATE_ARGS 
 	va_list ap;
 	va_start(ap, arg_count);
 	
-	//geneticc_dma_transfer_t* transfer = *(geneticc_dma_transfer_t**)internal_list_select_vargs_memory(&geneticc_dma_transfer_list, predicate, arg_count, ap);	//Calls va_end
-	//geneticc_dma_transfer_t* transfer =  internal_list_get(&geneticc_dma_transfer_list, internal_list_select_vargs_memory(&geneticc_dma_transfer_list, predicate, arg_count, ap));	//Calls va_end
-	geneticc_dma_transfer_t* transfer = *(geneticc_dma_transfer_t**)List_SelectPointerVargs(&geneticc_dma_transfer_list, predicate, arg_count, ap);	//Calls va_end
+	//geneticc_dma_transfer_t* transfer = *(geneticc_dma_transfer_t**)internal_list_find_vargs_memory(&geneticc_dma_transfer_list, predicate, arg_count, ap);	//Calls va_end
+	//geneticc_dma_transfer_t* transfer =  internal_list_get(&geneticc_dma_transfer_list, internal_list_find_vargs_memory(&geneticc_dma_transfer_list, predicate, arg_count, ap));	//Calls va_end
+	geneticc_dma_transfer_t* transfer = *(geneticc_dma_transfer_t**)List_FindPointersVargs(&geneticc_dma_transfer_list, predicate, arg_count, ap);	//Calls va_end
 	return transfer;
 }
 
@@ -231,14 +231,14 @@ geneticc_dma_transfer_t* __attribute__((__always_inline__)) internal_geneticc_dm
 	
 	return NULL;*/
 	
-	//return *(geneticc_dma_transfer_t**)internal_list_select_args_memory(&geneticc_dma_transfer_list, predicate_transfer_destsrcmatch, 2, dest, src);
-	return *(geneticc_dma_transfer_t**)List_SelectPointerArgs(&geneticc_dma_transfer_list, predicate_transfer_destsrcmatch, 2, dest, src);
+	//return *(geneticc_dma_transfer_t**)internal_list_find_args_memory(&geneticc_dma_transfer_list, predicate_transfer_destsrcmatch, 2, dest, src);
+	return *(geneticc_dma_transfer_t**)List_FindPointersArgs(&geneticc_dma_transfer_list, predicate_transfer_destsrcmatch, 2, dest, src);
 }
 
 geneticc_dma_subtransfer_t* __attribute__((__always_inline__)) internal_geneticc_dma_get_subtransfer(geneticc_dma_transfer_t* transfer, PREDICATE predicate)
 {
-	//return *(geneticc_dma_subtransfer_t**)internal_list_select_memory(&(transfer->subtransfers), predicate);
-	return *(geneticc_dma_subtransfer_t**)List_SelectPointer(&(transfer->subtransfers), predicate);
+	//return *(geneticc_dma_subtransfer_t**)internal_list_find_memory(&(transfer->subtransfers), predicate);
+	return *(geneticc_dma_subtransfer_t**)List_FindPointers(&(transfer->subtransfers), predicate);
 }
 
 geneticc_dma_subtransfer_t* internal_geneticc_dma_get_subtransfer_args(geneticc_dma_transfer_t* transfer, PREDICATE_ARGS predicate, int arg_count, ...)
@@ -246,8 +246,8 @@ geneticc_dma_subtransfer_t* internal_geneticc_dma_get_subtransfer_args(geneticc_
 	va_list ap;
 	va_start(ap, arg_count);
 	
-	//return *(geneticc_dma_subtransfer_t**)internal_list_select_vargs_memory(&(transfer->subtransfers), predicate, arg_count, ap);	//Calls va_end
-	return *(geneticc_dma_subtransfer_t**)List_SelectPointerVargs(&(transfer->subtransfers), predicate, arg_count, ap);	//Calls va_end
+	//return *(geneticc_dma_subtransfer_t**)internal_list_find_vargs_memory(&(transfer->subtransfers), predicate, arg_count, ap);	//Calls va_end
+	return *(geneticc_dma_subtransfer_t**)List_FindPointersVargs(&(transfer->subtransfers), predicate, arg_count, ap);	//Calls va_end
 }
 
 void internal_geneticc_dma_complete_transfer(geneticc_dma_transfer_t* transfer)
@@ -255,7 +255,7 @@ void internal_geneticc_dma_complete_transfer(geneticc_dma_transfer_t* transfer)
 	if(transfer->flags.freesrc)
 	free(transfer->src);
 	
-	int index = List_IndexOf(&geneticc_dma_transfer_list, CAST_STRUCT &transfer);
+	int index = List_Indexof(&geneticc_dma_transfer_list, CAST_STRUCT &transfer);
 	if(index != -1)
 	{
 		internal_list_removeAt_memory(&geneticc_dma_transfer_list, index);
@@ -349,8 +349,8 @@ void internal_geneticc_dma_start_next_transfer(geneticc_dma_transfer_t* transfer
 			return;
 		}
 		#warning may not work
-		//transfer = *(geneticc_dma_transfer_t**)internal_list_select_memory(&geneticc_dma_transfer_list, predicate_transfer_ready);  
-		transfer =  *(geneticc_dma_transfer_t**)List_SelectPointer(&geneticc_dma_transfer_list, predicate_transfer_start_triggered);
+		//transfer = *(geneticc_dma_transfer_t**)internal_list_find_memory(&geneticc_dma_transfer_list, predicate_transfer_ready);  
+		transfer =  *(geneticc_dma_transfer_t**)List_FindPointers(&geneticc_dma_transfer_list, predicate_transfer_start_triggered);
 	}
 	
 	if(transfer == NULL)	//No transfers ready
@@ -358,8 +358,8 @@ void internal_geneticc_dma_start_next_transfer(geneticc_dma_transfer_t* transfer
 	
 	//Get next transfer where running flag = false, and return a pointer to it.
 	//If this value is null it means all the transfers are complete.
-	//geneticc_dma_subtransfer_t* next =  *(geneticc_dma_subtransfer_t**)internal_list_select_memory(&transfer->subtransfers, predicate_subtransfer_waiting);
-	geneticc_dma_subtransfer_t* next =  *(geneticc_dma_subtransfer_t**)List_SelectPointer(&transfer->subtransfers, predicate_subtransfer_waiting);
+	//geneticc_dma_subtransfer_t* next =  *(geneticc_dma_subtransfer_t**)internal_list_find_memory(&transfer->subtransfers, predicate_subtransfer_waiting);
+	geneticc_dma_subtransfer_t* next =  *(geneticc_dma_subtransfer_t**)List_FindPointers(&transfer->subtransfers, predicate_subtransfer_waiting);
 
 	ASSERT(next);
 	

@@ -479,51 +479,51 @@ LIST_ANY_2, )
 /*
 *	Select
 */
-#define LIST_SELECT_4(list, predicate, start, length)	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start)
-#define LIST_SELECT_3(list, predicate, start)			INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start)
-#define LIST_SELECT_2(list, predicate)													internal_list_select_memory(list, predicate)
-#define LIST_SELECT_MACRO_CHOOSER(...)	\
+#define LIST_FINDINDEX_4(list, predicate, start, length)	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start)
+#define LIST_FINDINDEX_3(list, predicate, start)			INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start)
+#define LIST_FINDINDEX_2(list, predicate)													internal_list_find_memory(list, predicate)
+#define LIST_FINDINDEX_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_4(__VA_ARGS__,				\
-LIST_SELECT_4,							\
-LIST_SELECT_3,							\
-LIST_SELECT_2, )
+LIST_FINDINDEX_4,							\
+LIST_FINDINDEX_3,							\
+LIST_FINDINDEX_2, )
 
 
 /*
 *	Select Pointer
 */
-#define LIST_SELECTPOINTER_4(list, predicate, start, length)	internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start))
-#define LIST_SELECTPOINTER_3(list, predicate, start)			internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start))
-#define LIST_SELECTPOINTER_2(list, predicate)					internal_list_get(	list,							internal_list_select_memory(list, predicate))
-#define LIST_SELECTPOINTER_MACRO_CHOOSER(...)	\
+#define LIST_FIND_4(list, predicate, start, length)	internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start))
+#define LIST_FIND_3(list, predicate, start)			internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate), start))
+#define LIST_FIND_2(list, predicate)					internal_list_get(	list,							internal_list_find_memory(list, predicate))
+#define LIST_FIND_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_4(__VA_ARGS__,						\
-LIST_SELECTPOINTER_4,							\
-LIST_SELECTPOINTER_3,							\
-LIST_SELECTPOINTER_2, )
+LIST_FIND_4,							\
+LIST_FIND_3,							\
+LIST_FIND_2, )
 
 /*
 *	Select Vargs
 */
-#define LIST_SELECT_VARGS_6(list, predicate, arg_count, ap, start, length)	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start)
-#define LIST_SELECT_VARGS_5(list, predicate, arg_count, ap, start)			INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start)
-#define LIST_SELECT_VARGS_4(list, predicate, arg_count, ap)													internal_list_select_vargs_memory(list, predicate, arg_count, ap)
-#define LIST_SELECT_VARGS_MACRO_CHOOSER(...)	\
+#define LIST_FINDINDEX_VARGS_6(list, predicate, arg_count, ap, start, length)	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start)
+#define LIST_FINDINDEX_VARGS_5(list, predicate, arg_count, ap, start)			INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start)
+#define LIST_FINDINDEX_VARGS_4(list, predicate, arg_count, ap)													internal_list_find_vargs_memory(list, predicate, arg_count, ap)
+#define LIST_FINDINDEX_VARGS_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_6(__VA_ARGS__,						\
-LIST_SELECT_VARGS_6,							\
-LIST_SELECT_VARGS_5,							\
-LIST_SELECT_VARGS_4, )
+LIST_FINDINDEX_VARGS_6,							\
+LIST_FINDINDEX_VARGS_5,							\
+LIST_FINDINDEX_VARGS_4, )
 
 /*
 *	Select Vargs
 */
-#define LIST_SELECTPOINTER_VARGS_6(list, predicate, arg_count, ap, start, length)	internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start))
-#define LIST_SELECTPOINTER_VARGS_5(list, predicate, arg_count, ap, start)			internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start))
-#define LIST_SELECTPOINTER_VARGS_4(list, predicate, arg_count, ap)					internal_list_get(									internal_list_select_vargs_memory(list, predicate, arg_count, ap))
-#define LIST_SELECTPOINTER_VARGS_MACRO_CHOOSER(...)	\
+#define LIST_FIND_VARGS_6(list, predicate, arg_count, ap, start, length)	internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), length * INTERNAL_LIST_GET_ELEM_SIZE(list), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start))
+#define LIST_FIND_VARGS_5(list, predicate, arg_count, ap, start)			internal_list_get(	INTERNAL_ARRAY_GET_TRUE_INDEX(	internal_array_select_vargs_memory(List_Array(list) + (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), List_Size(list) - (start * INTERNAL_LIST_GET_ELEM_SIZE(list)), INTERNAL_LIST_GET_ELEM_SIZE(list), predicate, arg_count, ap), start))
+#define LIST_FIND_VARGS_4(list, predicate, arg_count, ap)					internal_list_get(									internal_list_find_vargs_memory(list, predicate, arg_count, ap))
+#define LIST_FIND_VARGS_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_6(__VA_ARGS__,						\
-LIST_SELECTPOINTER_VARGS_6,							\
-LIST_SELECTPOINTER_VARGS_5,							\
-LIST_SELECTPOINTER_VARGS_4, )
+LIST_FIND_VARGS_6,							\
+LIST_FIND_VARGS_5,							\
+LIST_FIND_VARGS_4, )
 
 
 
@@ -542,17 +542,17 @@ LIST_SELECTPOINTER_VARGS_4, )
 *
 *	/returns	LIST_PTR	A list of zero based indexes to all values in the array that matched the predicate, or NULL if there were no matches.
 */
-#define INTERNAL_LIST_SELECTMANY_INDEXES(list, predicate, offset, size)	\
-internal_list_selectMany_indexes(list,  predicate, offset, size)
+#define INTERNAL_LIST_FINDALL_INDEXES(list, predicate, offset, size)	\
+internal_list_findAll_indexes(list,  predicate, offset, size)
 
-#define LIST_SELECTMANY_INDEXES_4(list, predicate, index, count)	INTERNAL_LIST_SELECTMANY_INDEXES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), count * INTERNAL_LIST_GET_ELEM_SIZE(list))
-#define LIST_SELECTMANY_INDEXES_3(list, predicate, index)			INTERNAL_LIST_SELECTMANY_INDEXES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), 0)
-#define LIST_SELECTMANY_INDEXES_2(list, predicate)					INTERNAL_LIST_SELECTMANY_INDEXES(list, predicate, 0, 0)
-#define LIST_SELECTMANY_INDEXES_MACRO_CHOOSER(...)	\
+#define LIST_FINDALL_INDEXES_4(list, predicate, index, count)	INTERNAL_LIST_FINDALL_INDEXES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), count * INTERNAL_LIST_GET_ELEM_SIZE(list))
+#define LIST_FINDALL_INDEXES_3(list, predicate, index)			INTERNAL_LIST_FINDALL_INDEXES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), 0)
+#define LIST_FINDALL_INDEXES_2(list, predicate)					INTERNAL_LIST_FINDALL_INDEXES(list, predicate, 0, 0)
+#define LIST_FINDALL_INDEXES_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_4(__VA_ARGS__,							\
-LIST_SELECTMANY_INDEXES_4,							\
-LIST_SELECTMANY_INDEXES_3,							\
-LIST_SELECTMANY_INDEXES_2, )
+LIST_FINDALL_INDEXES_4,							\
+LIST_FINDALL_INDEXES_3,							\
+LIST_FINDALL_INDEXES_2, )
 
 
 /*
@@ -563,17 +563,17 @@ LIST_SELECTMANY_INDEXES_2, )
 *
 *	/returns	LIST_PTR	A list containing pointers to each value in the list that matched the predicate's conditions, or NULL if there was no matches.
 */
-#define INTERNAL_LIST_SELECTMANY_POINTERS(list, predicate, offset, size)	\
-internal_list_selectMany_pointers(list,  predicate, offset, size)
+#define INTERNAL_LIST_FINDALL_POINTERS(list, predicate, offset, size)	\
+internal_list_findAll_pointers(list,  predicate, offset, size)
 
-#define LIST_SELECTMANY_POINTERS_4(list, predicate, index, count)	INTERNAL_LIST_SELECTMANY_POINTERS(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), count * INTERNAL_LIST_GET_ELEM_SIZE(list))
-#define LIST_SELECTMANY_POINTERS_3(list, predicate, index)			INTERNAL_LIST_SELECTMANY_POINTERS(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), 0)
-#define LIST_SELECTMANY_POINTERS_2(list, predicate)					INTERNAL_LIST_SELECTMANY_POINTERS(list, predicate, 0, 0)
-#define LIST_SELECTMANY_POINTERS_MACRO_CHOOSER(...)	\
+#define LIST_FINDALL_POINTERS_4(list, predicate, index, count)	INTERNAL_LIST_FINDALL_POINTERS(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), count * INTERNAL_LIST_GET_ELEM_SIZE(list))
+#define LIST_FINDALL_POINTERS_3(list, predicate, index)			INTERNAL_LIST_FINDALL_POINTERS(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), 0)
+#define LIST_FINDALL_POINTERS_2(list, predicate)					INTERNAL_LIST_FINDALL_POINTERS(list, predicate, 0, 0)
+#define LIST_FINDALL_POINTERS_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_4(__VA_ARGS__,							\
-LIST_SELECTMANY_POINTERS_4,							\
-LIST_SELECTMANY_POINTERS_3,							\
-LIST_SELECTMANY_POINTERS_2, )
+LIST_FINDALL_POINTERS_4,							\
+LIST_FINDALL_POINTERS_3,							\
+LIST_FINDALL_POINTERS_2, )
 
 /*
 *	/param	list			Pointer to the start of the list.
@@ -583,17 +583,17 @@ LIST_SELECTMANY_POINTERS_2, )
 *
 *	/returns	LIST_PTR	A list of values from the original list that matched the conditions defined by predicate, or NULL if there was no matches.
 */
-#define INTERNAL_LIST_SELECTMANY_VALUES(list, predicate, offset, size)	\
-internal_list_selectMany_values(list,  predicate, offset, size)
+#define INTERNAL_LIST_FINDALL_VALUES(list, predicate, offset, size)	\
+internal_list_findAll_values(list,  predicate, offset, size)
 
-#define LIST_SELECTMANY_VALUES_4(list, predicate, index, count)		INTERNAL_LIST_SELECTMANY_VALUES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), count * INTERNAL_LIST_GET_ELEM_SIZE(list))
-#define LIST_SELECTMANY_VALUES_3(list, predicate, index)			INTERNAL_LIST_SELECTMANY_VALUES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), 0)
-#define LIST_SELECTMANY_VALUES_2(list, predicate)					INTERNAL_LIST_SELECTMANY_VALUES(list, predicate, 0, 0)
-#define LIST_SELECTMANY_VALUES_MACRO_CHOOSER(...)	\
+#define LIST_FINDALL_VALUES_4(list, predicate, index, count)		INTERNAL_LIST_FINDALL_VALUES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), count * INTERNAL_LIST_GET_ELEM_SIZE(list))
+#define LIST_FINDALL_VALUES_3(list, predicate, index)			INTERNAL_LIST_FINDALL_VALUES(list, predicate, index * INTERNAL_LIST_GET_ELEM_SIZE(list), 0)
+#define LIST_FINDALL_VALUES_2(list, predicate)					INTERNAL_LIST_FINDALL_VALUES(list, predicate, 0, 0)
+#define LIST_FINDALL_VALUES_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_4(__VA_ARGS__,							\
-LIST_SELECTMANY_VALUES_4,							\
-LIST_SELECTMANY_VALUES_3,							\
-LIST_SELECTMANY_VALUES_2, )
+LIST_FINDALL_VALUES_4,							\
+LIST_FINDALL_VALUES_3,							\
+LIST_FINDALL_VALUES_2, )
 
 /*
 *	/param	list		Pointer to the start of the list.

@@ -9,8 +9,7 @@
 
 #include "../array/geneticc_array_defs.h"
 
-typedef size_t capacity_size_t;		//Signifies size as bytes
-typedef uint32_t capacity_count_t;	//Signifies element count
+
 
 typedef struct
 {
@@ -18,6 +17,8 @@ typedef struct
 	type_size_t elem_size;		//The size of the value's type (in bytes).
 	byte_offset_t tail;			//The byte offset to the first item in the array.
 	byte_offset_t head;			//The byte offset to the element after the last item in the array. If head == tail, there are no elements in the array.
+	//size_t size;					//The size of the populated elements as bytes.
+	//length_t count;				//The amount of populated elements in the list.
 	ARRAY_PTR array;			//Pointer to the start of the array
 	//type_t type;				//The type of elements stored in the array.
 }list_t;
@@ -25,6 +26,6 @@ typedef struct
 
 #define LIST_PTR		list_t*
 
-typedef void (*ACTION)(ELEMENT_PTR element);
+
 
 #endif /* GENETICC_LIST_DEFS_H_ */

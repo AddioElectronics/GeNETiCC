@@ -8,6 +8,7 @@
 #include <limits.h>
 
 #include "../../geneticc.h"
+#include "../../geneticc_defs.h"
 #include "../geneticc_list_defs.h"
 #include "../geneticc_list_config.h"
 //#include "geneticc_list_defs.h"
@@ -29,6 +30,9 @@ void internal_array_init_list(ARRAY_PTR array, size_t size,  element_size_t elem
 
 void internal_array_copy_init_list(ARRAY_PTR array, size_t size,  element_size_t elem_size, size_t populated_size, LIST_PTR out_list);
 
+ARRAY_PTR internal_list_toArray(LIST_PTR list);
+
+inline void internal_list_delete(LIST_PTR list);
 
 
 bool internal_list_ensure_capacity(LIST_PTR list, capacity_size_t capacity);
@@ -57,10 +61,9 @@ bool internal_list_set_generic(LIST_PTR list, generic_union_t value, index_t ind
 
 ELEMENT_PTR internal_list_get(LIST_PTR list, index_t index);
 
-inline void internal_list_delete(LIST_PTR list);
 
 
-
+bool GENOPTI_ATT_FORCE_INLINE internal_list_exists(LIST_PTR list, PREDICATE predicate);
 
 void internal_list_forEach(LIST_PTR list, ACTION action, byte_offset_t offset, size_t size);
 
@@ -68,11 +71,11 @@ bool internal_list_all(LIST_PTR list, PREDICATE predicate, byte_offset_t offset,
 
 bool internal_list_any(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size);
 
-GENOPTI_INLINE int internal_list_select_memory(LIST_PTR list, PREDICATE predicate);
+GENOPTI_INLINE int internal_list_find_memory(LIST_PTR list, PREDICATE predicate);
 
-GENOPTI_INLINE int internal_list_select_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
+GENOPTI_INLINE int internal_list_find_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
 
-int internal_list_select_vargs_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
+int internal_list_find_vargs_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
 
 
 #pragma endregion INTERNAL Functions
@@ -82,17 +85,17 @@ int internal_list_select_vargs_memory(LIST_PTR list, PREDICATE_ARGS predicate, i
 #pragma region Unsafe Generic Methods
 
 
-LIST_PTR internal_list_selectMany_indexes(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size);
-LIST_PTR internal_list_selectMany_pointers(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size);
-LIST_PTR internal_list_selectMany_values(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size);
+LIST_PTR internal_list_findAll_indexes(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size);
+LIST_PTR internal_list_findAll_pointers(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size);
+LIST_PTR internal_list_findAll_values(LIST_PTR list, PREDICATE predicate, byte_offset_t offset, size_t size);
 
-LIST_PTR internal_list_selectMany_indexes_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
-LIST_PTR internal_list_selectMany_pointers_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
-LIST_PTR internal_list_selectMany_values_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
+LIST_PTR internal_list_findAll_indexes_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
+LIST_PTR internal_list_findAll_pointers_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
+LIST_PTR internal_list_findAll_values_args(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ...);
 
-LIST_PTR internal_list_selectMany_indexes_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
-LIST_PTR internal_list_selectMany_pointers_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
-LIST_PTR internal_list_selectMany_values_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
+LIST_PTR internal_list_findAll_indexes_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
+LIST_PTR internal_list_findAll_pointers_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
+LIST_PTR internal_list_findAll_values_vargs(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, va_list ap);
 
 LIST_PTR internal_list_getRange_memory(LIST_PTR list, byte_offset_t offset, size_t range_size);
 
@@ -125,6 +128,10 @@ uint32_t internal_list_removeAllMatching_vargs_memory(LIST_PTR list, PREDICATE_A
 
 GENOPTI_INLINE bool internal_list_removeMatch_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ... );
 GENOPTI_INLINE uint32_t internal_list_removeAllMatching_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ... );
+
+void internal_list_reverse_memory(LIST_PTR list, int start);
+
+//void internal_list_sort_memory(LIST_PTR list, COMPARISON comparison);
 
 
 

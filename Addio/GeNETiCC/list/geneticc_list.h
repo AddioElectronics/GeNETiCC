@@ -121,6 +121,17 @@
 #define Array_CopyInit_List(...) ARRAY_COPY_INIT_LIST_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
+*	Allocates a new array and copies the elements from the list.
+*
+*	List_ToArray(list)
+*
+*	/param	list			Pointer to the list.
+*
+*	/returns				Pointer to the newly allocated array.
+*/
+#define List_ToArray(list)	internal_list_toArray(list)
+
+/*
 *	Frees a list and its internal array from memory.
 *
 *	List_Delete(list)
@@ -146,6 +157,8 @@
 #define List_Array(list)	internal_list_get_aligned_array(list)
 //#define List(list)			internal_list_get_aligned_array(list)
 //#define Larry(list)			internal_list_get_aligned_array(list)
+
+
 
 /*
 *	Returns a pointer to the value at the index.
@@ -368,6 +381,19 @@
 #define List_Contains(...) LIST_CONTAINS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
+*	Enumerates through all elements in the list, checking them to the predicate's conditions,
+*	and returning if the predicate was satisfied.
+*
+*	List_Exists(list, predicate)
+*
+*	/param	list		Pointer to the list.
+*	/param	predicate	A function which checks each value to its conditions.
+*
+*	/returns			True if an element in the list satisfied the predicate's condition, false if the predicate was unsatisfied.
+*/
+#define List_Exists(list, predicate) internal_list_exists(list, predicate)
+
+/*
 *	Search an list for a specific value, and returns the first index.
 *
 *	List_IndexOf(list, value)
@@ -386,9 +412,9 @@
 /*
 *	Searches an list from back to front for a value, and returns the index of the first match (latest index).
 *
-*	List_LastIndexOf(list, value)
-*	List_LastIndexOf(list, value, index)
-*	List_LastIndexOf(list, value, index, length)
+*	List_LastIndexof(list, value)
+*	List_LastIndexof(list, value, index)
+*	List_LastIndexof(list, value, index, length)
 *
 *	/param	list		Pointer to the list
 *	/param	value		The value to search for.
@@ -397,7 +423,7 @@
 *
 *	/returns	int		The index to the last item in the list matching value, or -1 if it does not exist.
 */
-#define List_LastIndexOf(...) LIST_LASTINDEXOF_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define List_LastIndexof(...) LIST_LASTINDEXOF_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Counts how many times "value" is seen in the list.
@@ -552,9 +578,9 @@
 /*
 *	Retrieves the index to the first value in the list that matches the predicate.
 *
-*	List_Select(list, predicate)
-*	List_Select(list, predicate, index)
-*	List_Select(list, predicate, index, length)
+*	List_FindIndex(list, predicate)
+*	List_FindIndex(list, predicate, index)
+*	List_FindIndex(list, predicate, index, length)
 *
 *	/param		list			Pointer to the list.
 *	/param		predicate		A pointer to a function (PREDICATE) which checks each value to its conditions. If arg_count and ap are used, predicate is type PREDICATE_ARGS.
@@ -563,29 +589,30 @@
 *
 *	/returns	int				Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-#define List_Select(...)	LIST_SELECT_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define List_FindIndex(...)	LIST_FINDINDEX_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
+//#define List_FindLastIndex(...)
 
 /*
 *	Retrieves a pointer to the first value in the list that matches the predicate.
 *
-*	List_SelectArgs(list, predicate, arg_count, ...)
+*	List_FindIndexArgs(list, predicate, arg_count, ...)
 *
 *	/param		list			Pointer to the list.
 *	/param		predicate		A pointer to a function (PREDICATE) which checks each value to its conditions.
 *	/param		arg_count		How many arguments have been passed.
 *	/param		...				The variadic arguments.
 *
-*	/returns	uint8_t*	A pointer to the first value in the array that matches the predicate
+*	/returns	int				Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-#define List_SelectArgs(list, predicate, arg_count, ...) internal_list_select_args_memory(list, predicate, arg_count, ##__VA_ARGS__)
+#define List_FindIndexArgs(list, predicate, arg_count, ...) internal_list_find_args_memory(list, predicate, arg_count, ##__VA_ARGS__)
 
 /*
 *	Retrieves a pointer to the first value in the list that matches the predicate.
 *
-*	List_SelectVargs(list, predicate, arg_count, ap)
-*	List_SelectVargs(list, predicate, arg_count, ap, index)
-*	List_SelectVargs(list, predicate, arg_count, ap, index, length)
+*	List_FindIndexVargs(list, predicate, arg_count, ap)
+*	List_FindIndexVargs(list, predicate, arg_count, ap, index)
+*	List_FindIndexVargs(list, predicate, arg_count, ap, index, length)
 *
 *	/param		list			Pointer to the list.
 *	/param		predicate		A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -594,16 +621,16 @@
 *	/param		index			(Optional)The index to start at.
 *	/param		length			(Optional)The amount of values to search.
 *
-*	/returns	uint8_t*	A pointer to the first value in the array that matches the predicate
+*	/returns	int				Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-#define List_SelectVargs(...)	LIST_SELECT_VARGS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define List_FindIndexVargs(...)	LIST_FINDINDEX_VARGS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Retrieves a pointer to the first value in the list that matches the predicate.
 *
-*	List_SelectPointer(list, predicate)
-*	List_SelectPointer(list, predicate, index)
-*	List_SelectPointer(list, predicate, index, length)
+*	List_Find(list, predicate)
+*	List_Find(list, predicate, index)
+*	List_Find(list, predicate, index, length)
 *
 *	/param		list			Pointer to the list.
 *	/param		predicate		A pointer to a function (PREDICATE) which checks each value to its conditions. If arg_count and ap are used, predicate is type PREDICATE_ARGS.
@@ -612,12 +639,12 @@
 *
 *	/returns	uint8_t*	A pointer to the first value in the array that matches the predicate
 */
-#define List_SelectPointer(...)	LIST_SELECTPOINTER_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define List_Find(...)	LIST_FIND_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Retrieves a pointer to the first value in the list that matches the predicate.
 *
-*	List_SelectPointerArgs(list, predicate, arg_count, ...)
+*	List_FindArgs(list, predicate, arg_count, ...)
 *
 *	/param		list			Pointer to the list.
 *	/param		predicate		A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -626,12 +653,12 @@
 *
 *	/returns	uint8_t*	A pointer to the first value in the array that matches the predicate
 */
-#define List_SelectPointerArgs(list, predicate, arg_count, ...) internal_list_get(list, internal_list_select_args_memory(list, predicate, arg_count, ##__VA_ARGS__))
+#define List_FindArgs(list, predicate, arg_count, ...) internal_list_get(list, internal_list_find_args_memory(list, predicate, arg_count, ##__VA_ARGS__))
 
 /*
 *	Retrieves a pointer to the first value in the list that matches the predicate.
 *
-*	List_SelectPointerVargs(list, predicate, arg_count, ap)
+*	List_FindVargs(list, predicate, arg_count, ap)
 *
 *	/param		list			Pointer to the list.
 *	/param		predicate		A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -640,7 +667,7 @@
 *
 *	/returns	uint8_t*	A pointer to the first value in the array that matches the predicate
 */
-#define List_SelectPointerVargs(list, predicate, arg_count, ap) internal_list_get(list, internal_list_select_vargs_memory(list, predicate, arg_count, ap))
+#define List_FindVargs(list, predicate, arg_count, ap) internal_list_get(list, internal_list_find_vargs_memory(list, predicate, arg_count, ap))
 
 #pragma endregion Macros
 
@@ -651,9 +678,9 @@
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, its index will be added to a list and returned.
 *
-*	List_SelectMany(list, predicate)
-*	List_SelectMany(list, predicate, index)
-*	List_SelectMany(list, predicate, index, length)
+*	List_FindAllIndexes(list, predicate)
+*	List_FindAllIndexes(list, predicate, index)
+*	List_FindAllIndexes(list, predicate, index, length)
 *
 *	/param		list		LIST_PTR	Pointer to the list.
 *	/param		predicate	PREDICATE	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -662,15 +689,15 @@
 *
 *	/returns	LIST_PTR				A list of zero based indexes to all values in the array that matched the predicate, or NULL if there were no matches.
 */
-#define List_SelectMany(...) LIST_SELECTMANY_INDEXES_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define List_FindAllIndexes(...) LIST_FINDALL_INDEXES_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, will have a pointer to them added to a list that will be returned.
 *
-*	List_SelectManyPointers(list, predicate)
-*	List_SelectManyPointers(list, predicate, index)
-*	List_SelectManyPointers(list, predicate, index, length)
+*	List_FindAll(list, predicate)
+*	List_FindAll(list, predicate, index)
+*	List_FindAll(list, predicate, index, length)
 *
 *	/param		list		LIST_PTR	Pointer to the list.
 *	/param		predicate	PREDICATE	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -679,15 +706,15 @@
 *
 *	/returns	LIST_PTR				A list of pointers to each value in the list that matched the predicate's conditions, or NULL if there were no matches.
 */
-#define List_SelectManyPointers(...) LIST_SELECTMANY_POINTERS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define List_FindAll(...) LIST_FINDALL_POINTERS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, will be added to a list and returned.
 *
-*	List_SelectManyValues(list, predicate)
-*	List_SelectManyValues(list, predicate, index)
-*	List_SelectManyValues(list, predicate, index, length)
+*	List_FindAllValues(list, predicate)
+*	List_FindAllValues(list, predicate, index)
+*	List_FindAllValues(list, predicate, index, length)
 *
 *	/param		list		LIST_PTR		Pointer to the list.
 *	/param		predicate	PREDICATE_ARGS	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -696,13 +723,13 @@
 *
 *	/returns	LIST_PTR				A list of values from the original list that matched the conditions defined by predicate, or NULL if there was no matches.
 */
-#define List_SelectManyValues(...) LIST_SELECTMANY_VALUES_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define List_FindAllValues(...) LIST_FINDALL_VALUES_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, its index will be added to a list and returned.
 *
-*	List_SelectManyArgs(list, predicate, arg_count, ...)
+*	List_FindAllIndexesArgs(list, predicate, arg_count, ...)
 *
 *	/param		list		LIST_PTR		Pointer to the list.
 *	/param		predicate	PREDICATE_ARGS	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -711,13 +738,13 @@
 *
 *	/returns	LIST_PTR				A list of zero based indexes to all values in the array that matched the predicate, or NULL if there were no matches.
 */
-#define List_SelectManyArgs(list, predicate, arg_count, ...) internal_list_selectMany_indexes_args(list, predicate, arg_count, ##__VA_ARGS__)
+#define List_FindAllIndexesArgs(list, predicate, arg_count, ...) internal_list_findAll_indexes_args(list, predicate, arg_count, ##__VA_ARGS__)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, will have a pointer to them added to a list that will be returned.
 *
-*	List_SelectManyPointersArgs(list, predicate, arg_count, ...)
+*	List_FindAllArgs(list, predicate, arg_count, ...)
 *
 *	/param		list		LIST_PTR		Pointer to the list.
 *	/param		predicate	PREDICATE_ARGS	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -726,13 +753,13 @@
 *
 *	/returns	LIST_PTR				A list containing pointers to each value in the list that matched the predicate's conditions, or NULL if there were no matches.
 */
-#define List_SelectManyPointersArgs(list, predicate, arg_count, ...) internal_list_selectMany_pointers_args(list, predicate, arg_count, ##__VA_ARGS__)
+#define List_FindAllArgs(list, predicate, arg_count, ...) internal_list_findAll_pointers_args(list, predicate, arg_count, ##__VA_ARGS__)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, will be added to a list and returned.
 *
-*	List_SelectManyValuesArgs(list, predicate, arg_count, ...)
+*	List_FindAllValuesArgs(list, predicate, arg_count, ...)
 *
 *	/param		list		LIST_PTR		Pointer to the list.
 *	/param		predicate	PREDICATE_ARGS	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -741,13 +768,13 @@
 *
 *	/returns	LIST_PTR				A list of values from the original list that matched the conditions defined by predicate, or NULL if there was no matches.
 */
-#define List_SelectManyValuesArgs(list, predicate, arg_count, ...) internal_list_selectMany_values_args(list, predicate, arg_count, ##__VA_ARGS__)
+#define List_FindAllValuesArgs(list, predicate, arg_count, ...) internal_list_findAll_values_args(list, predicate, arg_count, ##__VA_ARGS__)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, its index will be added to a list and returned.
 *
-*	List_SelectManyVargs(list, predicate)
+*	List_FindAllIndexesVargs(list, predicate)
 *
 *	/param		list		LIST_PTR		Pointer to the list.
 *	/param		predicate	PREDICATE_ARGS	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -756,13 +783,13 @@
 *
 *	/returns				LIST_PTR	A list of zero based indexes to all values in the array that matched the predicate, or NULL if there were no matches.
 */
-#define List_SelectManyVargs(list, predicate, arg_count, ap) internal_list_selectMany_indexes_args(list, predicate, arg_count, ap)
+#define List_FindAllIndexesVargs(list, predicate, arg_count, ap) internal_list_findAll_indexes_args(list, predicate, arg_count, ap)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, will have a pointer to them added to a list that will be returned.
 *
-*	List_SelectManyPointersVargs(list, predicate)
+*	List_FindAllVargs(list, predicate)
 *
 *	/param		list		LIST_PTR		Pointer to the list.
 *	/param		predicate	PREDICATE_ARGS	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -771,13 +798,13 @@
 *
 *	/returns				LIST_PTR	A list containing pointers to each value in the list that matched the predicate's conditions, or NULL if there were no matches.
 */
-#define List_SelectManyPointersVargs(list, predicate, arg_count, ap) internal_list_selectMany_pointers_args(list, predicate, arg_count, ap)
+#define List_FindAllVargs(list, predicate, arg_count, ap) internal_list_findAll_pointers_args(list, predicate, arg_count, ap)
 
 /*
 *	Enumerates through each value in the list, and checks it against the predicate's condition.
 *	Every value that satisfied the condition, will be added to a list and returned.
 *
-*	List_SelectManyValuesVargs(list, predicate)
+*	List_FindAllValuesVargs(list, predicate)
 *
 *	/param		list		LIST_PTR		Pointer to the list.
 *	/param		predicate	PREDICATE_ARGS	A pointer to a function (PREDICATE) which checks each value to its conditions.
@@ -786,7 +813,7 @@
 *
 *	/returns				LIST_PTR	A list of values from the original list that matched the conditions defined by predicate, or NULL if there was no matches.
 */
-#define List_SelectManyValuesVargs(list, predicate, arg_count, ap) internal_list_selectMany_values_args(list, predicate, arg_count, ap)
+#define List_FindAllValuesVargs(list, predicate, arg_count, ap) internal_list_findAll_values_args(list, predicate, arg_count, ap)
 
 
 /*
@@ -1079,6 +1106,9 @@
 #define List_Reverse(list) internal_list_reverse_memory(list)
 
 
+//#define List_Sort(list, comparison) internal_list_sort_memory(list, comparison)
+
+
 /*
 *	Casts all values in a list, and returns a new list containing all the cast values.
 *
@@ -1093,9 +1123,11 @@
 #define List_ConvertTo(list, oldType, newType) internal_list_convertTo(list, oldType, newType)
 
 
+//#define List_ConvertAll(list, converter) 
+
+
 
 #pragma endregion Unsafe Macros
-
 
 #pragma region DMA Functions
 

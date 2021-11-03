@@ -40,6 +40,22 @@
 #define Array_Contains(...) ARRAY_CONTAINS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
+*	Enumerates through an array checking the elements to the predicate, and returns true or false if an element satisfied the condition.
+*
+*	Array_Exists(array, predicate)
+*	Array_Exists(array, predicate, length)
+*	Array_Exists(array, predicate, length, start)
+*
+*	/param	array		Pointer to the start of the array.
+*	/param	predicate	A function which checks each value to its conditions.
+*	/param	length		The count of elements in the array, or how many elements are affected.
+*	/param	elem_size	The size of value's type (in bytes).
+*
+*	/returns			True if an element in the array satisfied the predicate's condition, false if the predicate was unsatisfied.
+*/
+#define Array_Exists(...) ARRAY_EXISTS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+
+/*
 *	Search an array for a specific value, and returns the first index.
 *
 *	Array_IndexOf(array, value)
@@ -180,9 +196,9 @@
 /*
 *	Retrieves the index to the first value in the array that matches the predicate.
 *
-*	Array_Select(array, predicate)
-*	Array_Select(array, predicate, length)
-*	Array_Select(array, predicate, length, start)
+*	Array_FindIndex(array, predicate)
+*	Array_FindIndex(array, predicate, length)
+*	Array_FindIndex(array, predicate, length, start)
 *
 *	/param	array			Pointer to the start of the array.
 *	/param	predicate		A pointer to a function (ARRAY_PREDICATE) which checks each value to its conditions.
@@ -192,14 +208,14 @@
 *
 *	/returns			Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-#define Array_Select(...) ARRAY_SELECT_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define Array_FindIndex(...) ARRAY_FINDINDEX_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Retrieves a pointer to the first value in the array that matches the predicate.
 *
-*	Array_SelectPointer(array, predicate)
-*	Array_SelectPointer(array, predicate, length)
-*	Array_SelectPointer(array, predicate, length, start)
+*	Array_Find(array, predicate)
+*	Array_Find(array, predicate, length)
+*	Array_Find(array, predicate, length, start)
 *
 *	/param	array			Pointer to the start of the array.
 *	/param	length			(Optional)The count of elements in the array. (eg. int[10] = 10)
@@ -208,12 +224,12 @@
 *
 *	/returns	uint8_t*	A pointer to the first value in the array that matches the predicate
 */
-#define Array_SelectPointer(...) ARRAY_SELECTPOINTER_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define Array_Find(...) ARRAY_FIND_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Retrieves the index to the first value in the array that matches the predicate.
 *
-*	Array_SelectArgs(array, predicate, length, arg_count, ...)
+*	Array_FindIndexArgs(array, predicate, length, arg_count, ...)
 *
 *	/param		array			Pointer to the array.
 *	/param		length			The count of elements in the array. (eg. int[10] = 10)
@@ -224,14 +240,14 @@
 *
 *	/returns					Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-#define Array_SelectArgs(array, predicate, length, arg_count, ...) internal_array_select_args_memory(array, length, sizeof(array[0]), predicate, arg_count, ##__VA_ARGS__)
+#define Array_FindIndexArgs(array, predicate, length, arg_count, ...) internal_array_select_args_memory(array, length, sizeof(array[0]), predicate, arg_count, ##__VA_ARGS__)
 
 /*
 *	Retrieves the index to the first value in the array that matches the predicate.
 *
-*	Array_SelectVargs(array, predicate, arg_count, ap)
-*	Array_SelectVargs(array, predicate, arg_count, ap, length)
-*	Array_SelectVargs(array, predicate, arg_count, ap, length, start)
+*	Array_FindIndexVargs(array, predicate, arg_count, ap)
+*	Array_FindIndexVargs(array, predicate, arg_count, ap, length)
+*	Array_FindIndexVargs(array, predicate, arg_count, ap, length, start)
 *
 *	/param		array			Pointer to the array.
 *	/param		predicate		A pointer to a function (ARRAY_PREDICATE) which checks each value to its conditions.
@@ -242,14 +258,14 @@
 *
 *	/returns					Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-#define Array_SelectVargs(...) ARRAY_SELECT_VARGS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define Array_FindIndexVargs(...) ARRAY_FINDINDEX_VARGS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 
 
 /*
 *	Retrieves a pointer to the first value in the array that matches the predicate.
 *
-*	Array_SelectPointerArgs(array, predicate, length, arg_count, ...)
+*	Array_FindArgs(array, predicate, length, arg_count, ...)
 *
 *	/param		array			Pointer to the array.
 *	/param		predicate		A pointer to a function (ARRAY_PREDICATE) which checks each value to its conditions.
@@ -259,14 +275,14 @@
 *
 *	/returns	uint8_t*		A pointer to the first value in the array that matches the predicate, or null if there were no matches.
 */
-#define Array_SelectPointerArgs(array, predicate, length, arg_count, ...) INTERNAL_ARRAY_GET_POINTER(array, internal_array_select_args_memory(array, length, sizeof(array[0]), predicate, arg_count, ##__VA_ARGS__), sizeof(array[0]))
+#define Array_FindArgs(array, predicate, length, arg_count, ...) INTERNAL_ARRAY_GET_POINTER(array, internal_array_select_args_memory(array, length, sizeof(array[0]), predicate, arg_count, ##__VA_ARGS__), sizeof(array[0]))
 
 /*
 *	Retrieves a pointer to the first value in the array that matches the predicate.
 *
-*	Array_SelectPointerVargs(array, predicate, arg_count, ap)
-*	Array_SelectPointerVargs(array, predicate, arg_count, ap, length)
-*	Array_SelectPointerVargs(array, predicate, arg_count, ap, length, start)
+*	Array_FindVargs(array, predicate, arg_count, ap)
+*	Array_FindVargs(array, predicate, arg_count, ap, length)
+*	Array_FindVargs(array, predicate, arg_count, ap, length, start)
 *
 *	/param		array			Pointer to the array.
 *	/param		predicate		A pointer to a function (ARRAY_PREDICATE) which checks each value to its conditions.
@@ -277,7 +293,7 @@
 *
 *	/returns	uint8_t*		A pointer to the first value in the array that matches the predicate, or null if there were no matches.
 */
-#define Array_SelectPointerVargs(...) ARRAY_SELECTPOINTER_VARGS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define Array_FindVargs(...) ARRAY_FIND_VARGS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 
 #pragma endregion Macros
@@ -287,9 +303,9 @@
 /*
 *	Retrieves an array of pointers to the elements that match the conditions defined by the specified predicate.
 *
-*	Array_SelectMany(array, predicate, out_count)
-*	Array_SelectMany(array, predicate, length, out_count)
-*	Array_SelectMany(array, predicate, length, start, out_count)
+*	Array_FindAll(array, predicate, out_count)
+*	Array_FindAll(array, predicate, length, out_count)
+*	Array_FindAll(array, predicate, length, start, out_count)
 *
 *	/param	array			*			Pointer to the start of the array.
 *	/param	length			uint		(Optional)The count of elements in the array. (eg. int[10] = 10)
@@ -298,7 +314,7 @@
 *
 *	/returns	uint8t**	An array of pointers to each value in the array that matched the predicate's conditions
 */
-#define Array_SelectMany(...) ARRAY_SELECTMANY_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+#define Array_FindAll(...) ARRAY_FINDALL_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 
 /*
@@ -518,6 +534,9 @@
 */
 #define Array_Reverse(...) ARRAY_REVERSE_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
+
+//#define Array_Sort(array, comparison)
+
 /*
 *	Converts an array of one data type, to an array of a different data type.
 *
@@ -534,6 +553,8 @@
 *	/returns	uint8_t*	A pointer to the start of the new array.
 */
 #define Array_ConvertTo(...) ARRAY_CONVERTTO_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+
+//#define Array_ConvertAll(...) 
 
 #pragma endregion Unsafe Macros
 

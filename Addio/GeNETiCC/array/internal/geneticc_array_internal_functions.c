@@ -27,14 +27,14 @@
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		Any value or struct that is in memory.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The index of the value in the array, or -1 if it does not exist.
 */
-int internal_array_indexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t length,  element_size_t elem_size)
+int internal_array_indexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size)
 {
-	for(int i = 0; i < length; i += elem_size)
+	for(int i = 0; i < size; i += elem_size)
 	{
 		uint8_t b = 0;
 		for(b; b < elem_size; b++)
@@ -58,16 +58,16 @@ int internal_array_indexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to find in the array. Can be any basic value type.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The index of the value in the array, or -1 if it does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_array_indexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size)
+int GENOPTI_ATT_FORCE_INLINE internal_array_indexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
 	uint64_t v = value.u64;		//Store value so we can get pointer from.
 	
-	return internal_array_indexOf_memory(array, &v, length, elem_size);
+	return internal_array_indexOf_memory(array, &v, size, elem_size);
 }
 
 
@@ -76,14 +76,14 @@ int GENOPTI_ATT_FORCE_INLINE internal_array_indexOf_generic(const ARRAY_PTR arra
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		Any value or struct that is in memory.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			If the array contains the value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t length,  element_size_t elem_size )
+bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size )
 {
-	return internal_array_indexOf_memory(array, value, length, elem_size) != -1;
+	return internal_array_indexOf_memory(array, value, size, elem_size) != -1;
 }
 
 /*
@@ -91,32 +91,55 @@ bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_memory(const ARRAY_PTR arr
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to find in the array. Can be any basic value type.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			If the array contains the value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_generic(const ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size)
+bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
 	uint64_t v = value.u64;	//Store value so we can get pointer from.
 	
-	return internal_array_contains_memory(array, &v, length, elem_size);
+	return internal_array_contains_memory(array, &v, size, elem_size);
 }
 
+/*
+*	Enumerates through an array checking the elements to the predicate, and returns true or false if an element satisfied the condition.
+*
+*	/param	array		Pointer to the start of the array.
+*	/param	size		The size of the array (in bytes).
+*	/param	elem_size	The size of the value's type (in bytes).
+*	/param	predicate	A function which checks each value to its conditions.
+*
+*	/returns			True if an element in the array satisfied the predicate's condition, false if the predicate was unsatisfied.
+*/
+bool __attribute__((__always_inline__)) internal_array_exists(const ARRAY_PTR array, size_t size,  element_size_t elem_size, PREDICATE predicate)
+{
+	return internal_array_select_memory(array, size, elem_size, predicate) != -1;
+	//for(int i = 0; i < size; i += elem_size)
+	//{
+		//if((*predicate)(array + i))
+		//{
+			//return true;
+		//}
+	//}
+//
+	//return false;
+}
 
 /*
 *	Searches an array from back to front for a value, and returns the index of the first match (latest index).
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to find in the array. Can be any basic value type.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The last index of the value in the array, or -1 if it does not exist.
 */
-int internal_array_lastIndexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t length,  element_size_t elem_size)
+int internal_array_lastIndexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size)
 {
-	for(int i = length - elem_size; i >= 0; i -= elem_size)
+	for(int i = size - elem_size; i >= 0; i -= elem_size)
 	{
 		uint8_t b = 0;
 		for(b; b < elem_size; b++)
@@ -140,16 +163,16 @@ int internal_array_lastIndexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR v
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to find in the array. Can be any basic value type.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The index of the value in the array, or -1 if it does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_array_lastIndexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size)
+int GENOPTI_ATT_FORCE_INLINE internal_array_lastIndexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
 	uint64_t v = value.u64;		//Store value so we can get pointer from.
 	
-	return internal_array_lastIndexOf_memory(array, &v, length, elem_size);
+	return internal_array_lastIndexOf_memory(array, &v, size, elem_size);
 }
 
 
@@ -157,13 +180,13 @@ int GENOPTI_ATT_FORCE_INLINE internal_array_lastIndexOf_generic(const ARRAY_PTR 
 *	Searches an array for the largest value, and returns its index.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	isSigned	Are the values signed?
 *
 *	/returns			The index of the largest value in the array.
 */
-index_t internal_array_max_memory(const ARRAY_PTR array, size_t length,  element_size_t elem_size, bool isSigned)
+index_t internal_array_max_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, bool isSigned)
 {
 	int valueIndex = 0;		//The index of the largest value.
 	int64_t value = 0;		//The value at valueIndex.
@@ -173,7 +196,7 @@ index_t internal_array_max_memory(const ARRAY_PTR array, size_t length,  element
 
 	if(isSigned)
 	{
-		for(int i = 0; i < length; i += elem_size)
+		for(int i = 0; i < size; i += elem_size)
 		{
 			compare = 0;	//Reset compare
 			switch(elem_size)
@@ -201,7 +224,7 @@ index_t internal_array_max_memory(const ARRAY_PTR array, size_t length,  element
 	}
 	else
 	{
-		for(int i = 0; i < length; i += elem_size)
+		for(int i = 0; i < size; i += elem_size)
 		{
 			compare = 0;	//Reset compare
 			switch(elem_size)
@@ -237,18 +260,18 @@ index_t internal_array_max_memory(const ARRAY_PTR array, size_t length,  element
 *	Searches an array of floating points for the largest value.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The index of the largest value in the array.
 */
-index_t internal_array_maxf_memory(const double* array, size_t length,  element_size_t elem_size)
+index_t internal_array_maxf_memory(const double* array, size_t size,  element_size_t elem_size)
 {
 	int valueIndex = 0;		//The index of the largest value.
 	double value = 0;		//The value at valueIndex.
 	double compare = 0;	//The current value to compare.
 	
-	for(int i = 0; i < length; i += elem_size)
+	for(int i = 0; i < size; i += elem_size)
 	{
 		compare = 0;	//Reset compare
 		
@@ -277,13 +300,13 @@ index_t internal_array_maxf_memory(const double* array, size_t length,  element_
 *	Searches an array for the smallest value.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	isSigned	Are the values signed?
 *
 *	/returns			The index of the largest value in the array.
 */
-index_t internal_array_min_memory(const ARRAY_PTR array, size_t length,  element_size_t elem_size, bool isSigned)
+index_t internal_array_min_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, bool isSigned)
 {
 	int valueIndex = 0;		//The index of the largest value.
 	int64_t value = 0;		//The value at valueIndex.
@@ -295,7 +318,7 @@ index_t internal_array_min_memory(const ARRAY_PTR array, size_t length,  element
 		
 	if(isSigned)
 	{
-		for(int i = 0; i < length; i += elem_size)
+		for(int i = 0; i < size; i += elem_size)
 		{
 			compare = 0;	//Reset compare
 			switch(elem_size)
@@ -323,7 +346,7 @@ index_t internal_array_min_memory(const ARRAY_PTR array, size_t length,  element
 	}
 	else
 	{
-		for(int i = 0; i < length; i += elem_size)
+		for(int i = 0; i < size; i += elem_size)
 		{
 			compare = 0;	//Reset compare
 			switch(elem_size)
@@ -358,18 +381,18 @@ index_t internal_array_min_memory(const ARRAY_PTR array, size_t length,  element
 *	Searches an array of floating points for the smallest value.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The index of the largest value in the array.
 */
-index_t internal_array_minf_memory(const double* array, size_t length,  element_size_t elem_size)
+index_t internal_array_minf_memory(const double* array, size_t size,  element_size_t elem_size)
 {
 	int valueIndex = 0;		//The index of the largest value.
 	double value = 0;		//The value at valueIndex.
 	double compare = 0;	//The current value to compare.
 	
-	for(int i = 0; i < length; i += elem_size)
+	for(int i = 0; i < size; i += elem_size)
 	{
 		compare = 0;	//Reset compare
 		
@@ -397,13 +420,13 @@ index_t internal_array_minf_memory(const double* array, size_t length,  element_
 *	Gets the sum of all values in the array.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	isSigned	Are the values signed?
 *
 *	/returns			The average value of the array's contents.
 */
-generic_union_t internal_array_sum_memory(const ARRAY_PTR array, size_t length,  element_size_t elem_size, bool isSigned)
+generic_union_t internal_array_sum_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, bool isSigned)
 {
 	int64_t value = 0;		//The sum of all contents
 	uint64_t uvalue = 0;	//The sum of all contents (unsigned)
@@ -412,7 +435,7 @@ generic_union_t internal_array_sum_memory(const ARRAY_PTR array, size_t length, 
 	
 	if(isSigned)
 	{
-		for(int i = 0; i < length; i += elem_size)
+		for(int i = 0; i < size; i += elem_size)
 		{
 			switch(elem_size)
 			{
@@ -433,7 +456,7 @@ generic_union_t internal_array_sum_memory(const ARRAY_PTR array, size_t length, 
 	}
 	else
 	{
-		for(int i = 0; i < length; i += elem_size)
+		for(int i = 0; i < size; i += elem_size)
 		{
 			switch(elem_size)
 			{
@@ -465,16 +488,16 @@ generic_union_t internal_array_sum_memory(const ARRAY_PTR array, size_t length, 
 *	Gets the sum of all values in the array.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The average value of the array's contents.
 */
-double internal_array_sumf_memory(const double* array, size_t length,  element_size_t elem_size)
+double internal_array_sumf_memory(const double* array, size_t size,  element_size_t elem_size)
 {
 	double value = 0;		//The sum of all contents
 	
-	for(int i = 0; i < length; i += elem_size)
+	for(int i = 0; i < size; i += elem_size)
 	{
 		switch(elem_size)
 		{
@@ -494,18 +517,18 @@ double internal_array_sumf_memory(const double* array, size_t length,  element_s
 *	Gets the average of all values in the array.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	isSigned	Are the values signed?
 *
 *	/returns			The average value of the array's contents.
 */
-generic_union_t internal_array_average_memory(const ARRAY_PTR array, size_t length,  element_size_t elem_size, bool isSigned)
+generic_union_t internal_array_average_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, bool isSigned)
 {
 	if(isSigned)
-	return (generic_union_t)(internal_array_sum_memory(array, length, elem_size, isSigned).s64 / (length / elem_size));
+	return (generic_union_t)(internal_array_sum_memory(array, size, elem_size, isSigned).s64 / (size / elem_size));
 	else
-	return (generic_union_t)(internal_array_sum_memory(array, length, elem_size, isSigned).u64 / (length / elem_size));
+	return (generic_union_t)(internal_array_sum_memory(array, size, elem_size, isSigned).u64 / (size / elem_size));
 }
 
 
@@ -513,33 +536,33 @@ generic_union_t internal_array_average_memory(const ARRAY_PTR array, size_t leng
 *	Gets the average of all values in the array.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The average value of the array's contents.
 */
-double GENOPTI_ATT_FORCE_INLINE internal_array_averagef_memory(const double* array, size_t length,  element_size_t elem_size)
+double GENOPTI_ATT_FORCE_INLINE internal_array_averagef_memory(const double* array, size_t size,  element_size_t elem_size)
 {
-	return internal_array_sumf_memory(array, length, elem_size) / (length / elem_size);
+	return internal_array_sumf_memory(array, size, elem_size) / (size / elem_size);
 }
 
 /*
 *	Counts how many times "value" is seen in the array.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The amount of times "value" is in the array.
 */
-unsigned int internal_array_valueCount_memory(const ELEMENT_PTR value, const ARRAY_PTR array, size_t length,  element_size_t elem_size)
+unsigned int internal_array_valueCount_memory(const ELEMENT_PTR value, const ARRAY_PTR array, size_t size,  element_size_t elem_size)
 {
 	int offset = 0;
 	int count = 0;
 	
-	while(offset < length)
+	while(offset < size)
 	{
-		int index = internal_array_indexOf_memory((array + offset), value, length - offset, elem_size);
+		int index = internal_array_indexOf_memory((array + offset), value, size - offset, elem_size);
 		
 		if(index == -1)
 		break;
@@ -555,31 +578,31 @@ unsigned int internal_array_valueCount_memory(const ELEMENT_PTR value, const ARR
 *	Counts how many times "value" is seen in the array.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *
 *	/returns			The amount of times "value" is in the array.
 */
-unsigned int GENOPTI_ATT_FORCE_INLINE internal_array_valueCount_generic(const ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size)
+unsigned int GENOPTI_ATT_FORCE_INLINE internal_array_valueCount_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
 	uint64_t v = value.u64;		//Store value so we can get pointer from.
 	
-	return internal_array_valueCount_memory(array, &v, length, elem_size);
+	return internal_array_valueCount_memory(array, &v, size, elem_size);
 }
 
 /*
 *	Retrieves a pointer to the first value in the array that matches the predicate.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	predicate	A function which checks each value to its conditions.
 *
 *	/returns			Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-int internal_array_select_memory(const ARRAY_PTR array, size_t length,  element_size_t elem_size, PREDICATE predicate)
+int internal_array_select_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, PREDICATE predicate)
 {
-	for(int i = 0; i < length; i += elem_size)
+	for(int i = 0; i < size; i += elem_size)
 	{
 		if((*predicate)(array + i))
 		{
@@ -594,7 +617,7 @@ int internal_array_select_memory(const ARRAY_PTR array, size_t length,  element_
 *	Retrieves a pointer to the first value in the array that matches the predicate.
 *
 *	/param	array		Pointer to the start of the array.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	predicate	A function which checks each value to its conditions, while accepting arguments in the form of a va_list.
 *	/param	arg_count	How many arguments have been passed.
@@ -602,11 +625,11 @@ int internal_array_select_memory(const ARRAY_PTR array, size_t length,  element_
 *
 *	/returns			Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-int internal_array_select_args_memory(const ARRAY_PTR array, size_t length,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, ...)
+int internal_array_select_args_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, ...)
 {
 	va_list ap;
 	va_start(ap, arg_count);
-	return internal_array_select_vargs_memory(array, length, elem_size, predicate, arg_count, ap);
+	return internal_array_select_vargs_memory(array, size, elem_size, predicate, arg_count, ap);
 }
 
 
@@ -620,9 +643,9 @@ int internal_array_select_args_memory(const ARRAY_PTR array, size_t length,  ele
 *
 *	/returns			Zero based index of the first value in the array that matches the predicate, or -1 if the value does not exist.
 */
-int internal_array_select_vargs_memory(const ARRAY_PTR array, size_t length,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, va_list ap)
+int internal_array_select_vargs_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, va_list ap)
 {
-	for(int i = 0; i < length; i += elem_size)
+	for(int i = 0; i < size; i += elem_size)
 	{
 		if((*predicate)(array + i, arg_count, ap ))
 		{
@@ -643,17 +666,17 @@ int internal_array_select_vargs_memory(const ARRAY_PTR array, size_t length,  el
 #pragma region Type Specific Methods
 
 
-bool internal_array_contains_float(const float value, const float* array, size_t length)
+bool internal_array_contains_float(const float value, const float* array, length_t length)
 {
 	return internal_array_indexOf_float(value, array, length) != -1;
 }
 
-bool internal_array_contains_double(const double value, const double* array, size_t length)
+bool internal_array_contains_double(const double value, const double* array, length_t length)
 {
 	return internal_array_indexOf_double(value, array, length) != -1;
 }
 
-int internal_array_indexOf_float(const float value, const float* array, size_t length)
+int internal_array_indexOf_float(const float value, const float* array, length_t length)
 {
 	for(int i = 0; i < length; i++)
 	{
@@ -663,7 +686,7 @@ int internal_array_indexOf_float(const float value, const float* array, size_t l
 	return -1;
 }
 
-int internal_array_indexOf_double(const double value, const double* array, size_t length)
+int internal_array_indexOf_double(const double value, const double* array, length_t length)
 {
 	for(int i = 0; i < length; i++)
 	{
@@ -673,7 +696,7 @@ int internal_array_indexOf_double(const double value, const double* array, size_
 	return -1;
 }
 
-int internal_array_lastIndexOf_float(const float value, const float* array, size_t length)
+int internal_array_lastIndexOf_float(const float value, const float* array, length_t length)
 {
 	for(int i = length - 1; i >= 0; i--)
 	{
@@ -683,7 +706,7 @@ int internal_array_lastIndexOf_float(const float value, const float* array, size
 	return -1;
 }
 
-int internal_array_lastIndexOf_double(const double value, const double* array, size_t length)
+int internal_array_lastIndexOf_double(const double value, const double* array, length_t length)
 {
 	for(int i = length - 1;  i >= 0; i--)
 	{
@@ -790,19 +813,19 @@ uint8_t** internal_array_selectMany_vargs_memory(const ARRAY_PTR array, size_t s
 *	/param	array		Pointer to the start of the array.
 *	/param	range		Pointer to where the values to insert starts.
 *	/param	offset		The byte offset where the new values should be inserted at.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	byte_count	The amount of bytes being inserted (element count x elem_size)
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR internal_array_insertRange_memory(ARRAY_PTR array, const ELEMENT_PTR range, int offset, size_t byte_count, size_t length,  element_size_t elem_size, bool free_old )
+ARRAY_PTR internal_array_insertRange_memory(ARRAY_PTR array, const ELEMENT_PTR range, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
 {
-	ASSERT(byte_count && ARRAY_MAX_SIZE - (length + byte_count) );
+	ASSERT(byte_count && ARRAY_MAX_SIZE - (size + byte_count) );
 
 	//Allocate new array.
-	uint8_t* newArray = malloc(length + byte_count);
+	uint8_t* newArray = malloc(size + byte_count);
 	
 	//Copy data before the inserted range into our new array.
 	if(offset > 0)
@@ -814,8 +837,8 @@ ARRAY_PTR internal_array_insertRange_memory(ARRAY_PTR array, const ELEMENT_PTR r
 	
 	
 	//Copy data after the inserted range into our new array.
-	if(offset < length)
-		geneticc_memcpy(newArray + offset + byte_count, array + offset, length - offset);
+	if(offset < size)
+		geneticc_memcpy(newArray + offset + byte_count, array + offset, size - offset);
 	
 	if(free_old)
 		free(array);
@@ -831,15 +854,15 @@ ARRAY_PTR internal_array_insertRange_memory(ARRAY_PTR array, const ELEMENT_PTR r
 *	/param	array		Pointer to the start of the array.
 *	/param	value		Pointer to where the value to insert starts.
 *	/param	offset		The byte offset where the new values should be inserted at.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_memory(ARRAY_PTR array, const ELEMENT_PTR value, int offset,  size_t length,  element_size_t elem_size, bool free_old )
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_memory(ARRAY_PTR array, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old )
 {
-	return internal_array_insertRange_memory(array, value, offset,  (1 * elem_size), length, elem_size, free_old);
+	return internal_array_insertRange_memory(array, value, offset,  (1 * elem_size), size, elem_size, free_old);
 }
 
 /*
@@ -850,17 +873,17 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_memory(ARRAY_PTR array,
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to insert.
 *	/param	offset		The byte offset where the new values should be inserted at.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_generic(ARRAY_PTR array, const generic_union_t value, int offset,  size_t length,  element_size_t elem_size, bool free_old)
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_generic(ARRAY_PTR array, const generic_union_t value, int offset,  size_t size,  element_size_t elem_size, bool free_old)
 {
 	uint64_t v = value.u64;	//Store value so we can get pointer from.
 	
-	return internal_array_insertRange_memory(array, &v, offset,  (1 * elem_size), length, elem_size, free_old);
+	return internal_array_insertRange_memory(array, &v, offset,  (1 * elem_size), size, elem_size, free_old);
 }
 
 ///*
@@ -870,15 +893,15 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_generic(ARRAY_PTR array
 //*/param	array		Pointer to the start of the array.
 //*	/param	value		Pointer to where the values to add starts.
 //*	/param	byte_count	The amount of bytes being inserted (element count x elem_size)
-//*	/param	length		The size of the array (in bytes).
+//*	/param	size		The size of the array (in bytes).
 //*	/param	elem_size	The size of the value's type (in bytes).
 //*	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 //*
 //*	/returns			A pointer to the start of the new array.
 //*/
-//ARRAY_PTR array_addRange_memory(const ELEMENT_PTR value, ARRAY_PTR array, size_t byte_count, size_t length,  element_size_t elem_size, bool free_old )
+//ARRAY_PTR array_addRange_memory(const ELEMENT_PTR value, ARRAY_PTR array, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
 //{
-	//return array_insertRange_memory(value, (length / elem_size), array, byte_count, length, elem_size, free_old); 
+	//return array_insertRange_memory(value, (size / elem_size), array, byte_count, size, elem_size, free_old); 
 //}
 
 /*
@@ -887,15 +910,15 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_generic(ARRAY_PTR array
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		Pointer to the value or struct to add.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t length,  element_size_t elem_size, bool free_old )
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old )
 {
-	return internal_array_insertRange_memory(array, value, length, (1 * elem_size), length, elem_size, free_old); 
+	return internal_array_insertRange_memory(array, value, size, (1 * elem_size), size, elem_size, free_old); 
 }
 
 /*
@@ -904,17 +927,17 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_memory(ARRAY_PTR array, co
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to add.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_generic(ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size, bool free_old)
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
 {
 	uint64_t v = value.u64;	//Store value so we can get pointer from.
 	
-	return internal_array_insertRange_memory(array, &v, length, (1 * elem_size), length, elem_size, free_old);
+	return internal_array_insertRange_memory(array, &v, size, (1 * elem_size), size, elem_size, free_old);
 }
 
 ///*
@@ -924,15 +947,15 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_generic(ARRAY_PTR array, c
 //*	/param	value		Pointer to where the values to prepend starts.
 //*	/param	array		Pointer to the start of the array.
 //*	/param	byte_count	The amount of bytes being inserted (element count x elem_size)
-//*	/param	length		The size of the array (in bytes).
+//*	/param	size		The size of the array (in bytes).
 //*	/param	elem_size	The size of the value's type (in bytes).
 //*	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 //*
 //*	/returns			A pointer to the start of the new array.
 //*/
-//ARRAY_PTR array_prependRange_memory(const ELEMENT_PTR value,  ARRAY_PTR array, size_t byte_count, size_t length,  element_size_t elem_size, bool free_old )
+//ARRAY_PTR array_prependRange_memory(const ELEMENT_PTR value,  ARRAY_PTR array, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
 //{
-	//return array_insertRange_memory(value, 0, array, byte_count, length,  elem_size, free_old);
+	//return array_insertRange_memory(value, 0, array, byte_count, size,  elem_size, free_old);
 //}
 
 /*
@@ -941,15 +964,15 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_generic(ARRAY_PTR array, c
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		Pointer to the value or struct to prepend.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value,  size_t length,  element_size_t elem_size, bool free_old )
+ARRAY_PTR internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value,  size_t size,  element_size_t elem_size, bool free_old )
 {
-	return internal_array_insertRange_memory(array, value, 0, (1 * elem_size), length,elem_size, free_old);
+	return internal_array_insertRange_memory(array, value, 0, (1 * elem_size), size,elem_size, free_old);
 }
 
 /*
@@ -958,17 +981,17 @@ ARRAY_PTR internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to prepend.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_prepend_generic(ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size, bool free_old)
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_prepend_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
 {
 	uint64_t v = value.u64;	//Store value so we can get pointer from.
 	
-	return internal_array_insertRange_memory(array, &v, 0,  (1 * elem_size), length, elem_size, free_old);
+	return internal_array_insertRange_memory(array, &v, 0,  (1 * elem_size), size, elem_size, free_old);
 }
 
 /*
@@ -979,18 +1002,18 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_prepend_generic(ARRAY_PTR arra
 *	/param	array		Pointer to the start of the array.
 *	/param	offset		The byte offset to start removing at.
 *	/param	byte_count	The amount of bytes being removed (element count x elem_size)
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeRange_memory(ARRAY_PTR array, int offset, size_t byte_count, size_t length,  element_size_t elem_size, bool free_old )
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeRange_memory(ARRAY_PTR array, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
 {
 	ASSERT(byte_count);
 
 	//Allocate new array.
-	uint8_t* newArray = malloc(length - byte_count);
+	uint8_t* newArray = malloc(size - byte_count);
 	
 	//Copy data before the removed values into our new array.
 	if(offset > 0)
@@ -998,8 +1021,8 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeRange_memory(ARRAY_PTR a
 	
 	
 	//Copy data after the removed values into our new array.
-	if(offset < length)
-	geneticc_memcpy(newArray + offset, array + offset + byte_count, length - offset - byte_count);
+	if(offset < size)
+	geneticc_memcpy(newArray + offset, array + offset + byte_count, size - offset - byte_count);
 	
 	if(free_old)
 	free(array);
@@ -1013,15 +1036,15 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeRange_memory(ARRAY_PTR a
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	offset		The byte offset to start removing at.
-*	/param	length		The size of the array (in bytes).
+*	/param	size		The size of the array (in bytes).
 *	/param	elem_size	The size of the value's type (in bytes).
 *	/param	free_old*	If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAt_memory(ARRAY_PTR array, int offset, size_t length,  element_size_t elem_size, bool free_old )
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAt_memory(ARRAY_PTR array, int offset, size_t size,  element_size_t elem_size, bool free_old )
 {
-	internal_array_removeRange_memory(array, offset, elem_size, length, elem_size, free_old);
+	internal_array_removeRange_memory(array, offset, elem_size, size, elem_size, free_old);
 }
 
 /*
@@ -1029,17 +1052,17 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAt_memory(ARRAY_PTR arra
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value			A pointer to the value to remove
-*	/param	length			The size of the array (in bytes).
+*	/param	size			The size of the array (in bytes).
 *	/param	elem_size		The size of the value's type (in bytes).
 *	/param	free_old*		If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *	/param	out_removed*	(Out)Returns true or false depending if a value was found and removed.
 *
 *	/returns				A pointer to the start of the new array.
 */
-ARRAY_PTR internal_array_remove_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t length,  element_size_t elem_size, bool free_old, bool* out_removed )
+ARRAY_PTR internal_array_remove_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed )
 {
 	//Element index
-	int index = internal_array_indexOf_memory(array, value, length, elem_size);
+	int index = internal_array_indexOf_memory(array, value, size, elem_size);
 	
 	//Value not in array, nothing to remove.
 	if(index == -1)
@@ -1055,7 +1078,7 @@ ARRAY_PTR internal_array_remove_memory(ARRAY_PTR array, const ELEMENT_PTR value,
 	if(out_removed != NULL)
 	*out_removed = true;
 	
-	return internal_array_removeAt_memory(array, (index * elem_size), length, elem_size, free_old);
+	return internal_array_removeAt_memory(array, (index * elem_size), size, elem_size, free_old);
 }
 
 
@@ -1064,18 +1087,18 @@ ARRAY_PTR internal_array_remove_memory(ARRAY_PTR array, const ELEMENT_PTR value,
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value			The value to remove
-*	/param	length			The size of the array (in bytes).
+*	/param	size			The size of the array (in bytes).
 *	/param	elem_size		The size of the value's type (in bytes).
 *	/param	free_old*		If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *	/param	out_removed*	(Out)Returns true or false depending if a value was found and removed.
 *
 *	/returns				A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_remove_generic(ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size, bool free_old, bool* out_removed)
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_remove_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed)
 {
 	uint64_t v = value.u64;	//Store value so we can get pointer from.
 		
-	return internal_array_remove_memory(array, &v, length, elem_size, free_old, out_removed);
+	return internal_array_remove_memory(array, &v, size, elem_size, free_old, out_removed);
 }
 
 /*
@@ -1083,20 +1106,20 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_remove_generic(ARRAY_PTR array
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value			A pointer to the value which is used to determine which elements to remove.
-*	/param	length			The size of the array (in bytes).
+*	/param	size			The size of the array (in bytes).
 *	/param	elem_size		The size of the value's type (in bytes).
 *	/param	free_old*		If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *	/param	out_removed*	(Out)Returns amount of values removed from the array.
 *
 *	/returns				A pointer to the start of the new array.
 */
-ARRAY_PTR internal_array_removeAll_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t length,  element_size_t elem_size, bool free_old, unsigned int* out_count )
+ARRAY_PTR internal_array_removeAll_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count )
 {
-	uint8_t* newArray = malloc(length);
+	uint8_t* newArray = malloc(size);
 	
 	size_t newSize = 0;
 
-	for(int i = 0; i < length; i += elem_size)	
+	for(int i = 0; i < size; i += elem_size)	
 	{
 		uint8_t b = 0;
 		
@@ -1133,34 +1156,34 @@ ARRAY_PTR internal_array_removeAll_memory(ARRAY_PTR array, const ELEMENT_PTR val
 *
 *	/param	array		Pointer to the start of the array.
 *	/param	value			The value which is used to determine which elements to remove.
-*	/param	length			The size of the array (in bytes).
+*	/param	size			The size of the array (in bytes).
 *	/param	elem_size		The size of the value's type (in bytes).
 *	/param	free_old*		If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *	/param	out_removed*	(Out)Returns amount of values removed from the array.
 *
 *	/returns				A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAll_generic(ARRAY_PTR array, const generic_union_t value, size_t length,  element_size_t elem_size, bool free_old, unsigned int* out_count )
+ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAll_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count )
 {
 	uint64_t v = value.u64;	//Store value so we can get pointer from.
 		
-	return internal_array_removeAll_memory(array, &v, length, elem_size, free_old, out_count);
+	return internal_array_removeAll_memory(array, &v, size, elem_size, free_old, out_count);
 }
 
 /*
 *	Reverse the array in memory.
 *
 *	/param	array			Pointer to the start of the array.
-*	/param	length			The size of the array (in bytes).
+*	/param	size			The size of the array (in bytes).
 *	/param	free_old*		If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns				A pointer to the start of the new array.
 */
-ARRAY_PTR internal_array_reverse_memory(ARRAY_PTR array, size_t length,  element_size_t elem_size, bool free_old)
+ARRAY_PTR internal_array_reverse_memory(ARRAY_PTR array, size_t size,  element_size_t elem_size, bool free_old)
 {
-	uint8_t* newArray = malloc(length);
+	uint8_t* newArray = malloc(size);
 	
-	for(int i = 0, b = length - elem_size; i < length; i += elem_size, b -= elem_size)
+	for(int i = 0, b = size - elem_size; i < size; i += elem_size, b -= elem_size)
 	{
 		for(uint8_t c = 0; c < elem_size; c++)
 		{
@@ -1174,6 +1197,17 @@ ARRAY_PTR internal_array_reverse_memory(ARRAY_PTR array, size_t length,  element
 	return newArray;
 }
 
+
+
+//ARRAY_PTR internal_array_sort_memory(ARRAY_PTR array, size_t size,  element_size_t elem_size, COMPARISON comparison, bool free_old)
+//{
+	//
+//
+	//if(free_old)
+	//free(array);
+	//
+	//return newArray;
+//}
 
 
 #pragma endregion Unsafe Generic Methods

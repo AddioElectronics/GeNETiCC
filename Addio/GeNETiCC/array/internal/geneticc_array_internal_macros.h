@@ -41,9 +41,7 @@ float :					internal_call_array_contains_special(array, (generic_union_t)value, 
 double :				internal_call_array_contains_special(array, (generic_union_t)value, length, TYPE_DOUBLE),								\
 default:				internal_array_contains_generic(array, (generic_union_t)value, (length * elem_size), elem_size))
 #endif
-/*
-*	Macros which implement the overloading
-*/
+
 #define ARRAY_CONTAINS_4(array, value, length, start)	INTERNAL_ARRAY_CONTAINS((array + start), value, length, sizeof(array[0]))
 #define ARRAY_CONTAINS_3(array, value, length)			INTERNAL_ARRAY_CONTAINS(array, value, length, sizeof(array[0]))
 #define ARRAY_CONTAINS_2(array, value)					INTERNAL_ARRAY_CONTAINS(array, value, (sizeof(array) / sizeof(array[0]) ), sizeof(array[0]))
@@ -54,9 +52,27 @@ ARRAY_CONTAINS_3,							\
 ARRAY_CONTAINS_2, )
 
 /*
-*	Macro used to select functions by type.
-*	*More info in geneticc_array.c
+*	/param	array		Pointer to the start of the array.
+*	/param	length		The count of elements in the array, or how many elements are affected.
+*	/param	elem_size	The size of value's type (in bytes).
+*	/param	predicate	A function which checks each value to its conditions.
 *
+*	/returns			True if an element in the array satisfied the predicate's condition, false if the predicate was unsatisfied.
+*/
+#warning reminder to add optimization levels for all macros.
+#define INTERNAL_ARRAY_EXISTS(array, size, elem_size, predicate) \
+internal_array_exists(array, size, elem_size, predicate)
+
+#define ARRAY_EXISTS_4(array, predicate, length, start)		INTERNAL_ARRAY_EXISTS((array + start), length, sizeof(array[0]), predicate)
+#define ARRAY_EXISTS_3(array, predicate, length)			INTERNAL_ARRAY_EXISTS(array, length, sizeof(array[0]), predicate)
+#define ARRAY_EXISTS_2(array, predicate)					INTERNAL_ARRAY_EXISTS(array, (sizeof(array) / sizeof(array[0]) ), sizeof(array[0]), predicate)
+#define ARRAY_EXISTS_MACRO_CHOOSER(...)	\
+GET_ARGUMENT_4(__VA_ARGS__,					\
+ARRAY_EXISTS_4,							\
+ARRAY_EXISTS_3,							\
+ARRAY_EXISTS_2, )
+
+/*
 *	/param	array		Pointer to the start of the array.
 *	/param	value		The value to search for.
 *	/param	length  The count of elements in the array, or how many elements are affected.
@@ -78,10 +94,6 @@ double :				internal_call_array_indexOf_special(array, (generic_union_t)value, l
 default:				internal_array_indexOf_generic(array, (generic_union_t)value, (length * elem_size), elem_size))
 #endif
 
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_INDEXOF_4(array, value, length, start)	INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_INDEXOF((array + start), value, length, sizeof(array[0])), start)
 #define ARRAY_INDEXOF_3(array, value, length)											INTERNAL_ARRAY_INDEXOF(array, value, length, sizeof(array[0]))
 #define ARRAY_INDEXOF_2(array, value)													INTERNAL_ARRAY_INDEXOF(array, value, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))
@@ -118,9 +130,6 @@ double :				internal_call_array_indexOf_special(array, (generic_union_t)value, l
 default:				internal_array_lastIndexOf_generic(array, (generic_union_t)value, (length * elem_size), elem_size))
 #endif
 
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_LASTINDEXOF_4(array, value, length, start)	INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_LASTINDEXOF(array + start), (value, length, sizeof(array[0])), start)
 #define ARRAY_LASTINDEXOF_3(array, value, length)											INTERNAL_ARRAY_LASTINDEXOF(array, value, length, sizeof(array[0]))
 #define ARRAY_LASTINDEXOF_2(array, value)													INTERNAL_ARRAY_LASTINDEXOF(array, value, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))
@@ -150,9 +159,6 @@ ARRAY_LASTINDEXOF_2, )
 GENETICC_REPEAT_POINTER_TYPES(REPEATER_MACRO_GENETICC_ARRAY_VALUECOUNT_MEMORY(array, value, length, elem_size))				\
 default:				internal_array_valueCount_generic(array, (generic_union_t)value, (length * elem_size), elem_size))
 
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_VALUECOUNT_4(array, value, length, start)		INTERNAL_ARRAY_VALUECOUNT((array + start), value, length, sizeof(array[0]))
 #define ARRAY_VALUECOUNT_3(array, value, length)			INTERNAL_ARRAY_VALUECOUNT(array, value, length, sizeof(array[0]))
 #define ARRAY_VALUECOUNT_2(array, value)					INTERNAL_ARRAY_VALUECOUNT(array, value, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))
@@ -181,11 +187,6 @@ GENETICC_REPEAT_POINTER_TYPES_UNSIGNED(REPEATER_MACRO_GENETICC_ARRAY_MAX_MEMORY_
 float* :					internal_array_maxf_memory(array, (length * elem_size),elem_size),									\
 double* :					internal_array_maxf_memory(array, (length * elem_size),elem_size))
 
-
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_MAX_3(array, length, start)	INTERNAL_ARRAY_MAX((array + start), length, sizeof(array[0]), start)
 #define ARRAY_MAX_2(array, length)			INTERNAL_ARRAY_MAX(array, length, sizeof(array[0]))
 #define ARRAY_MAX_1(array)					INTERNAL_ARRAY_MAX(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))
@@ -195,11 +196,6 @@ ARRAY_MAX_3,							\
 ARRAY_MAX_2,							\
 ARRAY_MAX_1, )
 
-
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_MAX_VALUE_3(array, length, start)		array[INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_MAX((array + start), length, sizeof(array[0])), start)]
 #define ARRAY_MAX_VALUE_2(array, length)			array[									INTERNAL_ARRAY_MAX(array, length, sizeof(array[0]))]
 #define ARRAY_MAX_VALUE_1(array)					array[									INTERNAL_ARRAY_MAX(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))]
@@ -229,11 +225,6 @@ GENETICC_REPEAT_POINTER_TYPES_UNSIGNED(REPEATER_MACRO_GENETICC_ARRAY_MIN_MEMORY_
 float* :						internal_array_minf_memory(array, (length * elem_size),elem_size),								\
 double* :						internal_array_minf_memory(array, (length * elem_size),elem_size))
 
-
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_MIN_3(array, length, start)	INTERNAL_ARRAY_MIN((array + start), length, sizeof(array[0]))
 #define ARRAY_MIN_2(array, length)			INTERNAL_ARRAY_MIN(array, length, sizeof(array[0]))
 #define ARRAY_MIN_1(array)					INTERNAL_ARRAY_MIN(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))
@@ -243,11 +234,6 @@ ARRAY_MIN_3,							\
 ARRAY_MIN_2,							\
 ARRAY_MIN_1, )
 
-
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_MIN_VALUE_3(array, length, start)		array[INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_MIN((array + start), length, sizeof(array[0])), start)]
 #define ARRAY_MIN_VALUE_2(array, length)			array[									INTERNAL_ARRAY_MIN(array, length, sizeof(array[0]))]
 #define ARRAY_MIN_VALUE_1(array)					array[									INTERNAL_ARRAY_MIN(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))]
@@ -276,9 +262,6 @@ GENETICC_REPEAT_POINTER_TYPES_NO_FLOAT_UNION(REPEATER_MACRO_GENETICC_ARRAY_SUM_M
 float* :						internal_array_sumf_memory(array, (length * elem_size),elem_size),							\
 double* :						internal_array_sumf_memory(array, (length * elem_size),elem_size))
 
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_SUM_3(array, length, start)	INTERNAL_ARRAY_SUM((array + start), length, sizeof(array[0]))
 #define ARRAY_SUM_2(array, length)			INTERNAL_ARRAY_SUM(array, length, sizeof(array[0]))
 #define ARRAY_SUM_1(array)					INTERNAL_ARRAY_SUM(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))
@@ -307,9 +290,6 @@ GENETICC_REPEAT_POINTER_TYPES_NO_FLOAT_UNION(REPEATER_MACRO_GENETICC_ARRAY_AVERA
 float* :						internal_array_averagef_memory(array, (length * elem_size),elem_size),						\
 double* :						internal_array_averagef_memory(array, (length * elem_size),elem_size))
 
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_AVERAGE_3(array, length, start)	INTERNAL_ARRAY_AVERAGE((array + start), length, sizeof(array[0]))// / length
 #define ARRAY_AVERAGE_2(array, length)			INTERNAL_ARRAY_AVERAGE(array, length, sizeof(array[0])) /// length
 #define ARRAY_AVERAGE_1(array)					INTERNAL_ARRAY_AVERAGE(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]))// / (sizeof(array) / sizeof(array[0]))
