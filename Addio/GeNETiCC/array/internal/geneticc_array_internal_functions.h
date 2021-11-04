@@ -148,6 +148,8 @@ ARRAY_PTR internal_array_reverse_memory(ARRAY_PTR array, size_t size,  element_s
 
 //ARRAY_PTR internal_array_sort_memory(ARRAY_PTR array, size_t size,  element_size_t elem_size, COMPARISON comparison, bool free_old);
 
+void internal_array_fill_memory(ARRAY_PTR array, ELEMENT_PTR value, size_t size, element_size_t elem_size);
+GENOPTI_INLINE void internal_array_fill_generic(ARRAY_PTR array, generic_union_t value, size_t size, element_size_t elem_size);
 
 /*
 	Not Implemented at this time

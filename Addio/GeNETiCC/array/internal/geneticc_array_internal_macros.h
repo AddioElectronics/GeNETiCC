@@ -313,54 +313,54 @@ ARRAY_AVERAGE_1, )
 #define INTERNAL_ARRAY_SELECT(array, length, elem_size, predicate)	\
 internal_array_select_memory(array, (length * elem_size), elem_size, predicate)
 
-#define ARRAY_SELECT_4(array, predicate, length, start)		INTERNAL_ARRAY_GET_TRUE_INDEX(INTERNAL_ARRAY_SELECT((array + start), length, sizeof(array[0]), predicate), start)
-#define ARRAY_SELECT_3(array, predicate, length)			INTERNAL_ARRAY_SELECT(array, length, sizeof(array[0]), predicate)
-#define ARRAY_SELECT_2(array, predicate)					INTERNAL_ARRAY_SELECT(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), predicate)
-#define ARRAY_SELECT_MACRO_CHOOSER(...)	\
+#define ARRAY_FINDINDEX_4(array, predicate, length, start)		INTERNAL_ARRAY_GET_TRUE_INDEX(INTERNAL_ARRAY_SELECT((array + start), length, sizeof(array[0]), predicate), start)
+#define ARRAY_FINDINDEX_3(array, predicate, length)			INTERNAL_ARRAY_SELECT(array, length, sizeof(array[0]), predicate)
+#define ARRAY_FINDINDEX_2(array, predicate)					INTERNAL_ARRAY_SELECT(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), predicate)
+#define ARRAY_FINDINDEX_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_4(__VA_ARGS__,				\
-ARRAY_SELECT_4,							\
-ARRAY_SELECT_3,							\
-ARRAY_SELECT_2, )
+ARRAY_FINDINDEX_4,							\
+ARRAY_FINDINDEX_3,							\
+ARRAY_FINDINDEX_2, )
 
 /*
 *	Select Pointer
 */
-#define ARRAY_SELECTPOINTER_4(array, predicate, length, start)	array +	INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_SELECT((array + start), length, sizeof(array[0]), predicate), start)
-#define ARRAY_SELECTPOINTER_3(array, predicate, length)			array +	INTERNAL_ARRAY_SELECT(array, length, sizeof(array[0]), predicate)
-#define ARRAY_SELECTPOINTER_2(array, predicate)					array +	INTERNAL_ARRAY_SELECT(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), predicate)
-#define ARRAY_SELECTPOINTER_MACRO_CHOOSER(...)	\
+#define ARRAY_FIND_4(array, predicate, length, start)	array +	INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_SELECT((array + start), length, sizeof(array[0]), predicate), start)
+#define ARRAY_FIND_3(array, predicate, length)			array +	INTERNAL_ARRAY_SELECT(array, length, sizeof(array[0]), predicate)
+#define ARRAY_FIND_2(array, predicate)					array +	INTERNAL_ARRAY_SELECT(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), predicate)
+#define ARRAY_FIND_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_4(__VA_ARGS__,				\
-ARRAY_SELECTPOINTER_4,							\
-ARRAY_SELECTPOINTER_3,							\
-ARRAY_SELECTPOINTER_2, )
+ARRAY_FIND_4,							\
+ARRAY_FIND_3,							\
+ARRAY_FIND_2, )
 
 /*
 *	Array Select Vargs
 */
-#define INTERNAL_ARRAY_SELECT_VARGS(array, predicate, arg_count, ap, length, elem_size)	\
+#define INTERNAL_ARRAY_FINDINDEX_VARGS(array, predicate, arg_count, ap, length, elem_size)	\
 internal_array_select_vargs_memory(array, (length * elem_size), elem_size, predicate, arg_count, ap)
 
 
-#define ARRAY_SELECT_VARGS_6(array, predicate, arg_count, ap, length, start)				INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_SELECT_VARGS((array + start), predicate, arg_count, ap, length, sizeof(array[0])), start)
-#define ARRAY_SELECT_VARGS_5(array, predicate, arg_count, ap, length)														INTERNAL_ARRAY_SELECT_VARGS(array, predicate, arg_count, ap, length, sizeof(array[0]))
-#define ARRAY_SELECT_VARGS_4(array, predicate, arg_count, ap)																INTERNAL_ARRAY_SELECT_VARGS(array, predicate, arg_count, ap, sizeof(array) / sizeof(array[0]), sizeof(array[0]))
-#define ARRAY_SELECT_VARGS_MACRO_CHOOSER(...)	\
+#define ARRAY_FINDINDEX_VARGS_6(array, predicate, arg_count, ap, length, start)				INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_FINDINDEX_VARGS((array + start), predicate, arg_count, ap, length, sizeof(array[0])), start)
+#define ARRAY_FINDINDEX_VARGS_5(array, predicate, arg_count, ap, length)														INTERNAL_ARRAY_FINDINDEX_VARGS(array, predicate, arg_count, ap, length, sizeof(array[0]))
+#define ARRAY_FINDINDEX_VARGS_4(array, predicate, arg_count, ap)																INTERNAL_ARRAY_FINDINDEX_VARGS(array, predicate, arg_count, ap, sizeof(array) / sizeof(array[0]), sizeof(array[0]))
+#define ARRAY_FINDINDEX_VARGS_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_6(__VA_ARGS__,						\
-ARRAY_SELECT_VARGS_6,							\
-ARRAY_SELECT_VARGS_5,							\
-ARRAY_SELECT_VARGS_4, )
+ARRAY_FINDINDEX_VARGS_6,							\
+ARRAY_FINDINDEX_VARGS_5,							\
+ARRAY_FINDINDEX_VARGS_4, )
 
 /*
 *	Select Pointer Vargs
 */
-#define ARRAY_SELECTPOINTER_VARGS_6(array, predicate, arg_count, ap, length, start)					array +	INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_SELECT_VARGS((array + start), predicate, arg_count, ap, length,  sizeof(array[0])), start)
-#define ARRAY_SELECTPOINTER_VARGS_5(array, predicate, arg_count, ap, length)						array +									INTERNAL_ARRAY_SELECT_VARGS(array, predicate, arg_count, ap, length, sizeof(array[0]))
-#define ARRAY_SELECTPOINTER_VARGS_4(array, predicate, arg_count, ap)																		INTERNAL_ARRAY_SELECT_VARGS(array, predicate, arg_count, ap, sizeof(array) / sizeof(array[0]), sizeof(array[0]))
-#define ARRAY_SELECTPOINTER_VARGS_MACRO_CHOOSER(...)	\				
+#define ARRAY_FIND_VARGS_6(array, predicate, arg_count, ap, length, start)					array +	INTERNAL_ARRAY_GET_TRUE_INDEX(	INTERNAL_ARRAY_FINDINDEX_VARGS((array + start), predicate, arg_count, ap, length,  sizeof(array[0])), start)
+#define ARRAY_FIND_VARGS_5(array, predicate, arg_count, ap, length)						array +									INTERNAL_ARRAY_FINDINDEX_VARGS(array, predicate, arg_count, ap, length, sizeof(array[0]))
+#define ARRAY_FIND_VARGS_4(array, predicate, arg_count, ap)																		INTERNAL_ARRAY_FINDINDEX_VARGS(array, predicate, arg_count, ap, sizeof(array) / sizeof(array[0]), sizeof(array[0]))
+#define ARRAY_FIND_VARGS_MACRO_CHOOSER(...)	\				
 GET_ARGUMENT_6(__VA_ARGS__,								\
-ARRAY_SELECTPOINTER_VARGS_6,							\
-ARRAY_SELECTPOINTER_VARGS_5,							\
-ARRAY_SELECTPOINTER_VARGS_4, )
+ARRAY_FIND_VARGS_6,							\
+ARRAY_FIND_VARGS_5,							\
+ARRAY_FIND_VARGS_4, )
 
 
 
@@ -388,20 +388,20 @@ ARRAY_SELECTPOINTER_VARGS_4, )
 *
 *	/returns	uint8t**	A pointer to the first value in the array that matches the predicate
 */
-#define INTERNAL_ARRAY_SELECTMANY(array, length, elem_size, predicate, out_length)	\
+#define INTERNAL_ARRAY_FINDALL(array, length, elem_size, predicate, out_length)	\
 internal_array_selectMany_memory(array, (length * elem_size), elem_size, predicate, out_length)
 
 /*
 *	Macros which implement the overloading
 */
-#define ARRAY_SELECTMANY_5(array, predicate, length, out_length, start)		INTERNAL_ARRAY_SELECTMANY((array + start), length, sizeof(array[0]), predicate, out_length)
-#define ARRAY_SELECTMANY_4(array, predicate, length, out_length)			INTERNAL_ARRAY_SELECTMANY(array, length, sizeof(array[0]), predicate, out_length)
-#define ARRAY_SELECTMANY_3(array, predicate, out_length)					INTERNAL_ARRAY_SELECTMANY(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), predicate, out_length)
-#define ARRAY_SELECTMANY_MACRO_CHOOSER(...)	\
+#define ARRAY_FINDALL_5(array, predicate, length, out_length, start)		INTERNAL_ARRAY_FINDALL((array + start), length, sizeof(array[0]), predicate, out_length)
+#define ARRAY_FINDALL_4(array, predicate, length, out_length)			INTERNAL_ARRAY_FINDALL(array, length, sizeof(array[0]), predicate, out_length)
+#define ARRAY_FINDALL_3(array, predicate, out_length)					INTERNAL_ARRAY_FINDALL(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), predicate, out_length)
+#define ARRAY_FINDALL_MACRO_CHOOSER(...)	\
 GET_ARGUMENT_5(__VA_ARGS__,					\
-ARRAY_SELECTMANY_5,							\
-ARRAY_SELECTMANY_4,							\
-ARRAY_SELECTMANY_3, )
+ARRAY_FINDALL_5,							\
+ARRAY_FINDALL_4,							\
+ARRAY_FINDALL_3, )
 
 /*
 *	Macro used to select functions by type.
@@ -687,11 +687,6 @@ ARRAY_REMOVEAT_GENETICC_2,)
 GENETICC_REPEAT_POINTER_TYPES(REPEATER_MACRO_GENETICC_ARRAY_REMOVE_MEMORY(array, value, length, elem_size, free_old, out_removed  ))					\
 default:				internal_array_remove_generic(array, (generic_union_t)value, (length * elem_size), elem_size, free_old, out_removed))
 
-
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_REMOVE_GENETICC_5(array, value, length, free_old, out_removed )		INTERNAL_ARRAY_REMOVE(array, value, length, sizeof(array[0]), free_old, out_removed )
 #define ARRAY_REMOVE_GENETICC_4(array, value, length, out_removed)					INTERNAL_ARRAY_REMOVE(array, value, length, sizeof(array[0]), false, out_removed )
 #define ARRAY_REMOVE_GENETICC_3(array, value, out_removed)							INTERNAL_ARRAY_REMOVE(array, value, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), false, out_removed )
@@ -724,10 +719,6 @@ GENETICC_REPEAT_POINTER_TYPES(REPEATER_MACRO_GENETICC_ARRAY_REMOVEALL_MEMORY(arr
 default:				internal_array_removeAll_generic(array, (generic_union_t)value, (length * elem_size), elem_size, free_old, out_count))
 
 
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_REMOVEALL_GENETICC_5(array, value, length, free_old, out_count )			INTERNAL_ARRAY_REMOVEALL(array, value, length, sizeof(array[0]), free_old, out_count )
 #define ARRAY_REMOVEALL_GENETICC_4(array, value, length, out_count)						INTERNAL_ARRAY_REMOVEALL(array, value, length, sizeof(array[0]), false, out_count )
 #define ARRAY_REMOVEALL_GENETICC_3(array, value, out_count)								INTERNAL_ARRAY_REMOVEALL(array, value, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), false, out_count )
@@ -758,10 +749,6 @@ ARRAY_REMOVEALL_GENETICC_2,)
 internal_array_reverse_memory(array, (length * elem_size), elem_size, free_old)
 
 
-
-/*
-*	Macros which implement the overloading
-*/
 #define ARRAY_REVERSE_GENETICC_3(array, length, free_old)		INTERNAL_ARRAY_REVERSE(array, length, sizeof(array[0]), free_old)
 #define ARRAY_REVERSE_GENETICC_2(array, length)					INTERNAL_ARRAY_REVERSE(array, length, sizeof(array[0]), false)
 #define ARRAY_REVERSE_GENETICC_1(array)							INTERNAL_ARRAY_REVERSE(array, (sizeof(array) / sizeof(array[0])), sizeof(array[0]), false)
@@ -771,6 +758,37 @@ ARRAY_REVERSE_GENETICC_3,						\
 ARRAY_REVERSE_GENETICC_2,						\
 ARRAY_REVERSE_GENETICC_1,)
 
+
+
+/*
+*	/param	array		Pointer to the start of the array.
+*	/param	value		Assigns the given value to each element of the specified array.
+*	/param	length		The count of elements in the array, or how many elements are affected.
+*	/param	elem_size	The size of value's type (in bytes).
+*
+*	/returns			If the array fill the value.
+*/
+#warning reminder to add optimization levels for all macros.
+#define REPEATER_MACRO_GENETICC_ARRAY_FILL_MEMORY(array, value, length, elem_size) internal_array_fill_memory(array, (generic_union_t){.u32 = (uint32_t)value}.cp, (length * elem_size), elem_size)
+
+#if GENETICC_OPTIMIZATION_LEVEL <= GENETICC_OPTIMIZATION_LEVEL_SPEED_1 || GENETICC_ALWAYS_INCLUDE_TYPE_SPECIFIC == true
+#define INTERNAL_ARRAY_FILL(array, value, length, elem_size) _Generic((value),																\
+GENETICC_REPEAT_POINTER_TYPES(REPEATER_MACRO_GENETICC_ARRAY_FILL_MEMORY(array, value, length, elem_size))									\
+default:				internal_array_fill_generic(array, (generic_union_t)value, (length * elem_size), elem_size))
+#else
+#define INTERNAL_ARRAY_FILL(array, value, length, elem_size) _Generic((value),																\
+GENETICC_REPEAT_POINTER_TYPES_NO_FLOAT(REPEATER_MACRO_GENETICC_ARRAY_FILL_MEMORY(array, value, length, elem_size))							\
+default:				internal_array_fill_generic(array, (generic_union_t)value, (length * elem_size), elem_size))
+#endif
+
+#define ARRAY_FILL_4(array, value, length, start)	INTERNAL_ARRAY_FILL(array + start, value, length, sizeof(array[0]))
+#define ARRAY_FILL_3(array, value, length)			INTERNAL_ARRAY_FILL(array, value, length, sizeof(array[0]))
+#define ARRAY_FILL_2(array, value)					INTERNAL_ARRAY_FILL(array, value, (sizeof(array) / sizeof(array[0]) ), sizeof(array[0]))
+#define ARRAY_FILL_MACRO_CHOOSER(...)	\
+GET_ARGUMENT_4(__VA_ARGS__,				\
+ARRAY_FILL_4,							\
+ARRAY_FILL_3,							\
+ARRAY_FILL_2, )
 
 
 /*
@@ -788,9 +806,7 @@ ARRAY_REVERSE_GENETICC_1,)
 #define INTERNAL_ARRAY_CONVERTTO(array, length,  oldType, newType, free_old ) \
 internal_array_convertTo(array, (length * geneticc_get_sized_type_abs(oldType) ), oldType, newType, free_old)
 
-/*
-*	Macros which implement the overloading
-*/
+
 #define ARRAY_CONVERTTO_GENETICC_5(array, length, oldType, newType, free_old)			INTERNAL_ARRAY_CONVERTTO(array, length, oldType, newType, free_old)
 #define ARRAY_CONVERTTO_GENETICC_4(array, length, oldType, newType)						INTERNAL_ARRAY_CONVERTTO(array, length, oldType, newType, false)
 #define ARRAY_CONVERTTO_GENETICC_3(array, oldType, newType)								INTERNAL_ARRAY_CONVERTTO(array, (sizeof(array) / geneticc_get_sized_type_abs(oldType)), oldType, newType, false)

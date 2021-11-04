@@ -10,23 +10,23 @@ typedef struct example_struct{
 
 //The arrays to search
 example_struct_t ts_arr[4];
-uint16_t shortarray [4] = {1, 2, 3, 4};	
+uint16_t shortarray [4] = {1, 2, 3, 4};
 uint16_t* pointerArray;
 uint32_t uintarray[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 int intarray[10] = {-1, 2, -3, 4, 5, 6, -7, 8, -9, 10};
 //int intarray[6] = {-1, 0x0101, 0x5432, 0x6789, 0xFF11, 0xef01};
 float  floatarray[3] = {1.0f, 2.5f, -5.25f};
 double dubarray[10] = {1.0d, 2.0d, -5.25d, 4.0d, 5.0d, 6.0d, 7.0d, 8.0d, 9.0d, 10.0d};
-	
+
 char charray[4] = {'0', '1', '2', '3'};
-	
+
 int dmaArray[32];
-	
+
 
 void initialize_example_values()
 {
 	//Initialize pointer array
-	pointerArray = malloc(16);	
+	pointerArray = malloc(16);
 	pointerArray[0] = 0;
 	pointerArray[1] = 1;
 	pointerArray[2] = 2;
@@ -40,7 +40,7 @@ void initialize_example_values()
 	ts_arr[0] = (example_struct_t){.a = 5, .b = 5};
 	ts_arr[1] = (example_struct_t){.a = 5, .b = -2.5f};
 	ts_arr[2] = (example_struct_t){.a = 3, .b = 2.5f};
-	ts_arr[3] = (example_struct_t){.a = 4, .b = 1.4f};	
+	ts_arr[3] = (example_struct_t){.a = 4, .b = 1.4f};
 
 	
 	for(int i = 0; i < 32; i++)
@@ -48,9 +48,6 @@ void initialize_example_values()
 		dmaArray[i] = 0x11223344 * (i + 1);
 	}
 	
-	
-	List_Init(&active_dma_lists, sizeof(list_t*));
-
 }
 
 
@@ -66,7 +63,7 @@ void array_contains_example()
 	
 
 	/* Pointer array (short) */
-	bool containsPointShort; 
+	bool containsPointShort;
 	containsPointShort = Array_Contains(pointerArray, 3, 8);						//Returns True
 	containsPointShort = Array_Contains(pointerArray, 3);							//Returns False, length must be passed for non-static arrays!
 	
@@ -76,7 +73,7 @@ void array_contains_example()
 	containsDouble = Array_Contains(dubarray, -5.25d);								//Returns true
 	
 	//Floats and doubles by default call specific functions for floating point values. This increases performance, but will produce a larger program.
-	//If you want them to use the generic method like all the other value types, go to the "Array_Contains" macro, and remove the float: and double: lines, which will end up using "default:" 
+	//If you want them to use the generic method like all the other value types, go to the "Array_Contains" macro, and remove the float: and double: lines, which will end up using "default:"
 	//Doing so will trade performance for a smaller code size.
 	//If you do not care about code size, specialty functions can be added for any value type, by doing the reverse(also need to create the specialty function and add it in the "internal_call_array_contains_special's" switch statement.).
 	
@@ -84,8 +81,8 @@ void array_contains_example()
 	
 	//The struct to search for.
 	example_struct_t ts = (example_struct_t){.a = 3, .b = 2.5f};
-			
-	//Unfortuantely we need to cast the struct to a char* 
+	
+	//Unfortuantely we need to cast the struct to a char*
 	//(Any pointers must be cast to char*, until they are added to the macro's _Generic)
 	bool containsStruct = Array_Contains(ts_arr, CAST_STRUCT &ts);		//Returns true
 
@@ -131,19 +128,19 @@ void array_insert_example()
 	char* insertCharArray	= Array_Insert(charray, 'a', 2);							//Result = {'0', '1', 'a', '2', '3'}
 	insertCharArray			= Array_Insert(insertCharArray, 'b', 3, 5, true);			//Result = {'0', '1', 'a', 'b', '2', '3'}
 	
-		
+	
 	char* insertRangeCharArray	= Array_InsertRange(charray, range, 2);									//Result = {'0', '1', 'r', 'a', 'n', 'g', 'e', '2', '3'}				Do not need to pass count or length because range and charray are static arrays.
 	insertRangeCharArray		= Array_InsertRange(insertRangeCharArray, range, 2, 2, 9, true);		//Result = {'0', '1', 'r', 'a', 'r', 'a', 'n', 'g', 'e', '2', '3'}		Need to pass length because insertRangeCharArray is not a static array. Only passing the first 2 chars of range.
 	
 	
 	char* addCharArray		= Array_Add(charray,'a');								//Result = {'0', '1', '2', '3', 'a'}
 	char* addRangeCharArray = Array_AddRange(charray, range);						//Result = {'0', '1', '2', '3',  'r', 'a', 'n', 'g', 'e'}
-		
+	
 	
 	
 	char* prependCharArray		= Array_Prepend(charray, 'a');						//Result = {'a', '0', '1', 'a', '2', '3'}
 	char* prependRangeCharArray = Array_PrependRange(charray, range);				//Result = { 'r', 'a', 'n', 'g', 'e', '0', '1', '2', '3'}
-		
+	
 	
 	//Remember to free when no longer used
 	free(insertCharArray);
@@ -183,7 +180,7 @@ void array_minmaxaverage_example()
 	
 	
 	int averageInt;
-	averageInt = Array_Average(uintarray);				//Result = 5	
+	averageInt = Array_Average(uintarray);				//Result = 5
 	averageInt = Array_Average(uintarray, 5, 5);		//Result = 8
 	
 	
@@ -206,15 +203,15 @@ bool predicate_example2( const ELEMENT_PTR value, int arg_count, va_list ap)
 }
 
 
-void select_example()
+void find_example()
 {
-	int index = Array_Select(uintarray, predicate_example);								//Result = 5
-	uint32_t* pointer = Array_SelectPointer(uintarray, predicate_example);				//Result = pointer to uintarray[5]
+	int index = Array_FindIndex(uintarray, predicate_example);								//Result = 5
+	uint32_t* pointer = Array_Find(uintarray, predicate_example);							//Result = pointer to uintarray[5]
 	
-	size_t matchCount = 0;																//Result = 5
-	uint8_t** matches = Array_SelectMany(uintarray, predicate_example, &matchCount);	//Result = array holding 5 pointers from uintarray[5] to uintarray[9]
+	size_t matchCount = 0;																	//Result = 5
+	uint8_t** matches = Array_FindAll(uintarray, predicate_example, &matchCount);			//Result = array holding 5 pointers from uintarray[5] to uintarray[9]
 	
-	index = Array_SelectArgs(uintarray, predicate_example2, 10, 2, 3, 3);				//Result = 5
+	index = Array_FindIndexArgs(uintarray, predicate_example2, 10, 2, 3, 3);				//Result = 5
 	
 	for(int i = 0; i < matchCount; i++)
 	{
@@ -235,7 +232,7 @@ void vargs_example(int arg_count, ...)
 	va_list ap;
 	va_start(ap, arg_count);
 	
-	int index = Array_SelectVargs(uintarray, predicate_example2, arg_count, ap);	//Result = 5
+	int index = Array_FindIndexVargs(uintarray, predicate_example2, arg_count, ap);	//Result = 5
 }
 
 
@@ -247,13 +244,13 @@ void remove_example()
 	bool removed;
 	int* removeArray = Array_Remove(uintarray, 5, &removed);								//Result, {1, 2, 3, 4, 6, 7, 8, 9, 10}		removed = true
 	removeArray = Array_Remove(removeArray, 11, 9, true, NULL );							//Result, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}	removed = false*  (removed not passed)
-		
+	
 	uint32_t removeCount = 0;
 	uint8_t* removeAllArray = Array_RemoveAll(pointerArray, 2, 8, false, &removeCount );	//Result, {0, 1, 3, 0, 1, 3}				removeCount = 2
 	size_t removeCountArrayNewSize = 8 - removeCount;
 	
 	uint16_t* reverseArray = Array_Reverse(pointerArray, 8);								//Result, {'3, '2', '1', '0'};
-		
+	
 	//Remember to free
 	free(removeRangeArray);
 	free(removeAtArray);
@@ -270,9 +267,9 @@ void list_example()
 	/*Initialize list - (List not created with malloc, internal array is)*/
 	
 	list_t listRange;					//When using list_t instead of LIST_PTR, when calling some macros you must cast to LIST_PTR, or you will get "invalid type argument of '->'..." Ex. (LIST_PTR)(&listRange)
-	List_Init(&listRange, 1);	
+	List_Init(&listRange, 1);
 	List_AddRange(&listRange, range);
-		
+	
 	/*Allocate list - (Malloc used to allocate list and array)*/
 	
 	LIST_PTR listRanger = new_List(1);	//Recommended instead of List_Init
@@ -289,7 +286,7 @@ void list_example()
 	//newList->array[1] = 'i';
 	//newList->array[2] = 's';
 	//newList->array[3] = 't';	//Legal
-	//newList->array[4] = 's';	//Not legal (out of range) 
+	//newList->array[4] = 's';	//Not legal (out of range)
 
 	length_t newListLength = List_Count(newList);	//Returns 0
 	newListLength = List_AdjustHead(newList, 4);	//Returns 4, This will increase the size of the internal array (as long as it does not go past its internal capacity).
@@ -305,7 +302,7 @@ void list_example()
 	List_Add(newList, 's');			//Adds a value to the end of the list
 	
 	/*Result = {'l', 'i', 's', 't', 's'}*/
-		
+	
 	char first = List_Array(newList)[0];
 	char second = newList->array[newList->tail + 1];
 	char* third = List_Get(newList, 2);							//Returns pointer
@@ -355,14 +352,14 @@ bool predicateex( const ELEMENT_PTR value)
 }
 
 
-void list_select_example()
+void list_find_example()
 {
 	
 	int array[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 	LIST_PTR list = Array_To_List(array);
 
-	LIST_PTR matches = List_SelectManyPointers(list, predicateex); //Result = A list containing pointers to list->array[5 - 9]
+	LIST_PTR matches = List_FindAll(list, predicateex); //Result = A list containing pointers to list->array[5 - 9]
 
 	int** aligned = matches->array;
 
@@ -400,16 +397,13 @@ void list_dma_example()
 	List_DMA_PrependList(intList, intRanger);		// Result = {'r', 'a', 'n', 'g', 'e', '0','0', '1', 'r', 'a', 'n', 'g', 'e', '2', '3', '4', '5', '6', '7', '8', '9', '5', 'r', 'a', 'n', 'g', 'e'}
 	List_DMA_RemoveAt(intList, 3);					// Result = {'r', 'a', 'n', 'e', '0', '0', '1', 'r', 'a', 'n', 'g', 'e', '2', '3', '4', '5', '6', '7', '8', '9', '5', 'r', 'a', 'n', 'g', 'e'}
 	List_DMA_Remove(intList, '3');					// Result = {'r', 'a', 'n', 'e',  '0', '0', '1', 'r', 'a', 'n', 'g', 'e', '2', '4', '5', '6', '7', '8', '9', '5', 'r', 'a', 'n', 'g', 'e'}
-		
-	//We will add the last DMA function to the list, and when the DMA transfer has finshed it(as well as all before), we can wait for them all to finish.
-	//In this example, the lists are not long enough, so by the time we get to the wait loop, they have already finished.
-	//This is why it is only recommended to use DMA functions with very large lists (anything that takes longer than it takes to create and register a transfer).
-	List_Add(&active_dma_lists, CAST_STRUCT &intList);	//Add pointer to list, we will use that to check if transfer is finished.
+
 	
 	List_DMA_RemoveAll(intList, 'a');								// Result = {'r', 'n', 'e', '0', '0', '1', 'r', 'n', 'g', 'e', '2', '5', 'r', 'n', 'g', 'e'}
 
-	//Wait until all transfers have finished. Because they all DMA functions that use the same DMA channel, and are executed in order, we do not have to wait before each function.
-	while(List_Contains(&active_dma_lists, CAST_STRUCT &intList));
+	//Wait for DMA transfer to finish.
+	//Used the destination to find the transfer
+	geneticc_dma_wait_for_transfer(intList);
 
 	List_Delete(intList);
 	List_Delete(intRanger);
@@ -435,11 +429,11 @@ void list_struct_example()
 	LIST_PTR list = Array_To_List(es_array);
 	
 	example_struct_t es1 = {.a = -1, .b = -1.5f};
-		
+	
 	size_t esa_size = sizeof(es_array[0]);
 	size_t es1_size = sizeof(es1);
 	size_t es_size = sizeof(example_struct_t);
-		
+	
 	
 	
 	List_Insert(list, CAST_STRUCT &es1, 2);
@@ -447,17 +441,13 @@ void list_struct_example()
 }
 
 void geneticc_dma_transfer_done(const geneticc_dma_transfer_t* transfer)
-{
-	//Remove the pointer to the list.
-	//This is so we know when a list is safe to use, after performing a list dma function(ex. List_InsertRangeDMA).
-	List_Remove(&active_dma_lists, CAST_STRUCT transfer->dest);
-	
+{	
 	#if GENETICC_DMA_AUTOFREE_TRANSFER == false
 	//This must be called if you have registered the callback or you will have a memory leak.
 	//You could store this pointer and free it at a later time if you wish, but it is not recommended.
 	//If the callback is not registered, it will be freed internally.
 	if(transfer->flags.no_delete)
-	geneticc_dma_delete_transfer(transfer);	
+	geneticc_dma_delete_transfer(transfer);
 	#endif
 }
 
@@ -467,7 +457,7 @@ int main(void)
 	/* Initializes MCU, drivers and middleware */
 	atmel_start_init();
 
-	geneticc_dma_init(BEATSIZE_BYTE);	
+	geneticc_dma_init(BEATSIZE_BYTE);
 	geneticc_dma_register_user_callbacks(DMA_CB_TRANSFER_DONE, geneticc_dma_transfer_done);
 	
 	initialize_example_values();
@@ -476,7 +466,7 @@ int main(void)
 	array_minmaxaverage_example();
 	array_insert_example();
 	remove_example();
-	select_example();
+	find_example();
 	list_example();
 	list_dma_example();
 	list_struct_example();

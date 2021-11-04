@@ -255,7 +255,7 @@ void internal_geneticc_dma_complete_transfer(geneticc_dma_transfer_t* transfer)
 	if(transfer->flags.freesrc)
 	free(transfer->src);
 	
-	int index = List_Indexof(&geneticc_dma_transfer_list, CAST_STRUCT &transfer);
+	int index = List_IndexOf(&geneticc_dma_transfer_list, CAST_STRUCT &transfer);
 	if(index != -1)
 	{
 		internal_list_removeAt_memory(&geneticc_dma_transfer_list, index);
@@ -350,7 +350,7 @@ void internal_geneticc_dma_start_next_transfer(geneticc_dma_transfer_t* transfer
 		}
 		#warning may not work
 		//transfer = *(geneticc_dma_transfer_t**)internal_list_find_memory(&geneticc_dma_transfer_list, predicate_transfer_ready);  
-		transfer =  *(geneticc_dma_transfer_t**)List_FindPointers(&geneticc_dma_transfer_list, predicate_transfer_start_triggered);
+		transfer =  *(geneticc_dma_transfer_t**)List_Find(&geneticc_dma_transfer_list, predicate_transfer_start_triggered);
 	}
 	
 	if(transfer == NULL)	//No transfers ready
@@ -359,7 +359,7 @@ void internal_geneticc_dma_start_next_transfer(geneticc_dma_transfer_t* transfer
 	//Get next transfer where running flag = false, and return a pointer to it.
 	//If this value is null it means all the transfers are complete.
 	//geneticc_dma_subtransfer_t* next =  *(geneticc_dma_subtransfer_t**)internal_list_find_memory(&transfer->subtransfers, predicate_subtransfer_waiting);
-	geneticc_dma_subtransfer_t* next =  *(geneticc_dma_subtransfer_t**)List_FindPointers(&transfer->subtransfers, predicate_subtransfer_waiting);
+	geneticc_dma_subtransfer_t* next =  *(geneticc_dma_subtransfer_t**)List_Find(&transfer->subtransfers, predicate_subtransfer_waiting);
 
 	ASSERT(next);
 	

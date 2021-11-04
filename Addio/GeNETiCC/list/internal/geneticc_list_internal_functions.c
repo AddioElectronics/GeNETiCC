@@ -1376,7 +1376,7 @@ uint32_t internal_list_removeAll_memory(LIST_PTR list, ELEMENT_PTR value)
 	int index = 0;
 	do
 	{
-		index = List_Indexof(list, value, index);
+		index = List_IndexOf(list, value, index);
 		
 		if(index != -1)
 		{
@@ -1778,7 +1778,7 @@ uint32_t GENOPTI_ATT_FORCE_INLINE internal_list_removeAllMatching_args_memory(LI
 *
 *	/param	list			Pointer to the start of the list.
 */
-void internal_list_reverse_memory(LIST_PTR list, int start)
+void internal_list_reverse_memory(LIST_PTR list)
 {
 	//internal_list_trimExcess(list);
 	//size_t size = internal_list_get_size(list);
@@ -2377,7 +2377,7 @@ bool internal_list_dma_removeAll_memory(LIST_PTR list, const ELEMENT_PTR value, 
 	//int index = 0;
 	//do
 	//{
-		//index = List_Indexof(list, value, index);
+		//index = List_IndexOf(list, value, index);
 		//
 		//if(index != -1)
 		//{

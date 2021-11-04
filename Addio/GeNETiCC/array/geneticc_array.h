@@ -296,6 +296,7 @@
 #define Array_FindVargs(...) ARRAY_FIND_VARGS_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 
+
 #pragma endregion Macros
 
 #pragma region Unsafe Macros
@@ -536,6 +537,21 @@
 
 
 //#define Array_Sort(array, comparison)
+
+
+/*
+*	Assigns the given value to the elements of the specified array.
+*	
+*	Array_Fill(array, value)
+*	Array_Fill(array, value, length)
+*	Array_Fill(array, value, length, start)
+*
+*	/param	array			Pointer to the start of the array.
+*	/param	value			Assigns the given value(or pointer to value) to each element of the specified array.
+*	/param	length			(Optional)The count of elements in the array. *Required for pointer arrays.
+*	/param	start			(Optional)The index to start at.
+*/
+#define Array_Fill(...)		ARRAY_FILL_MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
 
 /*
 *	Converts an array of one data type, to an array of a different data type.

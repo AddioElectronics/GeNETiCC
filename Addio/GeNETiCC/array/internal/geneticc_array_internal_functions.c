@@ -1175,6 +1175,7 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAll_generic(ARRAY_PTR ar
 *
 *	/param	array			Pointer to the start of the array.
 *	/param	size			The size of the array (in bytes).
+*	/param	elem_size		The size of the value's type (in bytes).
 *	/param	free_old*		If true, the array passed to "array" will be freed after the copy. (ARRAY_UNSAFE_REALLOC must be undefined)
 *
 *	/returns				A pointer to the start of the new array.
@@ -1209,6 +1210,37 @@ ARRAY_PTR internal_array_reverse_memory(ARRAY_PTR array, size_t size,  element_s
 	//return newArray;
 //}
 
+
+/*
+*	Assigns the given value to the elements of the specified array.
+*
+*	/param	array			Pointer to the start of the array.
+*	/param	value			Pointer to the value which will be assigned to each element of the array.
+*	/param	size			The size of the array (in bytes), or how many bytes to set.
+*	/param	elem_size		The size of the value's type (in bytes).
+*/
+void internal_array_fill_memory(ARRAY_PTR array, ELEMENT_PTR value, size_t size, element_size_t elem_size)
+{
+	for(int i = 0; i < size; i += elem_size)
+	{
+		memcpy(array + i, value + i, elem_size);
+	}
+}
+
+/*
+*	Assigns the given value to the elements of the specified array.
+*
+*	/param	array			Pointer to the start of the array.
+*	/param	value			Assigns the given value to each element of the specified array.
+*	/param	size			The size of the array (in bytes), or how many bytes to set.
+*	/param	elem_size		The size of the value's type (in bytes).
+*/
+void GENOPTI_ATT_FORCE_INLINE internal_array_fill_generic(ARRAY_PTR array, generic_union_t value, size_t size, element_size_t elem_size)
+{
+	uint64_t v = value.u64;	//Store value so we can get pointer from.
+		
+	return internal_array_fill_memory(array, &v, size, elem_size);
+}
 
 #pragma endregion Unsafe Generic Methods
 

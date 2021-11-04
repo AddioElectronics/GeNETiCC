@@ -129,7 +129,7 @@ uint32_t internal_list_removeAllMatching_vargs_memory(LIST_PTR list, PREDICATE_A
 GENOPTI_INLINE bool internal_list_removeMatch_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ... );
 GENOPTI_INLINE uint32_t internal_list_removeAllMatching_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ... );
 
-void internal_list_reverse_memory(LIST_PTR list, int start);
+void internal_list_reverse_memory(LIST_PTR list);
 
 //void internal_list_sort_memory(LIST_PTR list, COMPARISON comparison);
 
