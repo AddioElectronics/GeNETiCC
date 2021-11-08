@@ -1,7 +1,7 @@
 # GeNETiCC ( C Library)
 #### `V0.5.0`
 
-__**A C libary which implements generic functions for working with [arrays](https://github.com/AddioElectronics/GeNETiCC/wiki/API-Array), [lists](https://github.com/AddioElectronics/GeNETiCC/wiki/API-List), and more(coming soon), in a style that implements syntactic sugar that closely resembles C#.**__
+__**A C library which implements generic functions for working with [arrays](https://github.com/AddioElectronics/GeNETiCC/wiki/API-Array), [lists](https://github.com/AddioElectronics/GeNETiCC/wiki/API-List), and more(coming soon), in a style that implements syntactic sugar that closely resembles C#.**__
 
 
 
