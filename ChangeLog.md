@@ -1,6 +1,18 @@
 
 # Change Log
 All notable changes to this project will be documented in this file.
+
+## [0.5.1] - 11/12/2021
+  
+Restructured folders and added "using" files.
+ 
+### Added
+
+* Using files. Headers which make including components easier.
+ 
+### Changed
+  
+* Moved components that deal with collections of values to the "Collections" sub-directory. (Array, List...) 
  
 ## [0.5.0] - 11/1/2021
   
