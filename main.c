@@ -1,6 +1,11 @@
 #include <atmel_start.h>
 
-#include "addio/geneticc/geneticc_master.h"
+#include "addio/using/using_Addio.GeNETiCC.h"
+
+/*
+*	If "addio/using" is added to your project includes.
+*	#include "using_Addio.GeNETiCC.h"	
+*/
 
 //The struct def for the example
 typedef struct example_struct{

@@ -4,8 +4,10 @@
 #include <utils.h>
 
 #include "../geneticc.h"
-//#include "../geneticc_array_defs.h"
-#include "../list/geneticc_list.h"
+//#include "../array_geneticc_defs.h"
+#include "../collections/list/list_geneticc.h"
+
+#warning change Geneticc DMA to use a ring buffer instead of a list.
 
 enum geneticc_dma_beatsize
 {

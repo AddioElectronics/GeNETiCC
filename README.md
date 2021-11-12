@@ -31,10 +31,21 @@ One thing about DMA, from the small tests I've done everything is working smooth
 
 #### [Documentation and Reference API](https://github.com/AddioElectronics/GeNETiCC/wiki)
 
-Just import the headers and source files into your project, and include the headers.
+Just import the desired headers and source files into your project, and include the headers.
 
+``` C
+//Master header, will include all components.
+#include "addio/using/using_Addio.GeNETiCC.h"
+
+//If you wish to include specific components,
+//it will import everything needed to use them.
+#include "addio/using/using_Addio.GeNETiCC.collections.list.h"
 ```
-#include "addio/geneticc/geneticc_master.h"
+
+Add the "addio/using" folder into your project's included directories to shorten the path.
+
+``` C
+#include "using_Addio.GeNETiCC.h"
 ```
 
 ### Macros (Main Usage) <a name="macros"/>

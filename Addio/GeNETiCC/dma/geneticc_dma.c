@@ -1,7 +1,7 @@
 #include "geneticc_dma.h"
 
-#include "../geneticc_memory.h"
-#include "../list/geneticc_list.h"
+#include "../standard/memory/geneticc_memory.h"
+#include "../collections/list/list_geneticc.h"
 
 #pragma region Variables
 
