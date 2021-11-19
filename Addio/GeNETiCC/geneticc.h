@@ -7,7 +7,7 @@
 
 #include "config/geneticc_config.h"
 #include "geneticc_defs.h"
-#include "geneticc_internal_macros.h"
+#include "preprocess/geneticc_internal_macros.h"
 
 /*
 *	Union which contains all value types.

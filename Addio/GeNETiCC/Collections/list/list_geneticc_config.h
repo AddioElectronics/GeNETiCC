@@ -1,7 +1,7 @@
 #ifndef GENETICC_LIST_CONFIG_H_
 #define GENETICC_LIST_CONFIG_H_
 
-#include "../../config/addio_multisystem_config.h"
+#include "../../../config/addio_multisystem_config.h"
 
 #include "../array/array_geneticc_config.h"
 

@@ -1,7 +1,7 @@
 #ifndef GENETICC_INTERNAL_MACROS_H_
 #define GENETICC_INTERNAL_MACROS_H_
 
-#include "preprocess/geneticc_macro_type_repeater.h"
+#include "geneticc_macro_type_repeater.h"
 
 /*
 *	Macros used in ARRAY_..._MACRO_CHOOSER macros, used to change parameter counts.

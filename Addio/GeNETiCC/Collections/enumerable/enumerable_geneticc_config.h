@@ -2,7 +2,7 @@
 #ifndef GENETICC_ENUMERABLE_CONFIG_H_
 #define GENETICC_ENUMERABLE_CONFIG_H_
 
-#include "../../config/addio_multisystem_config.h"
+#include "../../../config/addio_multisystem_config.h"
 
 #if SYSTEM_TYPE == SYSTEM_TYPE_PC
 #define ENUMERABLE_MAX_SIZE					0x7FFFFFC7		//The max size of the enumerable (in bytes).

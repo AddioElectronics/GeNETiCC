@@ -1,7 +1,7 @@
 #include "geneticc_memory.h"
 
 //#include "enumerator/enumerator_geneticc.h"
-#include "geneticc.h"
+
 
 #pragma region Variables
 
