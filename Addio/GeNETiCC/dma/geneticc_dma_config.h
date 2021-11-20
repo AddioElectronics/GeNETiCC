@@ -58,12 +58,6 @@
 #define GENETICC_DMA_MAX_SUBTRANSFERS			255	//Absolute max is 255	(To increase, change the bit count for the subtran_count and complete_count bit fields in the geneticc_dma_transfer_t definition)
 
 /*
-*	How many loop cycles in the geneticc_dma_wait() equals a timeout.
-*/
-#define GENETICC_DMA_TIMEOUT		10000
-
-
-/*
 *	If the transfer_done user callback is registered,
 *	the transfer will be freed after the callback executes.
 *	This allows the user to use the transfer in the callback and not have to free itself.

@@ -10,14 +10,9 @@
 #include "geneticc_dma_config.h"
 #include "geneticc_dma_defs.h"
 
-
-
-
 #pragma region Functions
 
 inline void  geneticc_dma_init ();
-
-inline void  geneticc_dma_system_init ();
 
 inline void __attribute__((weak)) geneticc_dma_enable();
 inline void __attribute__((weak)) geneticc_dma_disable();
@@ -51,126 +46,26 @@ void internal_geneticc_dma_start_transfer_sync(geneticc_dma_subtransfer_t* subtr
 
 #pragma endregion Internal Functions
 
-#pragma region Shared System Functions
+#pragma region System Functions
 /*
-	If there are no functions that can be called from the macros,
-	add them to here for future systems to use.
-
-	*In your C file, remember to wrap them in #if GENETICC_DMA_SYSTEM == THE_SYSTEM.
+*	Functions must added to "geneticc_dma_system_%YOURSYSTEM%"
 */
 
+inline void  geneticc_dma_system_init(); //Optional
 
-/*	geneticc_dma_wait
-*
-*	returns true, if the transfer was complete, and false if the transfer timed out.
-*/
-bool geneticc_dma_wait();
+void internal_geneticc_dma_register_system_callbacks();
 
-
-bool geneticc_dma_busy();
-
-bool geneticc_dma_busy_timeout();
-
-
-void geneticc_dma_transfer_done_callback();
-void geneticc_dma_error_callback();
-
-
-#pragma endregion Shared System Functions
+#pragma endregion System Functions
 
 #pragma region System Definitions
-
-
 //////////////////////////////////////////////////////////////////////////
-//					Atmel Start Definitions
+//					Include your system here.
 //////////////////////////////////////////////////////////////////////////
 #if GENETICC_DMA_SYSTEM == GENETICC_DMA_SYSTEM_ATMELSTART_ARM
-#pragma region Atmel Start
+#include "systems/geneticc_dma_atmelstart_arm.h"
 
-#include <hpl_dma.h>
-
-extern DmacDescriptor _descriptor_section[DMAC_CH_NUM];
-
-int32_t _dma_disable_transaction(const uint8_t channel);
-
-/*
-*	The largest beatsize the system supports. (geneticc_dma_beatsize_t)
-*
-*	*BEATSIZE_MAX will select the largest beatsize for the current system.
-*	*System MAX is set in geneticc_dma.h,
-*/
-#define GENETICC_DMA_MAX_BEATSIZE		BEATSIZE_DWORD
-
-/*
-*	DMA hardware register values for the beatsize.
-*/
-#define GENETICC_DMA_BEATSIZE_BYTE_MASK		0x00
-#define GENETICC_DMA_BEATSIZE_WORD_MASK		0x01
-#define GENETICC_DMA_BEATSIZE_DWORD_MASK	0x02
-//#define GENETICC_DMA_BEATSIZE_QWORD_MASK	//Unsupported
-
-#define GENETICC_DMA_BEATSIZE_TO_AMOUNT(beatsize, size)
-
-#define GENETICC_DMA_CALLBACK_TRANSFERDONE_PROTOTYPE					void geneticc_dma_transfer_done_system_callback(struct _dma_resource *resource)
-#define GENETICC_DMA_CALLBACK_ERROR_PROTOTYPE							void geneticc_dma_error_system_callback(struct _dma_resource *resource)
-
-#define GENETICC_DMA_CALLBACK_TRANSFERDONE_PROTOTYPE_RETURNTYPE			void
-#define GENETICC_DMA_CALLBACK_TRANSFERDONE_PROTOTYPE_PARAMS				struct _dma_resource *resource
-#define GENETICC_DMA_CALLBACK_TRANSFERDONE__PARAMS						resource
-
-#define GENETICC_DMA_CALLBACK_ERROR_PROTOTYPE_RETURNTYPE				void
-#define GENETICC_DMA_CALLBACK_ERROR_PROTOTYPE_PARAMS					struct _dma_resource *resource
-#define GENETICC_DMA_CALLBACK_ERROR_PARAMS								resource
-
-
-
-#define GENETICC_DMA_SET_SRC_ADDRESS(src)			_dma_set_source_address(GENETICC_DMA_CHANNEL, src)
-#define GENETICC_DMA_SET_DEST_ADDRESS(dest)			_dma_set_destination_address(GENETICC_DMA_CHANNEL, dest)
-
-#define GENETICC_DMA_SET_ADDRESSES(dest, src)		_dma_set_source_address(GENETICC_DMA_CHANNEL, src), \
-													_dma_set_destination_address(GENETICC_DMA_CHANNEL, dest)
-													
-#define GENETICC_DMA_SET_INC_SRC(enabled)			_dma_srcinc_enable(GENETICC_DMA_CHANNEL, enabled)	
-#define GENETICC_DMA_SET_INC_DEST(enabled)			_dma_dstinc_enable(GENETICC_DMA_CHANNEL, enabled)	
-
-#define GENETICC_DMA_SET_BEAT_SIZE(beatsize)			hri_dmacdescriptor_write_BTCTRL_BEATSIZE_bf(&_descriptor_section[GENETICC_DMA_CHANNEL], beatsize)
-#define GENETICC_DMA_SET_TRANSACTION_COUNT(count)	_dma_set_data_amount(GENETICC_DMA_CHANNEL, count)
-
-
-/*
-*
-*/
-#define GENETICC_DMA_ENABLE_TRANSACTION				_dma_enable_transaction(GENETICC_DMA_CHANNEL, true)
-
-#define GENETICC_DMA_BUSY							geneticc_dma_busy()
-
-
-#define GENETICC_DMA_BUSY_WAIT						geneticc_dma_busy_timeout()
-/*
-*	Waits for the transfer to finish, or times out.
-*
-*	/returns	True when transfer is complete, and false if the timeout is reached.
-*/
-#define GENETICC_DMA_WAIT				geneticc_dma_wait()
-
-
-
-/*
-*	Cancels the pending DMA transaction.
-*/
-#define GENETICC_DMA_CANCEL_TRANSACTION				_dma_disable_transaction(GENETICC_DMA_CHANNEL)
-
-#define GENETICC_DMA_ENABLE_INTERRUPT				_dma_set_irq_state(GENETICC_DMA_CHANNEL, DMA_TRANSFER_COMPLETE_CB, true)//, _dma_set_irq_state(GENETICC_DMA_CHANNEL, DMA_TRANSFER_ERROR_CB, true);
-
-#define GENETICC_DMA_DISABLE_INTERRUPT				_dma_set_irq_state(GENETICC_DMA_CHANNEL, DMA_TRANSFER_COMPLETE_CB, false)//, _dma_set_irq_state(GENETICC_DMA_CHANNEL, DMA_TRANSFER_ERROR_CB, false)
-
-//#define GENETICC_DMA_CLEAR_TRANSFERDONE_INTERRUPT	//hri_dmac_clear_CHINTFLAG_TCMPL_bit(DMAC) Automatically cleared
-
-//#define GENETICC_DMA_CLEAR_ERROR_INTERRUPT		//hri_dmac_clear_CHINTFLAG_TERR_bit(DMAC) Automatically cleared
-
-
-#pragma endregion Atmel Start
-//#elif GENETICC_DMA_SYSTEM ==
+//#elif GENETICC_DMA_SYSTEM == GENETICC_DMA_SYSTEM_%SYSTEM%
+//#include "systems/geneticc_dma_%SYSTEM%.h"
 #endif
 #pragma endregion System Definitions
 
@@ -198,63 +93,85 @@ GENETICC_DMA_CALLBACK_ERROR_PROTOTYPE_RETURNTYPE				geneticc_dma_error_system_ca
 #pragma endregion Callback Macros
 
 #pragma region Macro Check
-#warning reminder to add new macros
-//
-//#if !defined(GENETICC_DMA_MAX_BEATSIZE)
+
+
+#if !defined(GENETICC_DMA_MAX_BEATSIZE)
+#error Must be defined
+#endif
+
+//#if !defined(GENETICC_DMA_SET_SRC_ADDRESS)
 //#error Must be defined
 //#endif
 //
-//#if !defined(GENETICC_DMA_BEATSIZE_BYTE_MASK)
+//#if !defined(GENETICC_DMA_SET_DEST_ADDRESS)
 //#error Must be defined
 //#endif
-//
-//#if !defined(GENETICC_DMA_BEATSIZE_WORD_MASK)
-//#error Must be defined
-//#endif
-//
-//#if !defined(GENETICC_DMA_BEATSIZE_DWORD_MASK)
-//#error Must be defined
-//#endif
-//
-//#if !defined(GENETICC_DMA_BEATSIZE_QWORD_MASK)
-//#error Must be defined
-//#endif
-//
-//#if !defined(GENETICC_DMA_BEATSIZE_TO_AMOUNT)
-//#error Must be defined
-//#endif
-//
-////#if !defined(GENETICC_DMA_SET_SRC_ADDRESS)
-////#error Must be defined
-////#endif
-////
-////#if !defined(GENETICC_DMA_SET_DEST_ADDRESS)
-////#error Must be defined
-////#endif
-//
-//#if !defined(GENETICC_DMA_SET_ADDRESSES)
-//#error Must be defined
-//#endif
-//
-//#if !defined(GENETICC_DMA_SET_BEAT_SIZE)
-//#error Must be defined
-//#endif
-//
-//#if !defined(GENETICC_DMA_SET_TRANSACTION_COUNT)
-//#error Must be defined
-//#endif
-//
-//#if !defined(GENETICC_DMA_ENABLE_TRANSACTION)
-//#error Must be defined
-//#endif 
-//
-//#if !defined(GENETICC_DMA_WAIT_FOR_TRANSFER)
-//#error Must be defined
-//#endif
-//
-//#if !defined(GENETICC_DMA_CANCEL_TRANSACTION)
-//#error Must be defined
-//#endif
+
+#if !defined(GENETICC_DMA_SET_ADDRESSES)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_SET_BEAT_SIZE)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_SET_TRANSACTION_COUNT)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_ENABLE_TRANSACTION)
+#error Must be defined
+#endif 
+
+#if !defined(GENETICC_DMA_CANCEL_TRANSACTION)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_BUSY)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_BUSY_WAIT)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_WAIT)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_ENABLE_INTERRUPT)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_DISABLE_INTERRUPT)
+#error Must be defined
+#endif
+
+
+
+#if !defined(GENETICC_DMA_CALLBACK_TRANSFERDONE_PROTOTYPE_RETURNTYPE)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_CALLBACK_TRANSFERDONE_PROTOTYPE_PARAMS)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_CALLBACK_TRANSFERDONE__PARAMS)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_CALLBACK_ERROR_PROTOTYPE_RETURNTYPE)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_CALLBACK_ERROR_PROTOTYPE_PARAMS)
+#error Must be defined
+#endif
+
+#if !defined(GENETICC_DMA_CALLBACK_ERROR_PARAMS)
+#error Must be defined
+#endif
 
 #pragma endregion Macro Check
 

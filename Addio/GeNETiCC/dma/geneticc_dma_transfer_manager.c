@@ -532,8 +532,12 @@ void internal_geneticc_dma_delete_subtransfer(geneticc_dma_subtransfer_t* subtra
 #pragma region Callback Functions
 
 
-void geneticc_dma_transfer_done_callback ()
+void geneticc_dma_transfer_done_callback()
 {
+	//GeNETiCC DMA disabled. Callback
+	if(!geneticc_dma_control.enabled)
+	return;
+	
 	geneticc_dma_control.transferring = false;
 	
 	//Transfer was synchronous. It was not in the transfer list.

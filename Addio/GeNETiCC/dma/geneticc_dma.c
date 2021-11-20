@@ -17,7 +17,6 @@ struct geneticc_dma_user_callbacks geneticc_dma_user_callbacks;
 
 
 #pragma region Functions
-
 void geneticc_dma_init()
 {	
 	geneticc_dma_control.beatsize = 0;
@@ -31,11 +30,11 @@ void geneticc_dma_init()
 	
 	List_Init(&geneticc_dma_transfer_list, sizeof(geneticc_dma_transfer_t*));
 	
-	//List_Init(&active_transfers, sizeof(geneticc_dma_active_transfer_t*));	//Will be used for multi-channel support.
+	//List_Init(&active_transfers, sizeof(geneticc_dma_active_transfer_t*));	//Will be used when multi-channel support is added.
 	
-	geneticc_dma_user_callbacks.transfer_done	= NULL;
+	geneticc_dma_user_callbacks.transfer_done		= NULL;
 	geneticc_dma_user_callbacks.subtransfer_done	= NULL;
-	geneticc_dma_user_callbacks.error			= NULL;
+	geneticc_dma_user_callbacks.error				= NULL;
 	
 	geneticc_dma_system_init();	
 	
