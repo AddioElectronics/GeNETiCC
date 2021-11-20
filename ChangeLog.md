@@ -2,6 +2,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.5.2] - 11/19/2021
+  
+Minor cleanup of DMA files.
+
+### Added
+
+* Template files used for adding new systems to DMA.
+ 
+### Changed
+  
+* Moved system specific macros from geneticc_dma.h to its own file. (geneticc_dma_atmelstart_arm.h)
+
 ## [0.5.1] - 11/12/2021
   
 Restructured folders and added "using" files.
