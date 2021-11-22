@@ -2,6 +2,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.5.3] - 11/21/2021
+  
+Minor cleanup "..._generic" functions.
+
+### Changed
+  
+* Replaced macro with __always_inline__. Macro only inlined for certain internal optimization levels.
+* Removed intermediate generic_union_t variable, instead grabbing pointer from argument.
+
 ## [0.5.2] - 11/19/2021
   
 Minor cleanup of DMA files.
