@@ -21,7 +21,7 @@ inline bool internal_array_contains_generic(const ARRAY_PTR array, generic_union
 inline bool internal_array_exists(const ARRAY_PTR array, size_t length,  element_size_t elem_size, PREDICATE predicate);
 
 int internal_array_indexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size);
-int internal_array_indexOf_generic(const ARRAY_PTR array, generic_union_t value,  size_t size,  element_size_t elem_size);
+inline int internal_array_indexOf_generic(const ARRAY_PTR array, generic_union_t value,  size_t size,  element_size_t elem_size);
 
 int internal_array_lastIndexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size);
 inline int internal_array_lastIndexOf_generic(const ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size);
@@ -36,7 +36,7 @@ generic_union_t internal_array_sum_memory(const ARRAY_PTR array, size_t size,  e
 double internal_array_sumf_memory(const double* array, size_t length,  element_size_t elem_size);
 
 generic_union_t internal_array_average_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, bool isSigned);
-inline double internal_array_averagef_memory(const double* array, size_t size,  element_size_t elem_size);
+GENOPTI_INLINE double internal_array_averagef_memory(const double* array, size_t size,  element_size_t elem_size);
 
 unsigned int internal_array_valueCount_memory(const ARRAY_PTR array,const ELEMENT_PTR value, size_t size,  element_size_t elem_size);
 inline unsigned int internal_array_valueCount_generic(const ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size);
@@ -52,8 +52,8 @@ int internal_array_select_vargs_memory(const ARRAY_PTR array, size_t size,  elem
 #pragma region Type Specific Methods - Generally faster than generic functions, but will increase code size
 
 
-bool internal_array_contains_float(const float value, const float* array, length_t length);
-bool internal_array_contains_double(const double value, const double* array, length_t length);
+inline bool internal_array_contains_float(const float value, const float* array, length_t length);
+inline bool internal_array_contains_double(const double value, const double* array, length_t length);
 
 int internal_array_indexOf_float(const float value, const float* array, length_t length);
 int internal_array_indexOf_double(const double value, const double* array, length_t length);
@@ -125,24 +125,24 @@ uint8_t** internal_array_selectMany_memory(const ARRAY_PTR array, size_t size,  
 uint8_t** internal_array_selectMany_vargs_memory(const ARRAY_PTR array, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, va_list ap, length_t* out_length);
 
 ARRAY_PTR internal_array_insertRange_memory(ARRAY_PTR array, const ELEMENT_PTR range, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ARRAY_PTR internal_array_insert_memory(ARRAY_PTR array, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ARRAY_PTR internal_array_insert_generic(ARRAY_PTR array, generic_union_t value, int offset, size_t size,  element_size_t elem_size, bool free_old);
+inline ARRAY_PTR internal_array_insert_memory(ARRAY_PTR array, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old );
+inline ARRAY_PTR internal_array_insert_generic(ARRAY_PTR array, generic_union_t value, int offset, size_t size,  element_size_t elem_size, bool free_old);
 
-GENOPTI_INLINE ARRAY_PTR internal_array_add_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ARRAY_PTR internal_array_add_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
+inline ARRAY_PTR internal_array_add_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
+inline ARRAY_PTR internal_array_add_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
 
-GENOPTI_INLINE ARRAY_PTR internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ARRAY_PTR internal_array_prepend_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
+inline ARRAY_PTR internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
+inline ARRAY_PTR internal_array_prepend_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
 
 
 ARRAY_PTR internal_array_removeRange_memory(ARRAY_PTR array, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ARRAY_PTR internal_array_removeAt_memory(ARRAY_PTR array, int offset, size_t size,  element_size_t elem_size, bool free_old );
+inline ARRAY_PTR internal_array_removeAt_memory(ARRAY_PTR array, int offset, size_t size,  element_size_t elem_size, bool free_old );
 
 ARRAY_PTR internal_array_remove_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed );
-GENOPTI_INLINE ARRAY_PTR internal_array_remove_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed);
+inline ARRAY_PTR internal_array_remove_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed);
 
 ARRAY_PTR internal_array_removeAll_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count );
-GENOPTI_INLINE ARRAY_PTR internal_array_removeAll_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count );
+inline ARRAY_PTR internal_array_removeAll_generic(ARRAY_PTR array, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count );
 
 ARRAY_PTR internal_array_reverse_memory(ARRAY_PTR array, size_t size,  element_size_t elem_size, bool free_old);
 

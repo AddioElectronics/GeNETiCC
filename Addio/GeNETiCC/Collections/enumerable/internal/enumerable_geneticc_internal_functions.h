@@ -21,7 +21,7 @@ inline bool internal_enumerable_contains_generic(const ENUMERABLE_PTR enumerable
 inline bool internal_enumerable_exists(const ENUMERABLE_PTR enumerable, size_t length,  element_size_t elem_size, PREDICATE predicate);
 
 int internal_enumerable_indexOf_memory(const ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size);
-int internal_enumerable_indexOf_generic(const ENUMERABLE_PTR enumerable, generic_union_t value,  size_t size,  element_size_t elem_size);
+inline int internal_enumerable_indexOf_generic(const ENUMERABLE_PTR enumerable, generic_union_t value,  size_t size,  element_size_t elem_size);
 
 int internal_enumerable_lastIndexOf_memory(const ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size);
 inline int internal_enumerable_lastIndexOf_generic(const ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size);
@@ -36,7 +36,7 @@ generic_union_t internal_enumerable_sum_memory(const ENUMERABLE_PTR enumerable, 
 double internal_enumerable_sumf_memory(const double* enumerable, size_t length,  element_size_t elem_size);
 
 generic_union_t internal_enumerable_average_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, bool isSigned);
-inline double internal_enumerable_averagef_memory(const double* enumerable, size_t size,  element_size_t elem_size);
+GENOPTI_INLINE double internal_enumerable_averagef_memory(const double* enumerable, size_t size,  element_size_t elem_size);
 
 unsigned int internal_enumerable_valueCount_memory(const ENUMERABLE_PTR enumerable,const ELEMENT_PTR value, size_t size,  element_size_t elem_size);
 inline unsigned int internal_enumerable_valueCount_generic(const ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size);
@@ -44,7 +44,7 @@ inline unsigned int internal_enumerable_valueCount_generic(const ENUMERABLE_PTR 
 int internal_enumerable_select_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, PREDICATE predicate);
 
 #warning remember to create macros for this.
-int internal_enumerable_select_args_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, ...);
+GENOPTI_INLINE int internal_enumerable_select_args_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, ...);
 int internal_enumerable_select_vargs_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, va_list ap);
 
 #pragma endregion Generic Methods
@@ -52,8 +52,8 @@ int internal_enumerable_select_vargs_memory(const ENUMERABLE_PTR enumerable, siz
 #pragma region Type Specific Methods - Generally faster than generic functions, but will increase code size
 
 
-bool internal_enumerable_contains_float(const float value, const float* enumerable, length_t length);
-bool internal_enumerable_contains_double(const double value, const double* enumerable, length_t length);
+inline bool internal_enumerable_contains_float(const float value, const float* enumerable, length_t length);
+inline bool internal_enumerable_contains_double(const double value, const double* enumerable, length_t length);
 
 int internal_enumerable_indexOf_float(const float value, const float* enumerable, length_t length);
 int internal_enumerable_indexOf_double(const double value, const double* enumerable, length_t length);
@@ -125,31 +125,31 @@ uint8_t** internal_enumerable_selectMany_memory(const ENUMERABLE_PTR enumerable,
 uint8_t** internal_enumerable_selectMany_vargs_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, va_list ap, length_t* out_length);
 
 ENUMERABLE_PTR internal_enumerable_insertRange_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR range, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_insert_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_insert_generic(ENUMERABLE_PTR enumerable, generic_union_t value, int offset, size_t size,  element_size_t elem_size, bool free_old);
+inline ENUMERABLE_PTR internal_enumerable_insert_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old );
+inline ENUMERABLE_PTR internal_enumerable_insert_generic(ENUMERABLE_PTR enumerable, generic_union_t value, int offset, size_t size,  element_size_t elem_size, bool free_old);
 
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_add_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_add_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
+inline ENUMERABLE_PTR internal_enumerable_add_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
+inline ENUMERABLE_PTR internal_enumerable_add_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
 
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_prepend_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_prepend_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
+inline ENUMERABLE_PTR internal_enumerable_prepend_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old );
+inline ENUMERABLE_PTR internal_enumerable_prepend_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old);
 
 
 ENUMERABLE_PTR internal_enumerable_removeRange_memory(ENUMERABLE_PTR enumerable, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old );
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_removeAt_memory(ENUMERABLE_PTR enumerable, int offset, size_t size,  element_size_t elem_size, bool free_old );
+inline ENUMERABLE_PTR internal_enumerable_removeAt_memory(ENUMERABLE_PTR enumerable, int offset, size_t size,  element_size_t elem_size, bool free_old );
 
 ENUMERABLE_PTR internal_enumerable_remove_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed );
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_remove_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed);
+inline ENUMERABLE_PTR internal_enumerable_remove_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed);
 
 ENUMERABLE_PTR internal_enumerable_removeAll_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count );
-GENOPTI_INLINE ENUMERABLE_PTR internal_enumerable_removeAll_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count );
+inline ENUMERABLE_PTR internal_enumerable_removeAll_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count );
 
 ENUMERABLE_PTR internal_enumerable_reverse_memory(ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, bool free_old);
 
 //ENUMERABLE_PTR internal_enumerable_sort_memory(ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, COMPARISON comparison, bool free_old);
 
 void internal_enumerable_fill_memory(ENUMERABLE_PTR enumerable, ELEMENT_PTR value, size_t size, element_size_t elem_size);
-GENOPTI_INLINE void internal_enumerable_fill_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size, element_size_t elem_size);
+inline void internal_enumerable_fill_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size, element_size_t elem_size);
 
 /*
 	Not Implemented at this time
@@ -171,7 +171,7 @@ uint8_t* internal_enumerable_convertTo_memory(ENUMERABLE_PTR enumerable, size_t 
 /*
 *	Calls either convertTo_cast or convertTo_memory depending on GENETICC_OPTIMIZATION_LEVEL
 */
-static inline uint8_t* __attribute__((always_inline)) internal_enumerable_convertTo(ENUMERABLE_PTR enumerable, size_t length, type_sized_t oldType, type_sized_t newType, bool free_old)
+static inline uint8_t* __attribute__((__always_inline__)) internal_enumerable_convertTo(ENUMERABLE_PTR enumerable, size_t length, type_sized_t oldType, type_sized_t newType, bool free_old)
 {
 	#warning come back and time these convert functions
 	#if GENETICC_OPTIMIZATION_LEVEL == GENETICC_OPTIMIZATION_LEVEL_SIZE

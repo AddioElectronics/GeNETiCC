@@ -65,7 +65,6 @@ void array_contains_example()
 	containsInt = Array_Contains(uintarray, 5, sizeof(intarray) / sizeof(int));		//Returns true		length is optional
 	containsInt = Array_Contains(uintarray, 5, 4);									//Returns false		only checks the first 4 items.
 	containsInt = Array_Contains(uintarray, 5, 4, 4);								//Returns true		checks from index 4, to index 8
-	
 
 	/* Pointer array (short) */
 	bool containsPointShort;
@@ -465,7 +464,7 @@ int main(void)
 	geneticc_dma_init(BEATSIZE_BYTE);
 	geneticc_dma_register_user_callbacks(DMA_CB_TRANSFER_DONE, geneticc_dma_transfer_done);
 	
-	initialize_example_values();
+	initialize_example_values();	
 	array_contains_example();
 	array_indexOf_example();
 	array_minmaxaverage_example();

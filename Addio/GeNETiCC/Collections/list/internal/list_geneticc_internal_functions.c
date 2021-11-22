@@ -264,7 +264,7 @@ bool internal_list_set_capacity(LIST_PTR list, capacity_count_t newCapacity)
 *
 *	/returns				The amount of elements that can fit in the list.
 */
-capacity_count_t __attribute__((__always_inline__)) internal_list_get_capacity(LIST_PTR list)
+capacity_count_t GENOPTI_ATT_FORCE_INLINE internal_list_get_capacity(LIST_PTR list)
 {
 	return list->capacity * list->elem_size;
 }
@@ -276,7 +276,7 @@ capacity_count_t __attribute__((__always_inline__)) internal_list_get_capacity(L
 *
 *	/Returns	uint		Size of the elements in the list.
 */
-size_t __attribute__((__always_inline__))  internal_list_get_size(LIST_PTR list)
+size_t GENOPTI_ATT_FORCE_INLINE  internal_list_get_size(LIST_PTR list)
 {
 	return  (list->head - list->tail);
 }
@@ -288,7 +288,7 @@ size_t __attribute__((__always_inline__))  internal_list_get_size(LIST_PTR list)
 *
 *	/Returns	uint		Count of the elements in the list.
 */
-length_t __attribute__((__always_inline__))  internal_list_get_count(LIST_PTR list)
+length_t GENOPTI_ATT_FORCE_INLINE  internal_list_get_count(LIST_PTR list)
 {
 	return  (list->head - list->tail) *  list->elem_size;
 }
@@ -435,11 +435,9 @@ bool internal_list_set_memory(LIST_PTR list, const ELEMENT_PTR value, index_t in
 *
 *	/returns	bool		True if the value was set, or null if the index was out of range.
 */
-bool internal_list_set_generic(LIST_PTR list, generic_union_t value, index_t index)
+bool __attribute__((__always_inline__)) internal_list_set_generic(LIST_PTR list, generic_union_t value, index_t index)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_set_memory(list, &v, index);
+	return internal_list_set_memory(list, &value, index);
 }
 
 /*
@@ -1118,7 +1116,7 @@ bool internal_list_insertRange_memory(LIST_PTR list, const ARRAY_PTR range, byte
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the of value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset, element_size_t elem_size)
+bool __attribute__((__always_inline__)) internal_list_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset, element_size_t elem_size)
 {
 	return internal_list_insertRange_memory(list, value, offset, elem_size, elem_size);
 }
@@ -1133,11 +1131,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_insert_memory(LIST_PTR list, const E
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the of value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset,  element_size_t elem_size)
+bool __attribute__((__always_inline__)) internal_list_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_insertRange_memory(list, &v, offset, elem_size, elem_size);
+	return internal_list_insertRange_memory(list, &value, offset, elem_size, elem_size);
 }
 
 /*
@@ -1150,7 +1146,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_insert_generic(LIST_PTR list, generi
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the range of values.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size,  element_size_t elem_size )
+bool __attribute__((__always_inline__)) internal_list_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size,  element_size_t elem_size )
 {
 	return internal_list_insertRange_memory(list, range, internal_list_get_size(list), range_size, elem_size);
 }
@@ -1164,7 +1160,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_addRange_memory(LIST_PTR list, const
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the range of values.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_add_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size )
+bool __attribute__((__always_inline__)) internal_list_add_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size )
 {
 	return internal_list_insertRange_memory(list, value,  internal_list_get_size(list), elem_size, elem_size);
 }
@@ -1178,11 +1174,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_add_memory(LIST_PTR list, const ELEM
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the range of values.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_add_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size)
+bool __attribute__((__always_inline__)) internal_list_add_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_insertRange_memory(list, &v, internal_list_get_size(list), elem_size, elem_size);
+	return internal_list_insertRange_memory(list, &value, internal_list_get_size(list), elem_size, elem_size);
 }
 
 /*
@@ -1195,7 +1189,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_add_generic(LIST_PTR list, generic_u
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the range of values.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size,  element_size_t elem_size )
+bool __attribute__((__always_inline__)) internal_list_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size,  element_size_t elem_size )
 {
 	return internal_list_insertRange_memory(list, range, 0, range_size, elem_size);
 }
@@ -1209,7 +1203,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_prependRange_memory(LIST_PTR list, c
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the range of values.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_prepend_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size )
+bool __attribute__((__always_inline__)) internal_list_prepend_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size )
 {
 	return internal_list_insertRange_memory(list, value, 0, elem_size, elem_size);
 }
@@ -1223,11 +1217,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_prepend_memory(LIST_PTR list, const 
 *
 *	/returns	bool		True or false depending if the list had enough capacity for the range of values.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_prepend_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size)
+bool __attribute__((__always_inline__)) internal_list_prepend_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-
-	return internal_list_insertRange_memory(list, &v, 0, elem_size, elem_size);
+	return internal_list_insertRange_memory(list, &value, 0, elem_size, elem_size);
 }
 
 /*
@@ -1307,7 +1299,7 @@ void internal_list_removeRange_memory(LIST_PTR list, byte_offset_t offset, size_
 *	/param	list		Pointer to the list.
 *	/param	offset		The byte offset to start removing at.
 */
-void GENOPTI_ATT_FORCE_INLINE internal_list_removeAt_memory(LIST_PTR list, byte_offset_t offset )
+void __attribute__((__always_inline__)) internal_list_removeAt_memory(LIST_PTR list, byte_offset_t offset )
 {
 	internal_list_removeRange_memory(list, offset, list->elem_size);
 }
@@ -1350,11 +1342,9 @@ bool internal_list_remove_memory(LIST_PTR list, const ELEMENT_PTR value )
 *
 *	/returns				True or false depending on if an item was found and removed.
 */
-bool internal_list_remove_generic(LIST_PTR list, generic_union_t value)
+bool __attribute__((__always_inline__)) internal_list_remove_generic(LIST_PTR list, generic_union_t value)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-		
-	return internal_list_remove_memory(list, &v) != 0;
+	return internal_list_remove_memory(list, &value) != 0;
 }
 
 
@@ -1532,11 +1522,9 @@ uint32_t internal_list_removeAll_memory(LIST_PTR list, ELEMENT_PTR value)
 *
 *	/returns				Returns amount of values removed from the list.
 */
-uint32_t internal_list_removeAll_generic(LIST_PTR list, generic_union_t value )
+uint32_t __attribute__((__always_inline__)) internal_list_removeAll_generic(LIST_PTR list, generic_union_t value )
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_removeAll_memory(list, &v);
+	return internal_list_removeAll_memory(list, &value);
 }
 
 
@@ -1778,7 +1766,7 @@ uint32_t GENOPTI_ATT_FORCE_INLINE internal_list_removeAllMatching_args_memory(LI
 *
 *	/param	list			Pointer to the start of the list.
 */
-void internal_list_reverse_memory(LIST_PTR list)
+void __attribute__((__always_inline__)) internal_list_reverse_memory(LIST_PTR list)
 {
 	//internal_list_trimExcess(list);
 	//size_t size = internal_list_get_size(list);
@@ -2087,7 +2075,7 @@ bool internal_list_dma_insertRange_memory(LIST_PTR list, const ARRAY_PTR range, 
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset)
+bool __attribute__((__always_inline__)) internal_list_dma_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset)
 {
 	return internal_list_dma_insertRange_memory(list, value, offset, list->elem_size);
 }
@@ -2102,11 +2090,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_insert_memory(LIST_PTR list, con
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset)
+bool __attribute__((__always_inline__)) internal_list_dma_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_dma_insertRange_memory(list, &v, offset, list->elem_size);
+	return internal_list_dma_insertRange_memory(list, &value, offset, list->elem_size);
 }
 
 /*
@@ -2119,7 +2105,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_insert_generic(LIST_PTR list, ge
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size )
+bool __attribute__((__always_inline__)) internal_list_dma_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size )
 {
 	return internal_list_dma_insertRange_memory(list, range, internal_list_get_size(list), range_size);
 }
@@ -2133,7 +2119,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_addRange_memory(LIST_PTR list, c
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_add_memory(LIST_PTR list, const ELEMENT_PTR value )
+bool __attribute__((__always_inline__)) internal_list_dma_add_memory(LIST_PTR list, const ELEMENT_PTR value )
 {
 	return internal_list_dma_insertRange_memory(list, value,  internal_list_get_size(list), list->elem_size);
 }
@@ -2147,11 +2133,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_add_memory(LIST_PTR list, const 
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_add_generic(LIST_PTR list, generic_union_t value)
+bool __attribute__((__always_inline__)) internal_list_dma_add_generic(LIST_PTR list, generic_union_t value)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_dma_insertRange_memory(list, &v, internal_list_get_size(list), list->elem_size);
+	return internal_list_dma_insertRange_memory(list, &value, internal_list_get_size(list), list->elem_size);
 }
 
 /*
@@ -2163,7 +2147,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_add_generic(LIST_PTR list, gener
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size )
+bool __attribute__((__always_inline__)) internal_list_dma_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size )
 {
 	return internal_list_dma_insertRange_memory(list, range, 0, range_size);
 }
@@ -2177,7 +2161,7 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_prependRange_memory(LIST_PTR lis
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_prepend_memory(LIST_PTR list, const ELEMENT_PTR value )
+bool __attribute__((__always_inline__)) internal_list_dma_prepend_memory(LIST_PTR list, const ELEMENT_PTR value )
 {
 	return internal_list_dma_insertRange_memory(list, value, 0, list->elem_size);
 }
@@ -2191,11 +2175,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_prepend_memory(LIST_PTR list, co
 *
 *	/returns	bool		True if the DMA transfer was registered. False if there was no capacity in the list, or if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_prepend_generic(LIST_PTR list, generic_union_t value)
+bool __attribute__((__always_inline__)) internal_list_dma_prepend_generic(LIST_PTR list, generic_union_t value)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-
-	return internal_list_dma_insertRange_memory(list, &v, 0, list->elem_size);
+	return internal_list_dma_insertRange_memory(list, &value, 0, list->elem_size);
 }
 
 /*
@@ -2296,7 +2278,7 @@ bool internal_list_dma_removeRange_memory(LIST_PTR list, byte_offset_t offset, s
 *
 *	/returns	bool	True if the DMA transfer was registered. False if the maximum transfer count has been reached.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_list_dma_removeAt_memory(LIST_PTR list, byte_offset_t offset )
+bool __attribute__((__always_inline__)) internal_list_dma_removeAt_memory(LIST_PTR list, byte_offset_t offset )
 {
 	return internal_list_dma_removeRange_memory(list, offset, list->elem_size);
 }
@@ -2345,11 +2327,9 @@ bool internal_list_dma_remove_memory(LIST_PTR list, const ELEMENT_PTR value, boo
 *
 *	/returns	bool		True if the DMA transfer was registered, or if there were no values to remove, out_removed will also be false. When False and out_removed true, the maximum transfer count has been reached.
 */
-bool internal_list_dma_remove_generic(LIST_PTR list, generic_union_t value, bool* out_removed)
+bool __attribute__((__always_inline__)) internal_list_dma_remove_generic(LIST_PTR list, generic_union_t value, bool* out_removed)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_dma_remove_memory(list, &v, out_removed);
+	return internal_list_dma_remove_memory(list, &value, out_removed);
 }
 
 
@@ -2462,11 +2442,9 @@ bool internal_list_dma_removeAll_memory(LIST_PTR list, const ELEMENT_PTR value, 
 *
 *	/returns	bool			True if the DMA transfer was registered. False if the maximum transfer count has been reached.
 */
-bool internal_list_dma_removeAll_generic(LIST_PTR list, generic_union_t value, uint32_t* out_remove_count )
+bool __attribute__((__always_inline__)) internal_list_dma_removeAll_generic(LIST_PTR list, generic_union_t value, uint32_t* out_remove_count )
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_list_dma_removeAll_memory(list, &v, out_remove_count);
+	return internal_list_dma_removeAll_memory(list, &value, out_remove_count);
 }
 
 

@@ -63,11 +63,9 @@ int internal_enumerable_indexOf_memory(const ENUMERABLE_PTR enumerable, const EL
 *
 *	/returns			The index of the value in the enumerable, or -1 if it does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_enumerable_indexOf_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
+int __attribute__((__always_inline__)) internal_enumerable_indexOf_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;		//Store value so we can get pointer from.
-	
-	return internal_enumerable_indexOf_memory(enumerable, &v, size, elem_size);
+	return internal_enumerable_indexOf_memory(enumerable, &value, size, elem_size);
 }
 
 
@@ -81,7 +79,7 @@ int GENOPTI_ATT_FORCE_INLINE internal_enumerable_indexOf_generic(const ENUMERABL
 *
 *	/returns			If the enumerable contains the value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_enumerable_contains_memory(const ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size )
+bool __attribute__((__always_inline__)) internal_enumerable_contains_memory(const ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size )
 {
 	return internal_enumerable_indexOf_memory(enumerable, value, size, elem_size) != -1;
 }
@@ -96,11 +94,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_enumerable_contains_memory(const ENUMERAB
 *
 *	/returns			If the enumerable contains the value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_enumerable_contains_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
+bool __attribute__((__always_inline__)) internal_enumerable_contains_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_enumerable_contains_memory(enumerable, &v, size, elem_size);
+	return internal_enumerable_contains_memory(enumerable, &value, size, elem_size);
 }
 
 /*
@@ -168,11 +164,9 @@ int internal_enumerable_lastIndexOf_memory(const ENUMERABLE_PTR enumerable, cons
 *
 *	/returns			The index of the value in the enumerable, or -1 if it does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_enumerable_lastIndexOf_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
+int __attribute__((__always_inline__)) internal_enumerable_lastIndexOf_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;		//Store value so we can get pointer from.
-	
-	return internal_enumerable_lastIndexOf_memory(enumerable, &v, size, elem_size);
+	return internal_enumerable_lastIndexOf_memory(enumerable, &value, size, elem_size);
 }
 
 
@@ -583,11 +577,9 @@ unsigned int internal_enumerable_valueCount_memory(const ELEMENT_PTR value, cons
 *
 *	/returns			The amount of times "value" is in the enumerable.
 */
-unsigned int GENOPTI_ATT_FORCE_INLINE internal_enumerable_valueCount_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
+unsigned int __attribute__((__always_inline__)) internal_enumerable_valueCount_generic(const ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;		//Store value so we can get pointer from.
-	
-	return internal_enumerable_valueCount_memory(enumerable, &v, size, elem_size);
+	return internal_enumerable_valueCount_memory(enumerable, &value, size, elem_size);
 }
 
 /*
@@ -625,7 +617,7 @@ int internal_enumerable_select_memory(const ENUMERABLE_PTR enumerable, size_t si
 *
 *	/returns			Zero based index of the first value in the enumerable that matches the predicate, or -1 if the value does not exist.
 */
-int internal_enumerable_select_args_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, ...)
+int GENOPTI_ATT_FORCE_INLINE internal_enumerable_select_args_memory(const ENUMERABLE_PTR enumerable, size_t size,  element_size_t elem_size, PREDICATE_ARGS predicate, int arg_count, ...)
 {
 	va_list ap;
 	va_start(ap, arg_count);
@@ -666,12 +658,12 @@ int internal_enumerable_select_vargs_memory(const ENUMERABLE_PTR enumerable, siz
 #pragma region Type Specific Methods
 
 
-bool internal_enumerable_contains_float(const float value, const float* enumerable, length_t length)
+bool __attribute__((__always_inline__)) internal_enumerable_contains_float(const float value, const float* enumerable, length_t length)
 {
 	return internal_enumerable_indexOf_float(value, enumerable, length) != -1;
 }
 
-bool internal_enumerable_contains_double(const double value, const double* enumerable, length_t length)
+bool __attribute__((__always_inline__)) internal_enumerable_contains_double(const double value, const double* enumerable, length_t length)
 {
 	return internal_enumerable_indexOf_double(value, enumerable, length) != -1;
 }
@@ -860,7 +852,7 @@ ENUMERABLE_PTR internal_enumerable_insertRange_memory(ENUMERABLE_PTR enumerable,
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_insert_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old )
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_insert_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old )
 {
 	return internal_enumerable_insertRange_memory(enumerable, value, offset,  (1 * elem_size), size, elem_size, free_old);
 }
@@ -879,11 +871,9 @@ ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_insert_memory(ENUMER
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_insert_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, int offset,  size_t size,  element_size_t elem_size, bool free_old)
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_insert_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, int offset,  size_t size,  element_size_t elem_size, bool free_old)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_enumerable_insertRange_memory(enumerable, &v, offset,  (1 * elem_size), size, elem_size, free_old);
+	return internal_enumerable_insertRange_memory(enumerable, &value, offset,  (1 * elem_size), size, elem_size, free_old);
 }
 
 ///*
@@ -916,7 +906,7 @@ ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_insert_generic(ENUME
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_add_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old )
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_add_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old )
 {
 	return internal_enumerable_insertRange_memory(enumerable, value, size, (1 * elem_size), size, elem_size, free_old); 
 }
@@ -933,11 +923,9 @@ ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_add_memory(ENUMERABL
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_add_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_add_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_enumerable_insertRange_memory(enumerable, &v, size, (1 * elem_size), size, elem_size, free_old);
+	return internal_enumerable_insertRange_memory(enumerable, &value, size, (1 * elem_size), size, elem_size, free_old);
 }
 
 ///*
@@ -970,7 +958,7 @@ ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_add_generic(ENUMERAB
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR internal_enumerable_prepend_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value,  size_t size,  element_size_t elem_size, bool free_old )
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_prepend_memory(ENUMERABLE_PTR enumerable, const ELEMENT_PTR value,  size_t size,  element_size_t elem_size, bool free_old )
 {
 	return internal_enumerable_insertRange_memory(enumerable, value, 0, (1 * elem_size), size,elem_size, free_old);
 }
@@ -987,11 +975,9 @@ ENUMERABLE_PTR internal_enumerable_prepend_memory(ENUMERABLE_PTR enumerable, con
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_prepend_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_prepend_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_enumerable_insertRange_memory(enumerable, &v, 0,  (1 * elem_size), size, elem_size, free_old);
+	return internal_enumerable_insertRange_memory(enumerable, &value, 0,  (1 * elem_size), size, elem_size, free_old);
 }
 
 /*
@@ -1008,7 +994,7 @@ ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_prepend_generic(ENUM
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_removeRange_memory(ENUMERABLE_PTR enumerable, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
+ENUMERABLE_PTR internal_enumerable_removeRange_memory(ENUMERABLE_PTR enumerable, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
 {
 	ASSERT(byte_count);
 
@@ -1042,9 +1028,9 @@ ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_removeRange_memory(E
 *
 *	/returns			A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_removeAt_memory(ENUMERABLE_PTR enumerable, int offset, size_t size,  element_size_t elem_size, bool free_old )
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_removeAt_memory(ENUMERABLE_PTR enumerable, int offset, size_t size,  element_size_t elem_size, bool free_old )
 {
-	internal_enumerable_removeRange_memory(enumerable, offset, elem_size, size, elem_size, free_old);
+	return internal_enumerable_removeRange_memory(enumerable, offset, elem_size, size, elem_size, free_old);
 }
 
 /*
@@ -1094,11 +1080,9 @@ ENUMERABLE_PTR internal_enumerable_remove_memory(ENUMERABLE_PTR enumerable, cons
 *
 *	/returns				A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_remove_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed)
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_remove_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-		
-	return internal_enumerable_remove_memory(enumerable, &v, size, elem_size, free_old, out_removed);
+	return internal_enumerable_remove_memory(enumerable, &value, size, elem_size, free_old, out_removed);
 }
 
 /*
@@ -1163,11 +1147,9 @@ ENUMERABLE_PTR internal_enumerable_removeAll_memory(ENUMERABLE_PTR enumerable, c
 *
 *	/returns				A pointer to the start of the new enumerable.
 */
-ENUMERABLE_PTR GENOPTI_ATT_FORCE_INLINE internal_enumerable_removeAll_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count )
+ENUMERABLE_PTR __attribute__((__always_inline__)) internal_enumerable_removeAll_generic(ENUMERABLE_PTR enumerable, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count )
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-		
-	return internal_enumerable_removeAll_memory(enumerable, &v, size, elem_size, free_old, out_count);
+	return internal_enumerable_removeAll_memory(enumerable, &value, size, elem_size, free_old, out_count);
 }
 
 /*
@@ -1235,11 +1217,9 @@ void internal_enumerable_fill_memory(ENUMERABLE_PTR enumerable, ELEMENT_PTR valu
 *	/param	size			The size of the enumerable (in bytes), or how many bytes to set.
 *	/param	elem_size		The size of the value's type (in bytes).
 */
-void GENOPTI_ATT_FORCE_INLINE internal_enumerable_fill_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size, element_size_t elem_size)
+void __attribute__((__always_inline__)) internal_enumerable_fill_generic(ENUMERABLE_PTR enumerable, generic_union_t value, size_t size, element_size_t elem_size)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-		
-	return internal_enumerable_fill_memory(enumerable, &v, size, elem_size);
+	return internal_enumerable_fill_memory(enumerable, &value, size, elem_size);
 }
 
 #pragma endregion Unsafe Generic Methods

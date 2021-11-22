@@ -39,31 +39,31 @@ bool internal_list_ensure_capacity(LIST_PTR list, capacity_size_t capacity);
 
 bool internal_list_set_capacity(LIST_PTR list, capacity_count_t newCapacity);
 
-inline capacity_count_t internal_list_get_capacity(LIST_PTR list);
+GENOPTI_INLINE capacity_count_t internal_list_get_capacity(LIST_PTR list);
 
-inline size_t internal_list_get_size(LIST_PTR list);
+GENOPTI_INLINE size_t internal_list_get_size(LIST_PTR list);
 
-inline length_t internal_list_get_count(LIST_PTR list);
+GENOPTI_INLINE length_t internal_list_get_count(LIST_PTR list);
 
 length_t internal_list_adjustHead(LIST_PTR list, int n, bool erase );
 
 length_t internal_list_adjustTail(LIST_PTR list, int n, bool erase );
 
-inline void internal_list_realign_array(LIST_PTR list);
+void internal_list_realign_array(LIST_PTR list);
 
-void internal_list_trimExcess(LIST_PTR list);
+GENOPTI_INLINE void internal_list_trimExcess(LIST_PTR list);
 
 inline ARRAY_PTR internal_list_get_aligned_array(LIST_PTR list);
 
 bool internal_list_set_memory(LIST_PTR list, const ELEMENT_PTR value, index_t index);
 
-bool internal_list_set_generic(LIST_PTR list, generic_union_t value, index_t index);
+inline bool internal_list_set_generic(LIST_PTR list, generic_union_t value, index_t index);
 
 ELEMENT_PTR internal_list_get(LIST_PTR list, index_t index);
 
 
 
-bool GENOPTI_ATT_FORCE_INLINE internal_list_exists(LIST_PTR list, PREDICATE predicate);
+GENOPTI_INLINE bool internal_list_exists(LIST_PTR list, PREDICATE predicate);
 
 void internal_list_forEach(LIST_PTR list, ACTION action, byte_offset_t offset, size_t size);
 
@@ -100,25 +100,25 @@ LIST_PTR internal_list_findAll_values_vargs(LIST_PTR list, PREDICATE_ARGS predic
 LIST_PTR internal_list_getRange_memory(LIST_PTR list, byte_offset_t offset, size_t range_size);
 
 bool internal_list_insertRange_memory(LIST_PTR list, const ARRAY_PTR range, byte_offset_t offset, size_t range_size,  element_size_t elem_size );
-GENOPTI_INLINE bool internal_list_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset, element_size_t elem_size);
-GENOPTI_INLINE bool internal_list_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset,  element_size_t elem_size);
+inline bool internal_list_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset, element_size_t elem_size);
+inline bool internal_list_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset,  element_size_t elem_size);
 
-GENOPTI_INLINE bool internal_list_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size, element_size_t elem_size );
-GENOPTI_INLINE bool internal_list_add_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size );
-GENOPTI_INLINE bool internal_list_add_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size);
+inline bool internal_list_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size, element_size_t elem_size );
+inline bool internal_list_add_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size );
+inline bool internal_list_add_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size);
 
-GENOPTI_INLINE bool internal_list_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size,  element_size_t elem_size );
-GENOPTI_INLINE bool internal_list_prepend_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size );
-GENOPTI_INLINE bool internal_list_prepend_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size);
+inline bool internal_list_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size,  element_size_t elem_size );
+inline bool internal_list_prepend_memory(LIST_PTR list, const ELEMENT_PTR value,  element_size_t elem_size );
+inline bool internal_list_prepend_generic(LIST_PTR list, generic_union_t value,  element_size_t elem_size);
 
 void internal_list_removeRange_memory(LIST_PTR list, byte_offset_t offset, size_t byte_count );
-GENOPTI_INLINE void internal_list_removeAt_memory(LIST_PTR list, byte_offset_t offset );
+inline void internal_list_removeAt_memory(LIST_PTR list, byte_offset_t offset );
 
 bool internal_list_remove_memory(LIST_PTR list , const ELEMENT_PTR value);
-bool internal_list_remove_generic(LIST_PTR list, generic_union_t value);
+inline bool internal_list_remove_generic(LIST_PTR list, generic_union_t value);
 
 uint32_t internal_list_removeAll_memory(LIST_PTR list, ELEMENT_PTR value);
-uint32_t internal_list_removeAll_generic(LIST_PTR list, generic_union_t value );
+inline uint32_t internal_list_removeAll_generic(LIST_PTR list, generic_union_t value );
 
 bool internal_list_removeMatch_memory(LIST_PTR list, PREDICATE predicate );
 uint32_t internal_list_removeAllMatching_memory(LIST_PTR list, PREDICATE predicate);
@@ -129,7 +129,7 @@ uint32_t internal_list_removeAllMatching_vargs_memory(LIST_PTR list, PREDICATE_A
 GENOPTI_INLINE bool internal_list_removeMatch_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ... );
 GENOPTI_INLINE uint32_t internal_list_removeAllMatching_args_memory(LIST_PTR list, PREDICATE_ARGS predicate, int arg_count, ... );
 
-void internal_list_reverse_memory(LIST_PTR list);
+inline void internal_list_reverse_memory(LIST_PTR list);
 
 //void internal_list_sort_memory(LIST_PTR list, COMPARISON comparison);
 
@@ -191,25 +191,25 @@ bool internal_array_dma_copy_init_list(ARRAY_PTR array, size_t size,  element_si
 LIST_PTR internal_list_dma_getRange_memory(LIST_PTR list, byte_offset_t offset, size_t range_size);
 
 bool internal_list_dma_insertRange_memory(LIST_PTR list, const ARRAY_PTR range, byte_offset_t offset, size_t range_size );
-GENOPTI_INLINE bool internal_list_dma_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset);
-GENOPTI_INLINE bool internal_list_dma_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset);
+inline bool internal_list_dma_insert_memory(LIST_PTR list, const ELEMENT_PTR value, byte_offset_t offset);
+inline bool internal_list_dma_insert_generic(LIST_PTR list, generic_union_t value, byte_offset_t offset);
 
-GENOPTI_INLINE bool internal_list_dma_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size);
-GENOPTI_INLINE bool internal_list_dma_add_memory(LIST_PTR list, const ELEMENT_PTR value );
-GENOPTI_INLINE bool internal_list_dma_add_generic(LIST_PTR list, generic_union_t value);
+inline bool internal_list_dma_addRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size);
+inline bool internal_list_dma_add_memory(LIST_PTR list, const ELEMENT_PTR value );
+inline bool internal_list_dma_add_generic(LIST_PTR list, generic_union_t value);
 
-GENOPTI_INLINE bool internal_list_dma_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size );
-GENOPTI_INLINE bool internal_list_dma_prepend_memory(LIST_PTR list, const ELEMENT_PTR value);
-GENOPTI_INLINE bool internal_list_dma_prepend_generic(LIST_PTR list, generic_union_t value);
+inline bool internal_list_dma_prependRange_memory(LIST_PTR list, const ARRAY_PTR range, size_t range_size );
+inline bool internal_list_dma_prepend_memory(LIST_PTR list, const ELEMENT_PTR value);
+inline bool internal_list_dma_prepend_generic(LIST_PTR list, generic_union_t value);
 
 bool internal_list_dma_removeRange_memory(LIST_PTR list, byte_offset_t offset, size_t byte_count );
-GENOPTI_INLINE bool internal_list_dma_removeAt_memory(LIST_PTR list, byte_offset_t offset );
+inline bool internal_list_dma_removeAt_memory(LIST_PTR list, byte_offset_t offset );
 
 bool internal_list_dma_remove_memory(LIST_PTR list, const ELEMENT_PTR value, bool* out_removed);
-bool internal_list_dma_remove_generic(LIST_PTR list, generic_union_t value, bool* out_removed);
+inline bool internal_list_dma_remove_generic(LIST_PTR list, generic_union_t value, bool* out_removed);
 
 bool internal_list_dma_removeAll_memory(LIST_PTR list, const ELEMENT_PTR value, uint32_t* out_remove_count);
-bool internal_list_dma_removeAll_generic(LIST_PTR list, generic_union_t value, uint32_t* out_remove_count );
+inline bool internal_list_dma_removeAll_generic(LIST_PTR list, generic_union_t value, uint32_t* out_remove_count );
 
 bool internal_list_dma_removeMatch_memory(LIST_PTR list, PREDICATE predicate, bool* out_removed );
 bool internal_list_dma_removeAllMatching_memory(LIST_PTR list, PREDICATE predicate, uint32_t* out_remove_count);

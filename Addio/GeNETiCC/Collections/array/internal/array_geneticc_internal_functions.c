@@ -63,11 +63,9 @@ int internal_array_indexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR value
 *
 *	/returns			The index of the value in the array, or -1 if it does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_array_indexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
+int __attribute__((__always_inline__)) internal_array_indexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;		//Store value so we can get pointer from.
-	
-	return internal_array_indexOf_memory(array, &v, size, elem_size);
+	return internal_array_indexOf_memory(array, &value, size, elem_size);
 }
 
 
@@ -81,7 +79,7 @@ int GENOPTI_ATT_FORCE_INLINE internal_array_indexOf_generic(const ARRAY_PTR arra
 *
 *	/returns			If the array contains the value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size )
+bool __attribute__((__always_inline__)) internal_array_contains_memory(const ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size )
 {
 	return internal_array_indexOf_memory(array, value, size, elem_size) != -1;
 }
@@ -96,11 +94,9 @@ bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_memory(const ARRAY_PTR arr
 *
 *	/returns			If the array contains the value.
 */
-bool GENOPTI_ATT_FORCE_INLINE internal_array_contains_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
+bool __attribute__((__always_inline__)) internal_array_contains_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_array_contains_memory(array, &v, size, elem_size);
+	return internal_array_contains_memory(array, &value, size, elem_size);
 }
 
 /*
@@ -168,11 +164,9 @@ int internal_array_lastIndexOf_memory(const ARRAY_PTR array, const ELEMENT_PTR v
 *
 *	/returns			The index of the value in the array, or -1 if it does not exist.
 */
-int GENOPTI_ATT_FORCE_INLINE internal_array_lastIndexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
+int __attribute__((__always_inline__)) internal_array_lastIndexOf_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;		//Store value so we can get pointer from.
-	
-	return internal_array_lastIndexOf_memory(array, &v, size, elem_size);
+	return internal_array_lastIndexOf_memory(array, &value, size, elem_size);
 }
 
 
@@ -583,11 +577,9 @@ unsigned int internal_array_valueCount_memory(const ELEMENT_PTR value, const ARR
 *
 *	/returns			The amount of times "value" is in the array.
 */
-unsigned int GENOPTI_ATT_FORCE_INLINE internal_array_valueCount_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
+unsigned int __attribute__((__always_inline__)) internal_array_valueCount_generic(const ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size)
 {
-	uint64_t v = value.u64;		//Store value so we can get pointer from.
-	
-	return internal_array_valueCount_memory(array, &v, size, elem_size);
+	return internal_array_valueCount_memory(array, &value, size, elem_size);
 }
 
 /*
@@ -666,12 +658,12 @@ int internal_array_select_vargs_memory(const ARRAY_PTR array, size_t size,  elem
 #pragma region Type Specific Methods
 
 
-bool internal_array_contains_float(const float value, const float* array, length_t length)
+bool __attribute__((__always_inline__)) internal_array_contains_float(const float value, const float* array, length_t length)
 {
 	return internal_array_indexOf_float(value, array, length) != -1;
 }
 
-bool internal_array_contains_double(const double value, const double* array, length_t length)
+bool __attribute__((__always_inline__)) internal_array_contains_double(const double value, const double* array, length_t length)
 {
 	return internal_array_indexOf_double(value, array, length) != -1;
 }
@@ -860,7 +852,7 @@ ARRAY_PTR internal_array_insertRange_memory(ARRAY_PTR array, const ELEMENT_PTR r
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_memory(ARRAY_PTR array, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old )
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_insert_memory(ARRAY_PTR array, const ELEMENT_PTR value, int offset,  size_t size,  element_size_t elem_size, bool free_old )
 {
 	return internal_array_insertRange_memory(array, value, offset,  (1 * elem_size), size, elem_size, free_old);
 }
@@ -879,11 +871,9 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_memory(ARRAY_PTR array,
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_generic(ARRAY_PTR array, const generic_union_t value, int offset,  size_t size,  element_size_t elem_size, bool free_old)
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_insert_generic(ARRAY_PTR array, const generic_union_t value, int offset,  size_t size,  element_size_t elem_size, bool free_old)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_array_insertRange_memory(array, &v, offset,  (1 * elem_size), size, elem_size, free_old);
+	return internal_array_insertRange_memory(array, &value, offset,  (1 * elem_size), size, elem_size, free_old);
 }
 
 ///*
@@ -916,7 +906,7 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_insert_generic(ARRAY_PTR array
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old )
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_add_memory(ARRAY_PTR array, const ELEMENT_PTR value, size_t size,  element_size_t elem_size, bool free_old )
 {
 	return internal_array_insertRange_memory(array, value, size, (1 * elem_size), size, elem_size, free_old); 
 }
@@ -933,11 +923,9 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_memory(ARRAY_PTR array, co
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_add_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_array_insertRange_memory(array, &v, size, (1 * elem_size), size, elem_size, free_old);
+	return internal_array_insertRange_memory(array, &value, size, (1 * elem_size), size, elem_size, free_old);
 }
 
 ///*
@@ -970,7 +958,7 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_add_generic(ARRAY_PTR array, c
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value,  size_t size,  element_size_t elem_size, bool free_old )
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value,  size_t size,  element_size_t elem_size, bool free_old )
 {
 	return internal_array_insertRange_memory(array, value, 0, (1 * elem_size), size,elem_size, free_old);
 }
@@ -987,11 +975,9 @@ ARRAY_PTR internal_array_prepend_memory(ARRAY_PTR array, const ELEMENT_PTR value
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_prepend_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_prepend_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-	
-	return internal_array_insertRange_memory(array, &v, 0,  (1 * elem_size), size, elem_size, free_old);
+	return internal_array_insertRange_memory(array, &value, 0,  (1 * elem_size), size, elem_size, free_old);
 }
 
 /*
@@ -1008,7 +994,7 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_prepend_generic(ARRAY_PTR arra
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeRange_memory(ARRAY_PTR array, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
+ARRAY_PTR internal_array_removeRange_memory(ARRAY_PTR array, int offset, size_t byte_count, size_t size,  element_size_t elem_size, bool free_old )
 {
 	ASSERT(byte_count);
 
@@ -1042,7 +1028,7 @@ ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeRange_memory(ARRAY_PTR a
 *
 *	/returns			A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAt_memory(ARRAY_PTR array, int offset, size_t size,  element_size_t elem_size, bool free_old )
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_removeAt_memory(ARRAY_PTR array, int offset, size_t size,  element_size_t elem_size, bool free_old )
 {
 	internal_array_removeRange_memory(array, offset, elem_size, size, elem_size, free_old);
 }
@@ -1094,11 +1080,9 @@ ARRAY_PTR internal_array_remove_memory(ARRAY_PTR array, const ELEMENT_PTR value,
 *
 *	/returns				A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_remove_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed)
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_remove_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, bool* out_removed)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-		
-	return internal_array_remove_memory(array, &v, size, elem_size, free_old, out_removed);
+	return internal_array_remove_memory(array, &value, size, elem_size, free_old, out_removed);
 }
 
 /*
@@ -1163,11 +1147,9 @@ ARRAY_PTR internal_array_removeAll_memory(ARRAY_PTR array, const ELEMENT_PTR val
 *
 *	/returns				A pointer to the start of the new array.
 */
-ARRAY_PTR GENOPTI_ATT_FORCE_INLINE internal_array_removeAll_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count )
+ARRAY_PTR __attribute__((__always_inline__)) internal_array_removeAll_generic(ARRAY_PTR array, const generic_union_t value, size_t size,  element_size_t elem_size, bool free_old, unsigned int* out_count )
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-		
-	return internal_array_removeAll_memory(array, &v, size, elem_size, free_old, out_count);
+	return internal_array_removeAll_memory(array, &value, size, elem_size, free_old, out_count);
 }
 
 /*
@@ -1235,11 +1217,9 @@ void internal_array_fill_memory(ARRAY_PTR array, ELEMENT_PTR value, size_t size,
 *	/param	size			The size of the array (in bytes), or how many bytes to set.
 *	/param	elem_size		The size of the value's type (in bytes).
 */
-void GENOPTI_ATT_FORCE_INLINE internal_array_fill_generic(ARRAY_PTR array, generic_union_t value, size_t size, element_size_t elem_size)
+void __attribute__((__always_inline__)) internal_array_fill_generic(ARRAY_PTR array, generic_union_t value, size_t size, element_size_t elem_size)
 {
-	uint64_t v = value.u64;	//Store value so we can get pointer from.
-		
-	return internal_array_fill_memory(array, &v, size, elem_size);
+	return internal_array_fill_memory(array, &value, size, elem_size);
 }
 
 #pragma endregion Unsafe Generic Methods
