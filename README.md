@@ -1,13 +1,14 @@
 # GeNETiCC ( C Library)
 #### `V0.5.3`
 
-__**A C library which implements generic functions for working with [arrays](https://github.com/AddioElectronics/GeNETiCC/wiki/API-Array), [lists](https://github.com/AddioElectronics/GeNETiCC/wiki/API-List), and more(coming soon), in a style that implements syntactic sugar that closely resembles C#.**__
+__**A C library which implements generic functions for working with [arrays](https://github.com/AddioElectronics/GeNETiCC/wiki/API-Array), [lists](https://github.com/AddioElectronics/GeNETiCC/wiki/API-List), and more(coming eventually), in a style that implements syntactic sugar that slightly resembles C#.**__
 
+`Please Note: This is more of a proof of concept, and is not intended to be a production ready library.`
 
 
 ## Notes
 
-`The README and WIKI are very messy at the moment, I apologize for any confusion caused`
+`The README and WIKI are currently in a state of disarray. They will be finished eventually.`
 
 The library is in an early state but almost production ready. It is very hard to test every permutation of each Macro/Function, so it would be much appreciated if you could report any bugs so I am able to fix them ASAP. Also feel free to post any issues, suggestions or questions you may have, this library is not like most other C libraries, and I want to make the documentation as clear as possible to avoid any confusion you or anyone else may have. My goal is to have this very approachable for coders of any skill level, just like C#.
 
