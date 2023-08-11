@@ -1,8 +1,0 @@
-#ifndef DICTIONARY_GENETICC_H_
-#define DICTIONARY_GENETICC_H_
-
-
-
-
-
-#endif /* DICTIONARY_GENETICC_H_ */

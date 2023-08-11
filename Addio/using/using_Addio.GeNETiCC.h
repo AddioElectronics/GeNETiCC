@@ -9,7 +9,7 @@
 #include "Addio/GeNETiCC/config/geneticc_config.h"
 #include "Addio/GeNETiCC/GeNETiCC.h"
 
-#include "using_Addio.GeNETiCC.collections.h"
+#include "using_geneticc_collections.h"
 //#include "using_geneticc_io.h"
 #include "Addio/GeNETiCC/DMA/geneticc_dma.h"
 
