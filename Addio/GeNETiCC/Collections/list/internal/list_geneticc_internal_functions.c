@@ -3,8 +3,8 @@
 #include <utils_assert.h>
 #include <stddef.h>
 
-#include "../../../standard/memory/geneticc_memory.h"
-#include "../../array/internal/array_geneticc_internal_functions.h"
+#include "Addio/GeNETiCC/standard/memory/geneticc_memory.h"
+#include "Addio/GeNETiCC/Collections/array/internal/array_geneticc_internal_functions.h"
 
 #pragma region INTERNAL Functions
 

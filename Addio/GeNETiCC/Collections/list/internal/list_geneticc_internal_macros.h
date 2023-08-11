@@ -2,7 +2,7 @@
 #define LIST_GENETICC_INTERNAL_MACROS_H_
 
 #include "list_geneticc_internal_functions.h"
-//#include "../config/list_geneticc_config.h"
+//#include "Addio/GeNETiCC/config/list_geneticc_config.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -10,8 +10,8 @@
 #include <stdarg.h>
 #include <limits.h>
 
-#include "../../../geneticc.h"
-#include "../../../preprocess/geneticc_macro_type_repeater.h"
+#include "Addio/GeNETiCC/geneticc.h"
+#include "Addio/GeNETiCC/preprocess/geneticc_macro_type_repeater.h"
 
 #define LIST_SIZE_TO_COUNT(size, elem_size)		(size / elem_size)
 #define LIST_COUNT_TO_SIZE(count, elem_size)	(count * elem_size)

@@ -7,7 +7,7 @@
 #include <stdarg.h>
 #include <limits.h>
 
-#include "../array/array_geneticc_defs.h"
+#include "Addio/GeNETiCC/Collections/array/array_geneticc_defs.h"
 
 
 

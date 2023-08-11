@@ -1,4 +1,4 @@
-#include "../geneticc_dma.h"
+#include "Addio/GeNETiCC/DMA/geneticc_dma.h"
 
 #if GENETICC_DMA_SYSTEM == GENETICC_DMA_SYSTEM_ATMELSTART_ARM
 

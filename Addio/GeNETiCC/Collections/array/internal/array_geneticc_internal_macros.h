@@ -2,7 +2,7 @@
 #define GENETICC_ARRAY_INTERNAL_MACROS_H_
 
 #include "array_geneticc_internal_functions.h"
-//#include "../config/array_geneticc_config.h"
+//#include "Addio/GeNETiCC/config/array_geneticc_config.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -10,7 +10,7 @@
 #include <stdarg.h>
 #include <limits.h>
 
-#include "../../../geneticc.h"
+#include "Addio/GeNETiCC/geneticc.h"
 
 
 #pragma region INTERNAL Macros - INTERNAL USE

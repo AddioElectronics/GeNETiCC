@@ -3,9 +3,9 @@
 
 #include <utils.h>
 
-#include "../geneticc.h"
-//#include "../array_geneticc_defs.h"
-#include "../collections/list/list_geneticc.h"
+#include "Addio/GeNETiCC/geneticc.h"
+//#include "Addio/GeNETiCC/Collections/array/array_geneticc_defs.h"
+#include "Addio/GeNETiCC/collections/list/list_geneticc.h"
 
 #warning change Geneticc DMA to use a ring buffer instead of a list.
 

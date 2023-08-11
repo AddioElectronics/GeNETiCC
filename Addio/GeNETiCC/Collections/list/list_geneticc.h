@@ -17,8 +17,8 @@
 #include <stdarg.h>
 #include <limits.h>
 
-#include "../../geneticc.h"
-#include "../array/array_geneticc.h"
+#include "Addio/GeNETiCC/geneticc.h"
+#include "Addio/GeNETiCC/Collections/array/array_geneticc.h"
 #include "list_geneticc_config.h"
 #include "internal/list_geneticc_internal_macros.h"
 

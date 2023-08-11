@@ -1,9 +1,9 @@
 #ifndef GENETICC_LIST_CONFIG_H_
 #define GENETICC_LIST_CONFIG_H_
 
-#include "../../../config/addio_multisystem_config.h"
+#include "Addio/config/addio_multisystem_config.h"
 
-#include "../array/array_geneticc_config.h"
+#include "Addio/GeNETiCC/Collections/array/array_geneticc_config.h"
 
 /*
 *	How many elements can a freshly initialized list store, before having to allocate more memory.

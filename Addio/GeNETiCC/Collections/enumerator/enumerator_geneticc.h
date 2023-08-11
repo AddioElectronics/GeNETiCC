@@ -2,8 +2,8 @@
 #ifndef GENETICC_ENUMERATOR_H_
 #define GENETICC_ENUMERATOR_H_
 
-#include "../../geneticc.h"
-#include "../array/array_geneticc_defs.h"
+#include "Addio/GeNETiCC/geneticc.h"
+#include "Addio/GeNETiCC/Collections/array/array_geneticc_defs.h"
 
 
 //////////////////////////////////////////////////////////////////////////

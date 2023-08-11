@@ -3,7 +3,7 @@
 #include <utils_assert.h>
 #include <stddef.h>
 
-#include "../../../standard/memory/geneticc_memory.h"
+#include "Addio/GeNETiCC/standard/memory/geneticc_memory.h"
 
 
 /*
@@ -1834,7 +1834,7 @@ float* internal_array_convertToFloatFromDouble_memory(double* array, length_t le
 
 #pragma region DMA Functions
 #if GENETICC_USE_DMA == true
-#include "../../../dma/geneticc_dma.h"
+#include "Addio/GeNETiCC/dma/geneticc_dma.h"
 
 bool internal_array_copy_dma(ARRAY_PTR array, ARRAY_PTR dest, size_t size, bool free_source)
 {

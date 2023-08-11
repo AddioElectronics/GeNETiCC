@@ -7,10 +7,10 @@
 #include <stdarg.h>
 #include <limits.h>
 
-#include "../../../geneticc.h"
-#include "../../../geneticc_defs.h"
-#include "../enumerable_geneticc_defs.h"
-#include "../enumerable_geneticc_config.h"
+#include "Addio/GeNETiCC/geneticc.h"
+#include "Addio/GeNETiCC/geneticc_defs.h"
+#include "Addio/GeNETiCC/Collections/enumerable/enumerable_geneticc_defs.h"
+#include "Addio/GeNETiCC/Collections/enumerable/enumerable_geneticc_config.h"
 
 
 #pragma region Generic Methods

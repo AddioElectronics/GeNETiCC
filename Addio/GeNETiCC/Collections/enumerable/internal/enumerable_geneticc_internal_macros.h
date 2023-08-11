@@ -2,7 +2,7 @@
 #define ENUMERABLE_GENETICC_INTERNAL_MACROS_H_
 
 #include "enumerable_geneticc_internal_functions.h"
-//#include "../config/enumerable_geneticc_config.h"
+//#include "Addio/GeNETiCC/config/enumerable_geneticc_config.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -10,7 +10,7 @@
 #include <stdarg.h>
 #include <limits.h>
 
-#include "../../geneticc.h"
+#include "Addio/GeNETiCC/geneticc.h"
 
 
 #pragma region INTERNAL Macros - INTERNAL USE

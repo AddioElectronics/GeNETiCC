@@ -6,9 +6,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "../../geneticc.h"
-#include "../../dma/geneticc_dma.h"
-#include "../../dma/geneticc_dma_transfer_manager.h"
+#include "Addio/GeNETiCC/geneticc.h"
+#include "Addio/GeNETiCC/dma/geneticc_dma.h"
+#include "Addio/GeNETiCC/dma/geneticc_dma_transfer_manager.h"
 
 //static int zero = 0;
 

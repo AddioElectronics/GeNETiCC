@@ -1,11 +1,11 @@
 #ifndef USING_GENETICC_COLLECTIONS_LIST_H_
 #define USING_GENETICC_COLLECTIONS_LIST_H_
 
-#if __has_include("../GeNETiCC/GeNETiCC.h")
+#if __has_include("Addio/GeNETiCC/GeNETiCC.h")
 
 
-#include "../GeNETiCC/geneticc.h"
-#include "../GeNETiCC/collections/list/list_geneticc.h"
+#include "Addio/GeNETiCC/geneticc.h"
+#include "Addio/GeNETiCC/collections/list/list_geneticc.h"
 
 #else
 #error Library does not exist.
